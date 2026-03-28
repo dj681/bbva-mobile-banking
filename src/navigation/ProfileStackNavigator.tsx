@@ -3,46 +3,19 @@ import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { ProfileStackParamList } from '@/types';
+import ProfileHomeScreen from '@/screens/profile/ProfileHomeScreen';
+import EditProfileScreen from '@/screens/profile/EditProfileScreen';
+import ChangePasswordScreen from '@/screens/profile/ChangePasswordScreen';
+import SecuritySettingsScreen from '@/screens/profile/SecuritySettingsScreen';
+import NotificationSettingsScreen from '@/screens/profile/NotificationSettingsScreen';
+import LanguageScreen from '@/screens/profile/LanguageScreen';
+import AboutScreen from '@/screens/profile/AboutScreen';
+import SupportScreen from '@/screens/profile/SupportScreen';
 
-// ── Placeholder screens (replaced when actual screens are created) ────────────
-const ProfileHomeScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>ProfileHome</Text>
-  </View>
-);
-const EditProfileScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>EditProfile</Text>
-  </View>
-);
-const ChangePasswordScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>ChangePassword</Text>
-  </View>
-);
-const SecuritySettingsScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>SecuritySettings</Text>
-  </View>
-);
-const NotificationSettingsScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>NotificationSettings</Text>
-  </View>
-);
-const LanguageScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>Language</Text>
-  </View>
-);
-const AboutScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>About</Text>
-  </View>
-);
-const SupportScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>Support</Text>
+// Placeholder for DeviceManagement (not part of this task)
+const DeviceManagementScreen = () => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text>Gestion des appareils</Text>
   </View>
 );
 
@@ -62,6 +35,7 @@ const ProfileStackNavigator: React.FC = () => {
       <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
       <Stack.Screen name="SecuritySettings" component={SecuritySettingsScreen} />
       <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
+      <Stack.Screen name="DeviceManagement" component={DeviceManagementScreen} />
       <Stack.Screen name="Language" component={LanguageScreen} />
       <Stack.Screen name="About" component={AboutScreen} />
       <Stack.Screen name="Support" component={SupportScreen} />
