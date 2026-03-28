@@ -2,6 +2,52 @@
 
 Application bancaire mobile complète développée avec React Native et Expo, reproduisant les fonctionnalités essentielles d'une banque numérique moderne pour la clientèle BBVA.
 
+---
+
+## 🚀 Démarrage Rapide
+
+> **Temps estimé : 3 minutes** — Suivez ces étapes pour lancer l'application localement.
+
+### Prérequis rapides
+
+| Outil | Version | Vérification |
+|---|---|---|
+| [Node.js](https://nodejs.org/) | 18+ | `node -v` |
+| npm | 9+ | `npm -v` |
+| [Expo Go](https://expo.dev/go) | dernière | App Store / Play Store |
+
+### Étapes
+
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/dj681/bbva-mobile-banking.git
+cd bbva-mobile-banking
+
+# 2. Installer les dépendances
+npm install
+
+# 3. Démarrer le serveur de développement
+npm start
+```
+
+Un **QR code** s'affiche dans le terminal.
+
+| Plateforme | Comment ouvrir l'application |
+|---|---|
+| 📱 Appareil physique | Scannez le QR code avec **Expo Go** (iOS/Android) |
+| 🤖 Émulateur Android | `npm run android` — ou appuyez sur **`a`** dans le terminal |
+| 🍎 Simulateur iOS | `npm run ios` — ou appuyez sur **`i`** *(macOS uniquement)* |
+| 🌐 Navigateur web | `npm run web` — ou appuyez sur **`w`** dans le terminal |
+
+### Connexion en mode démonstration
+
+> L'application utilise uniquement des données fictives. Aucun compte réel n'est requis.
+
+Entrez **n'importe quel e-mail et mot de passe** sur l'écran de connexion.  
+Exemple : `demo@bbva.fr` / `demo1234`
+
+---
+
 ## �� Stack Technologique
 
 | Technologie | Version | Usage |
@@ -116,7 +162,7 @@ Application bancaire mobile complète développée avec React Native et Expo, re
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/your-org/bbva-mobile-banking.git
+git clone https://github.com/dj681/bbva-mobile-banking.git
 cd bbva-mobile-banking
 
 # 2. Installer les dépendances
