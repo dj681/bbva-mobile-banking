@@ -100,9 +100,10 @@ yarn-error.log*
 logs/
 *.log
 
-# Package manager lock files (keep one)
-package-lock.json
+# Package manager lock files (keep one, track npm lockfile)
+# package-lock.json  <- tracked intentionally for reproducible installs
 pnpm-lock.yaml
+yarn.lock
 
 # Temporary files
 *.tmp
