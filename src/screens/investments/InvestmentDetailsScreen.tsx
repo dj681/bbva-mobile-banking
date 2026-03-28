@@ -388,17 +388,18 @@ export const InvestmentDetailsScreen: React.FC = () => {
   const investment = investmentFromStore ?? MOCK_INVESTMENTS[investmentId];
   const extraInfo = MOCK_INFO[investmentId] ?? { market: 'Euronext Paris', dividend: '—' };
   const chartData = CHART_CONFIG[activePeriod];
+  const investmentSymbol = investment?.symbol;
 
   useEffect(() => {
     dispatch(setSelectedInvestment(investmentId));
     dispatch(fetchInvestmentDetails(investmentId));
-    if (investment) {
-      dispatch(fetchPriceHistory({ symbol: investment.symbol, period: '1M' }));
+    if (investmentSymbol) {
+      dispatch(fetchPriceHistory({ symbol: investmentSymbol, period: '1M' }));
     }
     return () => {
       dispatch(setSelectedInvestment(null));
     };
-  }, [dispatch, investmentId, investment?.symbol]);
+  }, [dispatch, investmentId, investmentSymbol]);
 
   const handlePeriodChange = useCallback(
     (period: Period) => {

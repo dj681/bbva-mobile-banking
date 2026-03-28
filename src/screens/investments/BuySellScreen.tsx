@@ -102,7 +102,7 @@ const MOCK_ACCOUNTS: Account[] = [
   },
 ];
 
-const BROKERAGE_RATE = 0.005; // 0.5%
+const BROKERAGE_RATE = 0.001; // 0.1% commission (aligned with API)
 
 interface SuccessViewProps {
   orderRef: string;
@@ -827,7 +827,7 @@ export const BuySellScreen: React.FC = () => {
             </Text>
           </View>
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Frais de courtage (0,5 %)</Text>
+            <Text style={styles.summaryLabel}>Frais de courtage (0,1 %)</Text>
             <Text style={styles.summaryValue}>
               {brokerage > 0 ? formatCurrency(brokerage) : '—'}
             </Text>
@@ -874,7 +874,7 @@ export const BuySellScreen: React.FC = () => {
         size="medium"
         animation="center"
         dismissOnBackdrop
-        confirmButton={{ label: isBuy ? "Confirmer l\u2019achat" : 'Confirmer la vente', onPress: handleSubmit, loading: isLoading }}
+        confirmButton={{ label: isBuy ? "Confirmer l'achat" : 'Confirmer la vente', onPress: handleSubmit, loading: isLoading }}
         cancelButton={{ label: 'Annuler', onPress: () => setConfirmModalVisible(false) }}
       >
         <Text style={styles.confirmTitle}>
