@@ -9,13 +9,7 @@ import { COLORS } from '@/constants/colors';
 
 import AuthNavigator from './AuthNavigator';
 import MainNavigator from './MainNavigator';
-
-// ── Splash placeholder ────────────────────────────────────────────────────────
-const SplashScreen = () => (
-  <View style={styles.splash}>
-    <ActivityIndicator size="large" color={COLORS.secondary} />
-  </View>
-);
+import SplashScreen from '@/screens/splash/SplashScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

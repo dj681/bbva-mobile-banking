@@ -1,30 +1,12 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { InvestmentsStackParamList } from '@/types';
 
-// ── Placeholder screens (replaced when actual screens are created) ────────────
-const PortfolioScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>Portfolio</Text>
-  </View>
-);
-const InvestmentDetailsScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>InvestmentDetails</Text>
-  </View>
-);
-const BuySellScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>BuySell</Text>
-  </View>
-);
-const SavingsPlansScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>SavingsPlans</Text>
-  </View>
-);
+import PortfolioScreen from '@/screens/investments/PortfolioScreen';
+import InvestmentDetailsScreen from '@/screens/investments/InvestmentDetailsScreen';
+import BuySellScreen from '@/screens/investments/BuySellScreen';
+import SavingsPlansScreen from '@/screens/investments/SavingsPlansScreen';
 
 const Stack = createNativeStackNavigator<InvestmentsStackParamList>();
 

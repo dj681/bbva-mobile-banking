@@ -1,35 +1,13 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { HomeStackParamList } from '@/types';
 
-// ── Placeholder screens (replaced when actual screens are created) ────────────
-const DashboardScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>Dashboard</Text>
-  </View>
-);
-const NotificationsScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>Notifications</Text>
-  </View>
-);
-const TransferFlowScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>TransferFlow</Text>
-  </View>
-);
-const PaymentFlowScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>PaymentFlow</Text>
-  </View>
-);
-const SupportScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Text>Support</Text>
-  </View>
-);
+import DashboardScreen from '@/screens/home/DashboardScreen';
+import NotificationsScreen from '@/screens/home/NotificationsScreen';
+import TransferScreen from '@/screens/transfers/TransferScreen';
+import PaymentScreen from '@/screens/transfers/PaymentScreen';
+import SupportScreen from '@/screens/profile/SupportScreen';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -44,8 +22,8 @@ const HomeStackNavigator: React.FC = () => {
     >
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
-      <Stack.Screen name="TransferFlow" component={TransferFlowScreen} />
-      <Stack.Screen name="PaymentFlow" component={PaymentFlowScreen} />
+      <Stack.Screen name="TransferFlow" component={TransferScreen} />
+      <Stack.Screen name="PaymentFlow" component={PaymentScreen} />
       <Stack.Screen name="Support" component={SupportScreen} />
     </Stack.Navigator>
   );
