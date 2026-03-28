@@ -1,0 +1,193 @@
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  Platform,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useCards } from '@/hooks/useCards';
+import { useTheme } from '@/hooks/useTheme';
+import { CreditCard } from '@/components/banking/CreditCard';
+import { TransactionItem } from '@/components/banking/TransactionItem';
+import { Badge } from '@/components/common/Badge';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { EmptyState } from '@/components/common/EmptyState';
+import { Button } from '@/components/common/Button';
+import { formatCurrency } from '@/utils/formatters';
+import type { CardsStackParamList, Card } from '@/types';
+
+const { width } = Dimensions.get('window');
+
+type Nav = NativeStackNavigationProp<CardsStackParamList, 'CardsList'>;
+
+const MOCK_TRANSACTIONS = [
+  { id: '1', cardId: 'c1', amount: -45.80, currency: 'EUR', merchant: 'Carrefour', category: 'Alimentation', date: '2024-03-18', status: 'completed' as const, type: 'purchase' as const, isPending: false },
+  { id: '2', cardId: 'c1', amount: -12.50, currency: 'EUR', merchant: 'RATP', category: 'Transport', date: '2024-03-17', status: 'completed' as const, type: 'purchase' as const, isPending: false },
+  { id: '3', cardId: 'c1', amount: -89.99, currency: 'EUR', merchant: 'FNAC', category: 'Loisirs', date: '2024-03-16', status: 'pending' as const, type: 'purchase' as const, isPending: true },
+  { id: '4', cardId: 'c1', amount: -35.00, currency: 'EUR', merchant: 'Restaurant Le Marais', category: 'Restaurant', date: '2024-03-15', status: 'completed' as const, type: 'purchase' as const, isPending: false },
+  { id: '5', cardId: 'c1', amount: 150.00, currency: 'EUR', merchant: 'Remboursement', category: 'Remboursement', date: '2024-03-14', status: 'completed' as const, type: 'refund' as const, isPending: false },
+];
+
+export const CardsListScreen: React.FC = () => {
+  const navigation = useNavigation<Nav>();
+  const { theme } = useTheme();
+  const { cards, selectedCard, selectCard, isLoading, error } = useCards();
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const isDark = theme === 'dark';
+  const colors = {
+    bg: isDark ? '#1a1a2e' : '#F5F5F5',
+    card: isDark ? '#16213e' : '#FFFFFF',
+    text: isDark ? '#FFFFFF' : '#003366',
+    subtext: isDark ? '#aaaaaa' : '#666666',
+    primary: '#003366',
+    secondary: '#00A8E8',
+    border: isDark ? '#333355' : '#E0E0E0',
+    success: '#4CAF50',
+    error: '#F44336',
+  };
+
+  useEffect(() => {
+    if (cards.length > 0 && !selectedCard) selectCard(cards[0].id);
+  }, [cards]);
+
+  const styles = makeStyles(colors);
+
+  const statusLabel = (s: string) => s === 'active' ? 'Active' : s === 'blocked' ? 'Bloquée' : s === 'expired' ? 'Expirée' : 'En attente';
+  const statusVariant = (s: string): 'success' | 'error' | 'warning' | 'info' => s === 'active' ? 'success' : s === 'blocked' ? 'error' : s === 'expired' ? 'warning' : 'info';
+
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return (
+    <View style={[styles.container, styles.centered]}>
+      <Text style={styles.errorText}>{error}</Text>
+    </View>
+  );
+
+  const card = selectedCard || cards[0];
+
+  const quickActions = [
+    { label: card?.status === 'active' ? 'Bloquer' : 'Débloquer', icon: card?.status === 'active' ? '🔒' : '🔓', screen: 'CardDetails' },
+    { label: 'Limites', icon: '⚙️', screen: 'CardDetails' },
+    { label: 'Paramètres', icon: '🛠️', screen: 'CardSettings' },
+    { label: 'Mouvements', icon: '📋', screen: 'CardTransactions' },
+  ];
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Mes Cartes</Text>
+        <TouchableOpacity onPress={() => {}}>
+          <Text style={styles.addBtn}>＋</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {cards.length === 0 ? (
+          <EmptyState title="Aucune carte" description="Vous n'avez pas encore de carte bancaire" />
+        ) : (
+          <>
+            <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}
+              onMomentumScrollEnd={(e) => {
+                const idx = Math.round(e.nativeEvent.contentOffset.x / (width - 32));
+                setCurrentIndex(idx);
+                if (cards[idx]) selectCard(cards[idx].id);
+              }}
+              contentContainerStyle={styles.carousel}
+            >
+              {cards.map((c) => (
+                <View key={c.id} style={styles.carouselItem}>
+                  <CreditCard card={c} />
+                </View>
+              ))}
+            </ScrollView>
+            <View style={styles.dotRow}>
+              {cards.map((_, i) => <View key={i} style={[styles.dot, i === currentIndex && styles.dotActive]} />)}
+            </View>
+
+            {card && (
+              <View style={styles.cardDetails}>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>Numéro</Text><Text style={styles.detailVal}>{card.cardNumber}</Text></View>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>Expiration</Text><Text style={styles.detailVal}>{card.expiryDate}</Text></View>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>Statut</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
+                {card.creditLimit && (
+                  <View style={styles.detailRow}><Text style={styles.detailKey}>Limite crédit</Text><Text style={styles.detailVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>
+                )}
+                <View style={styles.detailRow}><Text style={styles.detailKey}>Plafond journalier</Text><Text style={styles.detailVal}>{formatCurrency(card.dailyLimit, 'EUR')}</Text></View>
+              </View>
+            )}
+
+            <View style={styles.actionsRow}>
+              {quickActions.map(a => (
+                <TouchableOpacity key={a.label} style={styles.actionBtn} onPress={() => navigation.navigate(a.screen as any, { cardId: card?.id })}>
+                  <Text style={styles.actionIcon}>{a.icon}</Text>
+                  <Text style={styles.actionLabel}>{a.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <View style={styles.transactionsSection}>
+              <View style={styles.txHeader}>
+                <Text style={styles.txTitle}>Dernières opérations</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('CardTransactions', { cardId: card?.id })}>
+                  <Text style={styles.txSeeAll}>Tout voir</Text>
+                </TouchableOpacity>
+              </View>
+              {MOCK_TRANSACTIONS.slice(0, 5).map(tx => (
+                <View key={tx.id} style={styles.txRow}>
+                  <View style={styles.txMerchant}>
+                    <Text style={styles.txMerchantName}>{tx.merchant}</Text>
+                    <Text style={styles.txCategory}>{tx.category}</Text>
+                  </View>
+                  <View style={{ alignItems: 'flex-end' }}>
+                    <Text style={[styles.txAmount, { color: tx.amount < 0 ? colors.error : colors.success }]}>{tx.amount > 0 ? '+' : ''}{formatCurrency(tx.amount, tx.currency)}</Text>
+                    {tx.isPending && <Text style={styles.txPending}>En attente</Text>}
+                  </View>
+                </View>
+              ))}
+              <Button title="Voir tous les mouvements" onPress={() => navigation.navigate('CardTransactions', { cardId: card?.id })} variant="outline" style={{ marginTop: 8 }} />
+            </View>
+          </>
+        )}
+      </ScrollView>
+    </View>
+  );
+};
+
+const makeStyles = (colors: Record<string, string>) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.bg },
+  centered: { alignItems: 'center', justifyContent: 'center' },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.primary, padding: 16, paddingTop: Platform.OS === 'ios' ? 50 : 16 },
+  headerTitle: { color: '#FFFFFF', fontSize: 20, fontWeight: '700' },
+  addBtn: { color: '#FFFFFF', fontSize: 24, fontWeight: '300' },
+  carousel: { paddingHorizontal: 16, paddingTop: 16 },
+  carouselItem: { width: width - 32, marginRight: 0 },
+  dotRow: { flexDirection: 'row', justifyContent: 'center', paddingVertical: 10, gap: 6 },
+  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.border },
+  dotActive: { backgroundColor: colors.secondary, width: 20 },
+  cardDetails: { backgroundColor: colors.card, margin: 16, borderRadius: 12, padding: 16 },
+  detailRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: colors.border },
+  detailKey: { color: colors.subtext, fontSize: 14 },
+  detailVal: { color: colors.text, fontSize: 14, fontWeight: '600' },
+  actionsRow: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: colors.card, marginHorizontal: 16, marginBottom: 16, borderRadius: 12, padding: 16 },
+  actionBtn: { alignItems: 'center' },
+  actionIcon: { fontSize: 24 },
+  actionLabel: { color: colors.text, fontSize: 11, marginTop: 4, fontWeight: '500' },
+  transactionsSection: { backgroundColor: colors.card, margin: 16, borderRadius: 12, padding: 16 },
+  txHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 },
+  txTitle: { fontSize: 16, fontWeight: '700', color: colors.text },
+  txSeeAll: { color: colors.secondary, fontSize: 14 },
+  txRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: colors.border },
+  txMerchant: {},
+  txMerchantName: { fontSize: 14, fontWeight: '600', color: colors.text },
+  txCategory: { fontSize: 12, color: colors.subtext },
+  txAmount: { fontSize: 14, fontWeight: '700' },
+  txPending: { fontSize: 11, color: '#FF9800', marginTop: 2 },
+  errorText: { color: colors.error, fontSize: 14 },
+});
+
+export default CardsListScreen;
