@@ -4,6 +4,33 @@ Application bancaire mobile complète développée avec React Native et Expo, re
 
 ---
 
+## 📲 Lien permanent & QR Code (Expo Go)
+
+> **Scannez le QR code ci-dessous avec Expo Go pour ouvrir l'application instantanément.**
+
+### Lien permanent
+
+```
+exp://exp.host/@dj681/bbva-mobile-banking
+```
+
+Vous pouvez aussi appuyer sur ce lien depuis votre appareil Android pour ouvrir directement Expo Go :  
+🔗 **[exp://exp.host/@dj681/bbva-mobile-banking](exp://exp.host/@dj681/bbva-mobile-banking)**
+
+### QR Code — Android (Expo Go 54.0.6)
+
+<p align="center">
+  <img src="./assets/expo-qr.png" alt="QR Code Expo Go – BBVA Mobile Banking" width="220" />
+</p>
+
+1. Installez **[Expo Go 54.0.6](https://play.google.com/store/apps/details?id=host.exp.exponent)** sur votre Android.
+2. Ouvrez Expo Go → **Scan QR code**.
+3. Scannez l'image ci-dessus ou le QR code affiché dans le terminal après `npm start`.
+
+> ⚠️ **Première publication requise** : ce lien devient actif après avoir exécuté `npx expo publish` depuis un compte Expo authentifié (`expo login`). Voir la section [Installation](#️-installation) ci-dessous.
+
+---
+
 ## 🚀 Démarrage Rapide
 
 > **Temps estimé : 3 minutes** — Suivez ces étapes pour lancer l'application localement.
