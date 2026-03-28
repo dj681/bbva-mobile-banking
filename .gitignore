@@ -1,0 +1,113 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Expo
+.expo/
+dist/
+web-build/
+
+# Native builds
+ios/build/
+ios/Pods/
+ios/DerivedData/
+android/build/
+android/.gradle/
+android/app/build/
+android/app/release/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Metro
+.metro-health-check*
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+coverage/
+.jest-cache/
+
+# Environment & Secrets
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+*.pem
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.nfs*
+
+# IDE / Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+logs/
+*.log
+
+# Package manager lock files (keep one, track npm lockfile)
+# package-lock.json  <- tracked intentionally for reproducible installs
+pnpm-lock.yaml
+yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Flipper
+ios/Flipper/
