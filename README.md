@@ -2,6 +2,28 @@
 
 Application bancaire mobile complète développée avec React Native et Expo, reproduisant les fonctionnalités essentielles d'une banque numérique moderne pour la clientèle BBVA.
 
+<p align="center">
+  <a href="https://dj681.github.io/bbva-mobile-banking/">
+    <img src="https://img.shields.io/badge/🌐_Démo_Web_Live-Ouvrir_l'application-003366?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Démo Web Live" />
+  </a>
+  <a href="exp://exp.host/@dj681/bbva-mobile-banking">
+    <img src="https://img.shields.io/badge/📱_Expo_Go-Ouvrir_sur_mobile-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo Go" />
+  </a>
+</p>
+
+---
+
+## 🌐 Démo Web Live
+
+> **Accédez à l'application directement depuis votre navigateur — aucune installation requise.**
+
+🔗 **[https://dj681.github.io/bbva-mobile-banking/](https://dj681.github.io/bbva-mobile-banking/)**
+
+Cette URL est déployée automatiquement via GitHub Actions à chaque push sur `main`.
+
+> **Activation de GitHub Pages** : Pour que le lien soit actif, activez GitHub Pages dans les paramètres du dépôt :  
+> `Settings → Pages → Source → GitHub Actions`
+
 ---
 
 ## 📲 Lien permanent & QR Code (Expo Go)
@@ -297,6 +319,18 @@ Les contributions sont les bienvenues ! Suivez ces étapes :
 3. Committez vos modifications : `git commit -m 'feat: ajouter ma fonctionnalité'`
 4. Poussez vers la branche : `git push origin feature/ma-fonctionnalite`
 5. Ouvrez une Pull Request
+
+### CI / CD
+
+Le workflow GitHub Actions (`.github/workflows/deploy.yml`) s'exécute automatiquement à chaque push :
+
+| Étape | Déclencheur | Résultat |
+|---|---|---|
+| **Tests** | Tous les push et PR | Lance les 203 tests unitaires avec Jest |
+| **Déploiement web** | Push sur `main` uniquement | Exporte l'app Expo et la déploie sur GitHub Pages |
+
+> **URL de production** : `https://dj681.github.io/bbva-mobile-banking/`  
+> **Prérequis** : activer *Settings → Pages → Source → GitHub Actions* dans le dépôt.
 
 ### Convention de commits
 Ce projet suit la convention **Conventional Commits** :

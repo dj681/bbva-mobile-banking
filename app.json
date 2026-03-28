@@ -78,6 +78,9 @@
         "projectId": "bbva-mobile-banking"
       }
     },
-    "scheme": "bbva-mobile-banking"
+    "scheme": "bbva-mobile-banking",
+    "experiments": {
+      "baseUrl": "/bbva-mobile-banking"
+    }
   }
 }
