@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
@@ -7,12 +7,12 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as PaperProvider, MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { NavigationContainer, DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 
 import { store, persistor } from './src/store';
 import { COLORS } from './src/constants';
+import RootNavigator from './src/navigation/RootNavigator';
 
 // Keep the splash screen visible while resources load
 SplashScreen.preventAutoHideAsync();
@@ -49,32 +49,6 @@ const paperDarkTheme = {
   },
 };
 
-const navLightTheme = {
-  ...NavLightTheme,
-  colors: {
-    ...NavLightTheme.colors,
-    primary: COLORS.primary,
-    background: COLORS.gray100,
-    card: COLORS.white,
-    text: COLORS.gray900,
-    border: COLORS.gray300,
-    notification: COLORS.error,
-  },
-};
-
-const navDarkTheme = {
-  ...NavDarkTheme,
-  colors: {
-    ...NavDarkTheme.colors,
-    primary: COLORS.secondary,
-    background: COLORS.gray900,
-    card: COLORS.gray800,
-    text: COLORS.white,
-    border: COLORS.gray700,
-    notification: COLORS.error,
-  },
-};
-
 export default function App(): React.JSX.Element | null {
   const [appReady, setAppReady] = useState(false);
   const [isDarkMode] = useState(false);
@@ -96,9 +70,8 @@ export default function App(): React.JSX.Element | null {
           'Roboto-BoldItalic': require('./assets/fonts/Roboto-BoldItalic.ttf'),
           'Roboto-BlackItalic': require('./assets/fonts/Roboto-BlackItalic.ttf'),
         });
-      } catch (error) {
+      } catch {
         // Non-fatal: app continues with system fonts if custom fonts fail to load
-        console.warn('Font loading failed, falling back to system fonts:', error);
       } finally {
         setAppReady(true);
       }
@@ -118,19 +91,15 @@ export default function App(): React.JSX.Element | null {
   }
 
   const paperTheme = isDarkMode ? paperDarkTheme : paperLightTheme;
-  const navTheme = isDarkMode ? navDarkTheme : navLightTheme;
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView style={styles.container} onLayout={onLayoutRootView}>
       <ReduxProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <SafeAreaProvider>
             <PaperProvider theme={paperTheme}>
-              <NavigationContainer theme={navTheme} onReady={onLayoutRootView}>
-                <StatusBar style={isDarkMode ? 'light' : 'dark'} />
-                {/* RootNavigator will be imported from src/navigation once created */}
-                <View style={styles.placeholder} onLayout={onLayoutRootView} />
-              </NavigationContainer>
+              <StatusBar style={isDarkMode ? 'light' : 'dark'} />
+              <RootNavigator />
               <Toast />
             </PaperProvider>
           </SafeAreaProvider>
@@ -143,9 +112,5 @@ export default function App(): React.JSX.Element | null {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  placeholder: {
-    flex: 1,
-    backgroundColor: COLORS.primary,
   },
 });

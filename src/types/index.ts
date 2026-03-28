@@ -319,6 +319,7 @@ export type MainTabParamList = {
   HomeTab: undefined;
   AccountsTab: undefined;
   CardsTab: undefined;
+  CreditsTab: undefined;
   InvestmentsTab: undefined;
   ProfileTab: undefined;
 };

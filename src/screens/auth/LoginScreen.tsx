@@ -298,20 +298,20 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     color: '#FFFFFF',
     letterSpacing: 3,
-    fontFamily: 'Roboto_900Black',
+    fontFamily: 'Roboto-Black',
   },
   headerTitle: {
     fontSize: 26,
     fontWeight: '700',
     color: '#FFFFFF',
     marginBottom: 6,
-    fontFamily: 'Roboto_700Bold',
+    fontFamily: 'Roboto-Bold',
   },
   headerSubtitle: {
     fontSize: 14,
     color: 'rgba(255,255,255,0.8)',
     textAlign: 'center',
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   form: {
     marginHorizontal: 16,
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
   errorText: {
     flex: 1,
     fontSize: 13,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   fieldGroup: {
     marginBottom: 16,
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     marginBottom: 8,
-    fontFamily: 'Roboto_500Medium',
+    fontFamily: 'Roboto-Medium',
   },
   inputRow: {
     flexDirection: 'row',
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontSize: 15,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
     padding: 0,
   },
   rowBetween: {
@@ -378,12 +378,12 @@ const styles = StyleSheet.create({
   },
   rememberText: {
     fontSize: 13,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   forgotText: {
     fontSize: 13,
     fontWeight: '600',
-    fontFamily: 'Roboto_500Medium',
+    fontFamily: 'Roboto-Medium',
   },
   loginButton: {
     flexDirection: 'row',
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#FFFFFF',
-    fontFamily: 'Roboto_700Bold',
+    fontFamily: 'Roboto-Bold',
   },
   biometricButton: {
     flexDirection: 'row',
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
   biometricText: {
     fontSize: 15,
     fontWeight: '600',
-    fontFamily: 'Roboto_500Medium',
+    fontFamily: 'Roboto-Medium',
   },
   demoHint: {
     flexDirection: 'row',
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
   demoText: {
     flex: 1,
     fontSize: 12,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   footer: {
     padding: 24,
@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 11,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
 });
 

@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     color: '#FFFFFF',
     letterSpacing: 6,
-    fontFamily: 'Roboto_900Black',
+    fontFamily: 'Roboto-Black',
   },
   subtitle: {
     fontSize: 22,
@@ -194,14 +194,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     letterSpacing: 2,
     marginBottom: 8,
-    fontFamily: 'Roboto_500Medium',
+    fontFamily: 'Roboto-Medium',
   },
   tagline: {
     fontSize: 14,
     color: 'rgba(255,255,255,0.75)',
     textAlign: 'center',
     letterSpacing: 1,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   dotsContainer: {
     position: 'absolute',
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     bottom: 32,
     fontSize: 11,
     color: 'rgba(255,255,255,0.4)',
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
 });
 

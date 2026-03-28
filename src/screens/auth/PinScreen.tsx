@@ -394,13 +394,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 8,
     lineHeight: 32,
-    fontFamily: 'Roboto_700Bold',
+    fontFamily: 'Roboto-Bold',
   },
   subtitle: {
     fontSize: 14,
     textAlign: 'center',
     lineHeight: 20,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   stepsRow: {
     flexDirection: 'row',
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
   errorText: {
     flex: 1,
     fontSize: 13,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   errorPlaceholder: {
     height: 38,
@@ -477,13 +477,13 @@ const styles = StyleSheet.create({
   keyText: {
     fontSize: 26,
     fontWeight: '500',
-    fontFamily: 'Roboto_500Medium',
+    fontFamily: 'Roboto-Medium',
   },
   keySubText: {
     fontSize: 10,
     letterSpacing: 1,
     marginTop: 1,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   bottomActions: {
     marginTop: 20,
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     fontSize: 14,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
 });
 

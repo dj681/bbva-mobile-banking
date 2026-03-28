@@ -319,14 +319,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
     marginBottom: 12,
-    fontFamily: 'Roboto_700Bold',
+    fontFamily: 'Roboto-Bold',
   },
   subtitle: {
     fontSize: 15,
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 16,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   contactBadge: {
     flexDirection: 'row',
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   contactText: {
     fontSize: 15,
     fontWeight: '600',
-    fontFamily: 'Roboto_500Medium',
+    fontFamily: 'Roboto-Medium',
   },
   otpContainer: {
     flexDirection: 'row',
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     fontSize: 22,
     fontWeight: '700',
-    fontFamily: 'Roboto_700Bold',
+    fontFamily: 'Roboto-Bold',
   },
   errorBox: {
     width: '100%',
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
   errorText: {
     flex: 1,
     fontSize: 13,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   resendRow: {
     marginBottom: 28,
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
   },
   countdownText: {
     fontSize: 13,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   resendButton: {
     flexDirection: 'row',
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
   resendText: {
     fontSize: 14,
     fontWeight: '600',
-    fontFamily: 'Roboto_500Medium',
+    fontFamily: 'Roboto-Medium',
   },
   verifyButton: {
     width: '100%',
@@ -410,13 +410,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#FFFFFF',
-    fontFamily: 'Roboto_700Bold',
+    fontFamily: 'Roboto-Bold',
   },
   helpText: {
     fontSize: 13,
     textAlign: 'center',
     lineHeight: 20,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
     paddingHorizontal: 16,
   },
 });

@@ -12,6 +12,7 @@ import { FONT_SIZE } from '@/constants/fonts';
 import HomeStackNavigator from './HomeStackNavigator';
 import AccountsStackNavigator from './AccountsStackNavigator';
 import CardsStackNavigator from './CardsStackNavigator';
+import CreditsStackNavigator from './CreditsStackNavigator';
 import InvestmentsStackNavigator from './InvestmentsStackNavigator';
 import ProfileStackNavigator from './ProfileStackNavigator';
 
@@ -109,6 +110,22 @@ const MainNavigator: React.FC = () => {
               size={size}
               name="card"
               outlineName="card-outline"
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="CreditsTab"
+        component={CreditsStackNavigator}
+        options={{
+          tabBarLabel: 'Crédits',
+          tabBarIcon: ({ focused, color, size }) => (
+            <TabIcon
+              focused={focused}
+              color={color}
+              size={size}
+              name="cash"
+              outlineName="cash-outline"
             />
           ),
         }}

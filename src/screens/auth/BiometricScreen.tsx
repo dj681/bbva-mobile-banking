@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     color: '#FFFFFF',
     letterSpacing: 3,
-    fontFamily: 'Roboto_900Black',
+    fontFamily: 'Roboto-Black',
   },
   title: {
     fontSize: 26,
@@ -319,14 +319,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 12,
     lineHeight: 34,
-    fontFamily: 'Roboto_700Bold',
+    fontFamily: 'Roboto-Bold',
   },
   subtitle: {
     fontSize: 15,
     textAlign: 'center',
     marginBottom: 48,
     lineHeight: 22,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   iconArea: {
     width: 180,
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   errorText: {
     flex: 1,
     fontSize: 13,
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Roboto-Regular',
   },
   actions: {
     paddingHorizontal: 24,
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#FFFFFF',
-    fontFamily: 'Roboto_700Bold',
+    fontFamily: 'Roboto-Bold',
   },
   pinButton: {
     flexDirection: 'row',
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
   pinButtonText: {
     fontSize: 15,
     fontWeight: '500',
-    fontFamily: 'Roboto_500Medium',
+    fontFamily: 'Roboto-Medium',
   },
   loginLink: {
     alignItems: 'center',
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
   loginLinkText: {
     fontSize: 14,
     fontWeight: '600',
-    fontFamily: 'Roboto_500Medium',
+    fontFamily: 'Roboto-Medium',
   },
 });
 
