@@ -11,7 +11,7 @@ interface InvestmentItemProps {
 }
 
 function formatCurrency(amount: number, currency: string): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency,
     minimumFractionDigits: 2,
@@ -38,7 +38,7 @@ export const InvestmentItem: React.FC<InvestmentItemProps> = ({
       onPress={() => onPress?.(investment)}
       activeOpacity={0.75}
       accessibilityRole="button"
-      accessibilityLabel={`${investment.name}, current value ${formatCurrency(investment.currentValue, investment.currency)}`}
+      accessibilityLabel={`${investment.name}, valor actual ${formatCurrency(investment.currentValue, investment.currency)}`}
     >
       {/* Symbol badge */}
       <View style={styles.symbolBadge}>
@@ -53,7 +53,7 @@ export const InvestmentItem: React.FC<InvestmentItemProps> = ({
           {investment.name}
         </Text>
         <Text style={styles.type} numberOfLines={1}>
-          {investment.type} · {investment.quantity} units
+          {investment.type} · {investment.quantity} unidades
         </Text>
       </View>
 

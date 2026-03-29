@@ -26,7 +26,7 @@ interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChangeText,
-  placeholder = 'Search…',
+  placeholder = 'Buscar…',
   onClear,
   debounceMs = 300,
   autoFocus = false,
@@ -104,14 +104,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           clearButtonMode="never"
           autoCorrect={false}
           autoCapitalize="none"
-          accessibilityLabel="Search input"
+          accessibilityLabel="Campo de búsqueda"
           accessibilityRole="search"
         />
         {value.length > 0 && (
           <TouchableOpacity
             onPress={handleClear}
             style={styles.clearButton}
-            accessibilityLabel="Clear search"
+            accessibilityLabel="Borrar búsqueda"
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
             <Ionicons name="close-circle" size={18} color={COLORS.gray400} />

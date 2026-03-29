@@ -123,7 +123,7 @@ export const Modal: React.FC<ModalProps> = ({
           <Pressable
             style={StyleSheet.absoluteFill}
             onPress={dismissOnBackdrop ? onClose : undefined}
-            accessibilityLabel="Close modal"
+            accessibilityLabel="Cerrar modal"
           />
         </Animated.View>
 
@@ -137,7 +137,7 @@ export const Modal: React.FC<ModalProps> = ({
                 <TouchableOpacity
                   onPress={onClose}
                   style={styles.closeButton}
-                  accessibilityLabel="Close"
+                  accessibilityLabel="Cerrar"
                   accessibilityRole="button"
                   hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                 >

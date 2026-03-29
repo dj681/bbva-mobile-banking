@@ -68,7 +68,7 @@ const MainNavigator: React.FC = () => {
         name="HomeTab"
         component={HomeStackNavigator}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Inicio',
           tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
           tabBarBadgeStyle: { backgroundColor: COLORS.error },
           tabBarIcon: ({ focused, color, size }) => (
@@ -86,7 +86,7 @@ const MainNavigator: React.FC = () => {
         name="AccountsTab"
         component={AccountsStackNavigator}
         options={{
-          tabBarLabel: 'Accounts',
+          tabBarLabel: 'Cuentas',
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}
@@ -102,7 +102,7 @@ const MainNavigator: React.FC = () => {
         name="CardsTab"
         component={CardsStackNavigator}
         options={{
-          tabBarLabel: 'Cards',
+          tabBarLabel: 'Tarjetas',
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}
@@ -134,7 +134,7 @@ const MainNavigator: React.FC = () => {
         name="InvestmentsTab"
         component={InvestmentsStackNavigator}
         options={{
-          tabBarLabel: 'Invest',
+          tabBarLabel: 'Invertir',
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}
@@ -150,7 +150,7 @@ const MainNavigator: React.FC = () => {
         name="ProfileTab"
         component={ProfileStackNavigator}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: 'Perfil',
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}
