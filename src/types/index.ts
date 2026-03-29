@@ -8,6 +8,10 @@ export interface User {
   avatar?: string;
   createdAt: string;
   lastLogin: string;
+  birthDate?: string;
+  address?: string;
+  postalCode?: string;
+  city?: string;
 }
 
 export interface AuthState {

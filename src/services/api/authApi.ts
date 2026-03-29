@@ -23,13 +23,17 @@ const ALLOWED_EMAIL = 'jdiazrodriguez266@gmail.com';
 
 export const MOCK_USER: User = {
   id: 'usr-001-jdiaz',
-  firstName: 'Jorge',
-  lastName: 'Diaz Rodriguez',
+  firstName: 'José Antonio',
+  lastName: 'Díaz Rodríguez',
   email: ALLOWED_EMAIL,
-  phone: '',
-  avatar: `https://ui-avatars.com/api/?name=J+Diaz&background=004481&color=fff`,
+  phone: '642663110',
+  avatar: `https://ui-avatars.com/api/?name=JA+Diaz&background=004481&color=fff`,
   createdAt: '2019-03-15T09:00:00.000Z',
   lastLogin: new Date().toISOString(),
+  birthDate: '09.12.1966',
+  address: 'Calle Piedras 3, Matagorda, El Ejido',
+  postalCode: '04715',
+  city: 'Almería',
 };
 
 export interface LoginResult {
