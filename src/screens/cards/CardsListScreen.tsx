@@ -26,13 +26,18 @@ const { width } = Dimensions.get('window');
 
 type Nav = NativeStackNavigationProp<CardsStackParamList, 'CardsList'>;
 
-const MOCK_TRANSACTIONS = [
-  { id: '1', cardId: 'c1', amount: -45.80, currency: 'EUR', merchant: 'Carrefour', category: 'Alimentation', date: '2024-03-18', status: 'completed' as const, type: 'purchase' as const, isPending: false },
-  { id: '2', cardId: 'c1', amount: -12.50, currency: 'EUR', merchant: 'RATP', category: 'Transport', date: '2024-03-17', status: 'completed' as const, type: 'purchase' as const, isPending: false },
-  { id: '3', cardId: 'c1', amount: -89.99, currency: 'EUR', merchant: 'FNAC', category: 'Loisirs', date: '2024-03-16', status: 'pending' as const, type: 'purchase' as const, isPending: true },
-  { id: '4', cardId: 'c1', amount: -35.00, currency: 'EUR', merchant: 'Restaurant Le Marais', category: 'Restaurant', date: '2024-03-15', status: 'completed' as const, type: 'purchase' as const, isPending: false },
-  { id: '5', cardId: 'c1', amount: 150.00, currency: 'EUR', merchant: 'Remboursement', category: 'Remboursement', date: '2024-03-14', status: 'completed' as const, type: 'refund' as const, isPending: false },
-];
+const MOCK_TRANSACTIONS: Array<{
+  id: string;
+  cardId: string;
+  amount: number;
+  currency: string;
+  merchant: string;
+  category: string;
+  date: string;
+  status: 'completed' | 'pending' | 'failed';
+  type: 'purchase' | 'withdrawal' | 'refund';
+  isPending: boolean;
+}> = [];
 
 export const CardsListScreen: React.FC = () => {
   const navigation = useNavigation<Nav>();

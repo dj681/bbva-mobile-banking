@@ -19,16 +19,7 @@ import type { CardsStackParamList, CardTransaction } from '@/types';
 
 type Route = RouteProp<CardsStackParamList, 'CardTransactions'>;
 
-const MOCK_CARD_TRANSACTIONS: CardTransaction[] = [
-  { id: '1', cardId: 'c1', amount: -45.80, currency: 'EUR', merchant: 'Carrefour', category: 'Alimentation', date: '2024-03-18', status: 'completed', type: 'purchase', isPending: false },
-  { id: '2', cardId: 'c1', amount: -12.50, currency: 'EUR', merchant: 'RATP', category: 'Transport', date: '2024-03-17', status: 'completed', type: 'purchase', isPending: false },
-  { id: '3', cardId: 'c1', amount: -89.99, currency: 'EUR', merchant: 'FNAC', category: 'Loisirs', date: '2024-03-16', status: 'pending', type: 'purchase', isPending: true },
-  { id: '4', cardId: 'c1', amount: -35.00, currency: 'EUR', merchant: 'Restaurant Le Marais', category: 'Restaurant', date: '2024-03-15', status: 'completed', type: 'purchase', isPending: false },
-  { id: '5', cardId: 'c1', amount: 150.00, currency: 'EUR', merchant: 'Remboursement Amazon', category: 'Remboursement', date: '2024-03-14', status: 'completed', type: 'refund', isPending: false },
-  { id: '6', cardId: 'c1', amount: -22.00, currency: 'EUR', merchant: 'Total Energies', category: 'Carburant', date: '2024-03-13', status: 'completed', type: 'purchase', isPending: false },
-  { id: '7', cardId: 'c1', amount: -200.00, currency: 'EUR', merchant: 'Retrait DAB', category: 'Retrait', date: '2024-03-12', status: 'completed', type: 'withdrawal', isPending: false },
-  { id: '8', cardId: 'c1', amount: -8.50, currency: 'EUR', merchant: 'Netflix', category: 'Abonnement', date: '2024-03-11', status: 'completed', type: 'purchase', isPending: false },
-];
+const MOCK_CARD_TRANSACTIONS: CardTransaction[] = [];
 
 const CATEGORIES = ['Toutes', 'Alimentation', 'Transport', 'Loisirs', 'Restaurant', 'Carburant', 'Retrait', 'Abonnement'];
 
