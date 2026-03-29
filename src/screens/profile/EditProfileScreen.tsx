@@ -53,10 +53,10 @@ const EditProfileScreen: React.FC = () => {
     lastName: user?.lastName ?? '',
     email: user?.email ?? '',
     phone: user?.phone ?? '',
-    birthDate: '',
-    address: '',
-    postalCode: '',
-    city: '',
+    birthDate: user?.birthDate ?? '',
+    address: user?.address ?? '',
+    postalCode: user?.postalCode ?? '',
+    city: user?.city ?? '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [saving, setSaving] = useState(false);
