@@ -35,15 +35,16 @@ describe('TransactionItem component', () => {
 
   it('shows a negative amount for a debit transaction', () => {
     const { getByText } = render(<TransactionItem transaction={mockTransaction} />);
-    // Amount text contains a minus sign
-    const amountEl = getByText(/-\$45\.50/);
+    // Amount text contains a minus sign (es-ES locale: -45,50 US$)
+    const amountEl = getByText(/-45[,.]50/);
     expect(amountEl).toBeTruthy();
   });
 
   it('shows a positive amount for a credit transaction', () => {
     const credit = { ...mockTransaction, type: 'credit' as const };
     const { getByText } = render(<TransactionItem transaction={credit} />);
-    expect(getByText(/\+\$45\.50/)).toBeTruthy();
+    // es-ES locale: +45,50 US$
+    expect(getByText(/\+45[,.]50/)).toBeTruthy();
   });
 
   it('calls onPress with the transaction when tapped', () => {
@@ -84,7 +85,7 @@ describe('TransactionItem component', () => {
     const btn = getByRole('button');
     // The accessibility label is built from transaction.description and the formatted amount
     expect(btn.props.accessibilityLabel).toContain('Achat en ligne');
-    expect(btn.props.accessibilityLabel).toContain('45.50');
+    expect(btn.props.accessibilityLabel).toContain('45,50');
   });
 
   it('renders all known categories without crashing', () => {

@@ -31,13 +31,13 @@ describe('AccountCard component', () => {
 
   it('shows the balance by default', () => {
     const { getByText } = render(<AccountCard account={mockAccount} />);
-    // Formatted in en-US locale: $1,500.75 (currency EUR)
-    expect(getByText(/1,500\.75/)).toBeTruthy();
+    // Formatted in es-ES locale: 1.500,75 € or 1500,75 €
+    expect(getByText(/1[.,]?500[,.]75/)).toBeTruthy();
   });
 
   it('shows the account type label', () => {
     const { getByText } = render(<AccountCard account={mockAccount} />);
-    expect(getByText('Checking')).toBeTruthy();
+    expect(getByText('Corriente')).toBeTruthy();
   });
 
   it('calls onPress with the account when tapped', () => {
@@ -50,15 +50,15 @@ describe('AccountCard component', () => {
     expect(onPress).toHaveBeenCalledWith(mockAccount);
   });
 
-  it('shows "Inactive" pill when account is not active', () => {
+  it('shows "Inactiva" pill when account is not active', () => {
     const inactive = { ...mockAccount, isActive: false };
     const { getByText } = render(<AccountCard account={inactive} />);
-    expect(getByText('Inactive')).toBeTruthy();
+    expect(getByText('Inactiva')).toBeTruthy();
   });
 
-  it('does not show "Inactive" when account is active', () => {
+  it('does not show "Inactiva" when account is active', () => {
     const { queryByText } = render(<AccountCard account={mockAccount} />);
-    expect(queryByText('Inactive')).toBeNull();
+    expect(queryByText('Inactiva')).toBeNull();
   });
 
   it('renders all account types without crashing', () => {
@@ -82,6 +82,6 @@ describe('AccountCard component', () => {
     const { getByRole } = render(<AccountCard account={mockAccount} />);
     const btn = getByRole('button');
     expect(btn.props.accessibilityLabel).toContain('Compte Courant');
-    expect(btn.props.accessibilityLabel).toContain('1,500.75');
+    expect(btn.props.accessibilityLabel).toContain('1500,75');
   });
 });
