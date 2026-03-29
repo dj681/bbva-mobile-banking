@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@/hooks/useTheme';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { fetchCredits } from '@/store/slices';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { EmptyState } from '@/components/common/EmptyState';
 import { Button } from '@/components/common/Button';
@@ -19,18 +21,14 @@ import type { CreditsStackParamList, Credit } from '@/types';
 
 type Nav = NativeStackNavigationProp<CreditsStackParamList, 'CreditsList'>;
 
-const MOCK_CREDITS: Credit[] = [
-  { id: '1', type: 'mortgage', status: 'active', name: 'Crédit Immobilier Résidence Principale', originalAmount: 250000, remainingAmount: 187500, monthlyPayment: 1245, interestRate: 2.15, startDate: '2020-01-15', endDate: '2040-01-15', nextPaymentDate: '2024-04-01', nextPaymentAmount: 1245, totalPaid: 62500, currency: 'EUR' },
-  { id: '2', type: 'auto', status: 'active', name: 'Crédit Auto Renault Clio', originalAmount: 18000, remainingAmount: 9600, monthlyPayment: 350, interestRate: 3.5, startDate: '2022-06-01', endDate: '2026-06-01', nextPaymentDate: '2024-04-01', nextPaymentAmount: 350, totalPaid: 8400, currency: 'EUR' },
-  { id: '3', type: 'personal', status: 'active', name: 'Prêt Personnel Travaux', originalAmount: 15000, remainingAmount: 4500, monthlyPayment: 280, interestRate: 4.9, startDate: '2021-09-01', endDate: '2025-09-01', nextPaymentDate: '2024-04-01', nextPaymentAmount: 280, totalPaid: 10500, currency: 'EUR' },
-];
-
 const typeIcon = (type: string) => ({ mortgage: '🏠', auto: '🚗', personal: '💼', business: '🏢', student: '🎓' }[type] || '💳');
 const typeLabel = (type: string) => ({ mortgage: 'Immobilier', auto: 'Auto', personal: 'Personnel', business: 'Professionnel', student: 'Étudiant' }[type] || type);
 
 export const CreditsListScreen: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation<Nav>();
   const { theme } = useTheme();
+  const { credits, isLoading } = useAppSelector((state) => state.credits);
 
   const isDark = theme === 'dark';
   const colors = {
@@ -46,8 +44,16 @@ export const CreditsListScreen: React.FC = () => {
   };
   const styles = makeStyles(colors);
 
-  const totalDebt = MOCK_CREDITS.reduce((s, c) => s + c.remainingAmount, 0);
-  const nextPayment = MOCK_CREDITS.reduce((s, c) => s + c.nextPaymentAmount, 0);
+  useEffect(() => {
+    dispatch(fetchCredits());
+  }, [dispatch]);
+
+  const totalDebt = useMemo(() => credits.reduce((s, c) => s + c.remainingAmount, 0), [credits]);
+  const nextPayment = useMemo(() => credits.reduce((s, c) => s + c.nextPaymentAmount, 0), [credits]);
+
+  if (isLoading && credits.length === 0) {
+    return <LoadingSpinner />;
+  }
 
   const renderCredit = ({ item }: { item: Credit }) => {
     const progress = ((item.originalAmount - item.remainingAmount) / item.originalAmount) * 100;
@@ -61,7 +67,7 @@ export const CreditsListScreen: React.FC = () => {
             <Text style={styles.creditName} numberOfLines={2}>{item.name}</Text>
             <Text style={styles.creditType}>{typeLabel(item.type)} • {item.interestRate}%</Text>
           </View>
-          <Badge label="Actif" variant="success" />
+          <Badge label={item.status === 'closed' ? 'Soldé' : 'Actif'} variant={item.status === 'closed' ? 'info' : 'success'} />
         </View>
         <View style={styles.progressRow}>
           <View style={styles.progressBg}>
@@ -84,7 +90,7 @@ export const CreditsListScreen: React.FC = () => {
         <Text style={styles.headerTitle}>Mes Crédits</Text>
       </View>
       <FlatList
-        data={MOCK_CREDITS}
+        data={credits}
         keyExtractor={c => c.id}
         renderItem={renderCredit}
         ListHeaderComponent={

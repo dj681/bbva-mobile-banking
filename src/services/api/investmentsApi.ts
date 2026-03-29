@@ -30,10 +30,10 @@ export interface BuySellResult {
 let MOCK_INVESTMENTS: Investment[] = [];
 
 const MOCK_PORTFOLIO: PortfolioSummary = {
-  totalValue: 0,
-  totalInvested: 0,
-  totalGainLoss: 0,
-  totalGainLossPercent: 0,
+  totalValue: 0.00,
+  totalInvested: 0.00,
+  totalGainLoss: 0.00,
+  totalGainLossPercent: 0.00,
   currency: 'EUR',
   lastUpdated: new Date().toISOString(),
 };

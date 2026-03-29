@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -10,23 +10,23 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useTheme } from '@/hooks/useTheme';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { fetchCredits } from '@/store/slices';
 import { Button } from '@/components/common/Button';
 import { Modal } from '@/components/common/Modal';
 import { Input } from '@/components/common/Input';
 import { Divider } from '@/components/common/Divider';
 import { Badge } from '@/components/common/Badge';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { formatCurrency, formatDate } from '@/utils/formatters';
 import type { CreditsStackParamList, Credit, AmortizationEntry } from '@/types';
 
 type Route = RouteProp<CreditsStackParamList, 'CreditDetails'>;
 
-const MOCK_CREDITS: Record<string, Credit> = {
-  '1': { id: '1', type: 'mortgage', status: 'active', name: 'Crédit Immobilier Résidence Principale', originalAmount: 250000, remainingAmount: 187500, monthlyPayment: 1245, interestRate: 2.15, startDate: '2020-01-15', endDate: '2040-01-15', nextPaymentDate: '2024-04-01', nextPaymentAmount: 1245, totalPaid: 62500, currency: 'EUR' },
-  '2': { id: '2', type: 'auto', status: 'active', name: 'Crédit Auto Renault Clio', originalAmount: 18000, remainingAmount: 9600, monthlyPayment: 350, interestRate: 3.5, startDate: '2022-06-01', endDate: '2026-06-01', nextPaymentDate: '2024-04-01', nextPaymentAmount: 350, totalPaid: 8400, currency: 'EUR' },
-  '3': { id: '3', type: 'personal', status: 'active', name: 'Prêt Personnel Travaux', originalAmount: 15000, remainingAmount: 4500, monthlyPayment: 280, interestRate: 4.9, startDate: '2021-09-01', endDate: '2025-09-01', nextPaymentDate: '2024-04-01', nextPaymentAmount: 280, totalPaid: 10500, currency: 'EUR' },
-};
-
 const generateAmortization = (credit: Credit): AmortizationEntry[] => {
+  if (credit.remainingAmount <= 0 || credit.monthlyPayment <= 0) {
+    return [];
+  }
   const entries: AmortizationEntry[] = [];
   const monthlyRate = credit.interestRate / 100 / 12;
   let balance = credit.remainingAmount;
@@ -52,12 +52,23 @@ const MOCK_PAYMENTS = [
 ];
 
 export const CreditDetailsScreen: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const route = useRoute<Route>();
   const { creditId } = route.params;
   const { theme } = useTheme();
+  const { credits, isLoading } = useAppSelector((state) => state.credits);
 
-  const credit = MOCK_CREDITS[creditId];
+  useEffect(() => {
+    if (credits.length === 0) {
+      dispatch(fetchCredits());
+    }
+  }, [credits.length, dispatch]);
+
+  const credit = useMemo(
+    () => credits.find((c) => c.id === creditId),
+    [credits, creditId],
+  );
   const [activeTab, setActiveTab] = useState<'amortization' | 'payments'>('amortization');
   const [earlyPaymentModal, setEarlyPaymentModal] = useState(false);
   const [earlyAmount, setEarlyAmount] = useState('');
@@ -76,7 +87,19 @@ export const CreditDetailsScreen: React.FC = () => {
   };
   const styles = makeStyles(colors);
 
-  if (!credit) return null;
+  if (isLoading && !credit) return <LoadingSpinner />;
+  if (!credit) {
+    return (
+      <View style={styles.container}>
+        <View style={[styles.header, { justifyContent: 'flex-start' }]}>
+          <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Retour</Text></TouchableOpacity>
+        </View>
+        <View style={{ padding: 24 }}>
+          <Text style={{ color: colors.text }}>Crédit introuvable.</Text>
+        </View>
+      </View>
+    );
+  }
 
   const progress = ((credit.originalAmount - credit.remainingAmount) / credit.originalAmount) * 100;
   const amortization = generateAmortization(credit);

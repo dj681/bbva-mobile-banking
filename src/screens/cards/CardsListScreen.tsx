@@ -54,7 +54,10 @@ export const CardsListScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    if (cards.length > 0 && !selectedCard) selectCard(cards[0].id);
+    if (cards.length > 0 && !selectedCard) {
+      const virtualCard = cards.find((c) => c.isVirtual);
+      selectCard((virtualCard ?? cards[0]).id);
+    }
   }, [cards]);
 
   const styles = makeStyles(colors);
@@ -113,6 +116,7 @@ export const CardsListScreen: React.FC = () => {
               <View style={styles.cardDetails}>
                 <View style={styles.detailRow}><Text style={styles.detailKey}>Numéro</Text><Text style={styles.detailVal}>{card.cardNumber}</Text></View>
                 <View style={styles.detailRow}><Text style={styles.detailKey}>Expiration</Text><Text style={styles.detailVal}>{card.expiryDate}</Text></View>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>Type</Text><Text style={styles.detailVal}>{card.isVirtual ? 'Carte virtuelle' : 'Carte physique'}</Text></View>
                 <View style={styles.detailRow}><Text style={styles.detailKey}>Statut</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
                 {card.creditLimit && (
                   <View style={styles.detailRow}><Text style={styles.detailKey}>Limite crédit</Text><Text style={styles.detailVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>

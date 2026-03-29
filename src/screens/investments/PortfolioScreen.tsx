@@ -34,108 +34,6 @@ type Period = '1S' | '1M' | '3M' | '6M' | '1A';
 
 const PERIODS: Period[] = ['1S', '1M', '3M', '6M', '1A'];
 
-const MOCK_PORTFOLIO: PortfolioSummary = {
-  totalValue: 24680.45,
-  totalInvested: 20000,
-  totalGainLoss: 4680.45,
-  totalGainLossPercent: 23.4,
-  currency: 'EUR',
-  lastUpdated: new Date().toISOString(),
-};
-
-const MOCK_INVESTMENTS: Investment[] = [
-  {
-    id: '1',
-    symbol: 'MC',
-    name: 'LVMH Moët Hennessy',
-    type: 'stock',
-    quantity: 5,
-    purchasePrice: 620,
-    currentPrice: 780.5,
-    currentValue: 3902.5,
-    gainLoss: 802.5,
-    gainLossPercent: 25.89,
-    currency: 'EUR',
-    purchaseDate: '2023-01-15',
-    lastUpdated: new Date().toISOString(),
-    sector: 'Luxe',
-    isin: 'FR0000121014',
-    allocation: 15.8,
-  },
-  {
-    id: '2',
-    symbol: 'BNP',
-    name: 'BNP Paribas',
-    type: 'stock',
-    quantity: 20,
-    purchasePrice: 52,
-    currentPrice: 58.2,
-    currentValue: 1164,
-    gainLoss: 124,
-    gainLossPercent: 11.92,
-    currency: 'EUR',
-    purchaseDate: '2023-03-10',
-    lastUpdated: new Date().toISOString(),
-    sector: 'Finance',
-    isin: 'FR0000131104',
-    allocation: 4.7,
-  },
-  {
-    id: '3',
-    symbol: 'AMUN',
-    name: 'Amundi CAC 40 ETF',
-    type: 'etf',
-    quantity: 30,
-    purchasePrice: 80,
-    currentPrice: 92.4,
-    currentValue: 2772,
-    gainLoss: 372,
-    gainLossPercent: 15.5,
-    currency: 'EUR',
-    purchaseDate: '2022-06-01',
-    lastUpdated: new Date().toISOString(),
-    sector: 'ETF France',
-    isin: 'FR0007052782',
-    allocation: 11.2,
-  },
-  {
-    id: '4',
-    symbol: 'AIR',
-    name: 'Airbus SE',
-    type: 'stock',
-    quantity: 10,
-    purchasePrice: 110,
-    currentPrice: 152.8,
-    currentValue: 1528,
-    gainLoss: 428,
-    gainLossPercent: 38.91,
-    currency: 'EUR',
-    purchaseDate: '2022-12-01',
-    lastUpdated: new Date().toISOString(),
-    sector: 'Aéronautique',
-    isin: 'NL0000235190',
-    allocation: 6.2,
-  },
-  {
-    id: '5',
-    symbol: 'OAT',
-    name: 'OAT France 10 ans',
-    type: 'bond',
-    quantity: 15,
-    purchasePrice: 98,
-    currentPrice: 96.5,
-    currentValue: 1447.5,
-    gainLoss: -22.5,
-    gainLossPercent: -1.53,
-    currency: 'EUR',
-    purchaseDate: '2023-09-01',
-    lastUpdated: new Date().toISOString(),
-    sector: 'Obligations',
-    isin: 'FR0013380607',
-    allocation: 5.9,
-  },
-];
-
 const CHART_CONFIG: Record<Period, { labels: string[]; data: number[] }> = {
   '1S': {
     labels: ['L', 'M', 'J', 'V', 'S', 'D'],
@@ -394,8 +292,17 @@ export const PortfolioScreen: React.FC = () => {
   const [activePeriod, setActivePeriod] = useState<Period>('1M');
   const [refreshing, setRefreshing] = useState(false);
 
-  const effectiveInvestments = investments.length > 0 ? investments : MOCK_INVESTMENTS;
-  const effectivePortfolio = portfolio ?? MOCK_PORTFOLIO;
+  const effectiveInvestments = investments;
+  const effectivePortfolio: PortfolioSummary =
+    portfolio ??
+    {
+      totalValue: 0,
+      totalInvested: 0,
+      totalGainLoss: 0,
+      totalGainLossPercent: 0,
+      currency: 'EUR',
+      lastUpdated: new Date().toISOString(),
+    };
 
   const isPositive = effectivePortfolio.totalGainLoss >= 0;
   const gainColor = isPositive ? '#4CAF50' : '#F44336';
