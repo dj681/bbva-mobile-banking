@@ -25,7 +25,7 @@ let MOCK_BENEFICIARIES: Beneficiary[] = [
     name: 'Marie Dupont',
     iban: 'FR76 2004 1010 0505 0013 0080 439',
     bank: 'BNP Paribas',
-    alias: 'Ma sœur',
+    alias: 'Mi hermana',
     isFavorite: true,
     lastTransferDate: new Date(Date.now() - 15 * 86_400_000).toISOString(),
     avatar: 'https://ui-avatars.com/api/?name=Marie+Dupont&background=e0e0e0',
@@ -35,7 +35,7 @@ let MOCK_BENEFICIARIES: Beneficiary[] = [
     name: 'Pierre Martin',
     iban: 'FR76 3000 3030 0037 4918 4550 014',
     bank: 'Société Générale',
-    alias: 'Collègue Pierre',
+    alias: 'Colega Pierre',
     isFavorite: true,
     lastTransferDate: new Date(Date.now() - 7 * 86_400_000).toISOString(),
     avatar: 'https://ui-avatars.com/api/?name=Pierre+Martin&background=e0e0e0',
@@ -54,7 +54,7 @@ let MOCK_BENEFICIARIES: Beneficiary[] = [
     name: 'Thomas Bernard',
     iban: 'FR76 1751 5900 0008 0149 3808 049',
     bank: 'La Banque Postale',
-    alias: 'Propriétaire',
+    alias: 'Propietario',
     isFavorite: true,
     lastTransferDate: new Date(Date.now() - 30 * 86_400_000).toISOString(),
     avatar: 'https://ui-avatars.com/api/?name=Thomas+Bernard&background=e0e0e0',
@@ -78,7 +78,7 @@ const MOCK_SCHEDULED_TRANSFERS: ScheduledTransfer[] = [
     recipientIban: 'FR76 1751 5900 0008 0149 3808 049',
     amount: 800.00,
     currency: 'EUR',
-    description: 'Loyer mensuel',
+    description: 'Alquiler mensual',
     type: 'scheduled',
     scheduledDate: new Date(new Date().setDate(1)).toISOString(),
     isRecurring: true,
@@ -91,10 +91,10 @@ const MOCK_SCHEDULED_TRANSFERS: ScheduledTransfer[] = [
     id: 'sched-002',
     fromAccountId: 'acc-001',
     toAccountId: 'acc-002',
-    recipientName: 'Livret A BBVA',
+    recipientName: 'Cuenta de Ahorro BBVA',
     amount: 400.00,
     currency: 'EUR',
-    description: 'Épargne mensuelle automatique',
+    description: 'Ahorro mensual automático',
     type: 'internal',
     scheduledDate: new Date(new Date().setDate(5)).toISOString(),
     isRecurring: true,
@@ -113,17 +113,17 @@ export const executeTransferApi = async (
   await delay(1000);
 
   if (!transfer.amount || transfer.amount <= 0) {
-    throw new Error('Le montant du virement doit être supérieur à 0 €.');
+    throw new Error('El importe de la transferencia debe ser superior a 0 €.');
   }
   if (!transfer.fromAccountId) {
-    throw new Error('Compte source requis.');
+    throw new Error('Cuenta de origen requerida.');
   }
 
   return {
     transferId: `TRF-${Date.now()}`,
     status: 'completed',
     reference: `VIR${Date.now().toString().slice(-8)}`,
-    message: `Virement de ${transfer.amount.toFixed(2)} € effectué avec succès.`,
+    message: `Transferencia de ${transfer.amount.toFixed(2)} € realizada con éxito.`,
     executedAt: new Date().toISOString(),
   };
 };
@@ -150,7 +150,7 @@ export const deleteBeneficiaryApi = async (
 ): Promise<{ success: boolean }> => {
   await delay(600);
   const idx = MOCK_BENEFICIARIES.findIndex((b) => b.id === beneficiaryId);
-  if (idx === -1) throw new Error(`Bénéficiaire introuvable : ${beneficiaryId}`);
+  if (idx === -1) throw new Error(`Beneficiario no encontrado: ${beneficiaryId}`);
   MOCK_BENEFICIARIES.splice(idx, 1);
   return { success: true };
 };

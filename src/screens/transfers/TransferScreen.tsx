@@ -311,7 +311,7 @@ export const TransferScreen: React.FC = () => {
 
       <Modal visible={pinModalVisible} onClose={() => setPinModalVisible(false)} title="Introduzca su código PIN">
         <Text style={styles.pinLabel}>Confirme la transferencia con su código PIN</Text>
-        <Input label="Code PIN" value={pin} onChangeText={setPin} secureTextEntry keyboardType="number-pad" maxLength={6} />
+        <Input label="Código PIN" value={pin} onChangeText={setPin} secureTextEntry keyboardType="number-pad" maxLength={6} />
         <Button title={isLoading ? 'Procesando...' : 'Validar'} onPress={handleConfirm} disabled={isLoading || pin.length < 4} />
       </Modal>
 

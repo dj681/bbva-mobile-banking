@@ -103,10 +103,10 @@ function calculateProjectedDate(
     balance = balance * (1 + monthlyRate) + monthlyContribution;
     months++;
   }
-  if (months >= 600) return '> 50 ans';
+  if (months >= 600) return '> 50 años';
   const date = new Date();
   date.setMonth(date.getMonth() + months);
-  return date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  return date.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
 }
 
 const PLAN_INTEREST_RATE = 3.0; // default interest rate for new plans
@@ -353,7 +353,7 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, styles, colors }) => {
             <Text style={styles.planName} numberOfLines={1}>
               {plan.name}
             </Text>
-            <Text style={styles.planSubtitle}>Taux : {plan.interestRate} %/an</Text>
+            <Text style={styles.planSubtitle}>Tipo: {plan.interestRate} %/año</Text>
           </View>
         </View>
         <Badge
@@ -506,7 +506,7 @@ export const SavingsPlansScreen: React.FC = () => {
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Mes plans ({effectivePlans.length})</Text>
+        <Text style={styles.sectionTitle}>Mis planes ({effectivePlans.length})</Text>
       </>
     ),
     [styles, totalMonthly, totalSaved, effectivePlans.length],

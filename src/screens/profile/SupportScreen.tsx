@@ -80,10 +80,10 @@ const FAQ_ITEMS: FaqItem[] = [
 function getBotResponse(userMessage: string): string {
   const msg = userMessage.toLowerCase();
   if (msg.includes('pin') || msg.includes('code')) {
-    return 'Pour réinitialiser votre PIN, allez dans Profil → Sécurité → Code PIN → Modifier le PIN. Besoin d\'aide supplémentaire ?';
+    return 'Para restablecer su PIN, vaya a Perfil → Seguridad → Código PIN → Cambiar PIN. ¿Necesita más ayuda?';
   }
   if (msg.includes('carte') || msg.includes('card') || msg.includes('bloquer')) {
-    return 'Pour bloquer votre carte, rendez-vous dans l\'onglet Cartes et sélectionnez votre carte. Pour une urgence, appelez le 0800 000 001.';
+    return 'Para bloquear su tarjeta, acceda a la pestaña Tarjetas y selecciónela. En caso de urgencia, llame al 0800 000 001.';
   }
   if (msg.includes('virement') || msg.includes('transfer')) {
     return 'Las transferencias SEPA generalmente se procesan el siguiente día hábil. Las transferencias instantáneas se ejecutan en pocos segundos.';
@@ -95,19 +95,19 @@ function getBotResponse(userMessage: string): string {
     return 'Sus extractos están disponibles en Cuentas → seleccione su cuenta → Extractos. Puede descargarlos en PDF.';
   }
   if (msg.includes('solde') || msg.includes('balance')) {
-    return 'Votre solde est affiché sur le tableau de bord. Pour les détails, consultez l\'onglet Comptes.';
+    return 'Su saldo se muestra en el panel principal. Para más detalles, consulte la pestaña Cuentas.';
   }
   if (msg.includes('bonjour') || msg.includes('salut') || msg.includes('hello')) {
     return '¡Hola! Soy su asistente de BBVA. ¿En qué puedo ayudarle hoy?';
   }
   if (msg.includes('merci') || msg.includes('thank')) {
-    return 'Je vous en prie ! N\'hésitez pas si vous avez d\'autres questions. 😊';
+    return '¡De nada! No dude en preguntar si tiene alguna otra consulta. 😊';
   }
   return 'Entiendo su consulta. Para una atención personalizada, también puede llamar a nuestro servicio de atención al cliente al 0800 123 456 o consultar nuestras Preguntas frecuentes a continuación.';
 }
 
 function formatTime(date: Date): string {
-  return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 }
 
 // ─── Screen ───────────────────────────────────────────────────────────────────

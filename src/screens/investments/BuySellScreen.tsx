@@ -79,7 +79,7 @@ const MOCK_ACCOUNTS: Account[] = [
     accountNumber: '00012345678',
     iban: 'FR7630006000011234567800189',
     type: 'checking',
-    name: 'Compte Courant Principal',
+    name: 'Cuenta Corriente Principal',
     balance: 5840.22,
     availableBalance: 5640.22,
     currency: 'EUR',
@@ -92,7 +92,7 @@ const MOCK_ACCOUNTS: Account[] = [
     accountNumber: '00087654321',
     iban: 'FR7630006000018765432100123',
     type: 'savings',
-    name: 'Livret A',
+    name: 'Cuenta de Ahorro',
     balance: 12000,
     availableBalance: 12000,
     currency: 'EUR',
@@ -658,7 +658,7 @@ export const BuySellScreen: React.FC = () => {
             <Text style={styles.priceLabel}>Precio actual</Text>
             <Text style={styles.priceValue}>{formatCurrency(currentPrice)}</Text>
             <Text style={styles.priceUpdateTime}>
-              Actualizado a las {new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+              Actualizado a las {new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
             </Text>
           </View>
           <View style={styles.liveDot}>

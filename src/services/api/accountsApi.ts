@@ -10,7 +10,7 @@ const MOCK_ACCOUNTS: Account[] = [
     accountNumber: '00012345678',
     iban: 'ES76 0182 0012 3456 7800 1890',
     type: 'checking',
-    name: 'Compte Courant BBVA',
+    name: 'Cuenta Corriente BBVA',
     balance: 200_000.00,
     availableBalance: 200_000.00,
     currency: 'EUR',
@@ -72,6 +72,6 @@ export const fetchTransactionsApi = async (
 export const fetchAccountDetailsApi = async (accountId: string): Promise<Account> => {
   await delay(500);
   const account = MOCK_ACCOUNTS.find((a) => a.id === accountId);
-  if (!account) throw new Error(`Compte introuvable : ${accountId}`);
+  if (!account) throw new Error(`Cuenta no encontrada: ${accountId}`);
   return { ...account };
 };

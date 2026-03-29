@@ -74,7 +74,7 @@ export const fetchCardTransactionsApi = async (
 export const blockCardApi = async (cardId: string): Promise<Card> => {
   await delay(800);
   const idx = MOCK_CARDS.findIndex((c) => c.id === cardId);
-  if (idx === -1) throw new Error(`Carte introuvable : ${cardId}`);
+  if (idx === -1) throw new Error(`Tarjeta no encontrada: ${cardId}`);
   MOCK_CARDS[idx] = { ...MOCK_CARDS[idx], status: 'blocked' as CardStatus };
   return { ...MOCK_CARDS[idx] };
 };
@@ -82,7 +82,7 @@ export const blockCardApi = async (cardId: string): Promise<Card> => {
 export const unblockCardApi = async (cardId: string): Promise<Card> => {
   await delay(800);
   const idx = MOCK_CARDS.findIndex((c) => c.id === cardId);
-  if (idx === -1) throw new Error(`Carte introuvable : ${cardId}`);
+  if (idx === -1) throw new Error(`Tarjeta no encontrada: ${cardId}`);
   MOCK_CARDS[idx] = { ...MOCK_CARDS[idx], status: 'active' as CardStatus };
   return { ...MOCK_CARDS[idx] };
 };
@@ -93,7 +93,7 @@ export const updateCardLimitsApi = async (
 ): Promise<Card> => {
   await delay(700);
   const idx = MOCK_CARDS.findIndex((c) => c.id === cardId);
-  if (idx === -1) throw new Error(`Carte introuvable : ${cardId}`);
+  if (idx === -1) throw new Error(`Tarjeta no encontrada: ${cardId}`);
   MOCK_CARDS[idx] = {
     ...MOCK_CARDS[idx],
     spendingLimit: limits.spendingLimit,

@@ -85,7 +85,7 @@ export const fetchInvestmentDetailsApi = async (
 ): Promise<Investment> => {
   await delay(500);
   const inv = MOCK_INVESTMENTS.find((i) => i.id === investmentId);
-  if (!inv) throw new Error(`Investissement introuvable : ${investmentId}`);
+  if (!inv) throw new Error(`Inversión no encontrada: ${investmentId}`);
   return { ...inv };
 };
 
@@ -95,7 +95,7 @@ export const fetchPriceHistoryApi = async (
 ): Promise<PricePoint[]> => {
   await delay(600);
   const inv = MOCK_INVESTMENTS.find((i) => i.id === investmentId);
-  if (!inv) throw new Error(`Investissement introuvable : ${investmentId}`);
+  if (!inv) throw new Error(`Inversión no encontrada: ${investmentId}`);
   return generatePriceHistory(inv.currentPrice, days);
 };
 
@@ -135,7 +135,7 @@ export const buyInvestmentApi = async (
     investment = {
       id: `inv-${Date.now()}`,
       symbol: request.symbol ?? 'UNKNOWN',
-      name: 'Nouvel investissement',
+      name: 'Nueva inversión',
       type: 'stock' as AssetType,
       quantity: request.quantity,
       purchasePrice: request.price,
@@ -156,7 +156,7 @@ export const buyInvestmentApi = async (
     investment,
     totalAmount,
     fees,
-    message: `Achat de ${request.quantity} titre(s) exécuté avec succès.`,
+    message: `Compra de ${request.quantity} título(s) ejecutada con éxito.`,
   };
 };
 
@@ -166,12 +166,12 @@ export const sellInvestmentApi = async (
   await delay(1000);
   const idx = MOCK_INVESTMENTS.findIndex((i) => i.id === request.investmentId);
   if (idx === -1)
-    throw new Error(`Investissement introuvable : ${request.investmentId}`);
+    throw new Error(`Inversión no encontrada: ${request.investmentId}`);
 
   const inv = MOCK_INVESTMENTS[idx];
   if (inv.quantity < request.quantity) {
     throw new Error(
-      `Quantité insuffisante. Disponible : ${inv.quantity}, demandé : ${request.quantity}.`,
+      `Cantidad insuficiente. Disponible: ${inv.quantity}, solicitado: ${request.quantity}.`,
     );
   }
 
@@ -196,6 +196,6 @@ export const sellInvestmentApi = async (
     investment: { ...MOCK_INVESTMENTS[idx] },
     totalAmount,
     fees,
-    message: `Vente de ${request.quantity} titre(s) exécutée avec succès.`,
+    message: `Venta de ${request.quantity} título(s) ejecutada con éxito.`,
   };
 };

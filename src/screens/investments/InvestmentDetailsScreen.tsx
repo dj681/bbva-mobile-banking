@@ -539,11 +539,11 @@ export const InvestmentDetailsScreen: React.FC = () => {
 
         {/* Key stats */}
         <View style={styles.statsCard}>
-          <Text style={styles.sectionTitle}>Mes Positions</Text>
+          <Text style={styles.sectionTitle}>Mis Posiciones</Text>
 
           <StatRow
             label="Cantidad poseída"
-            value={`${investment.quantity} titres`}
+            value={`${investment.quantity} títulos`}
             styles={styles}
           />
           <StatRow

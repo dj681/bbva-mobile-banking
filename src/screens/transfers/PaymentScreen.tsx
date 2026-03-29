@@ -238,8 +238,8 @@ export const PaymentScreen: React.FC = () => {
       )}
       <Modal visible={pinModalVisible} onClose={() => setPinModalVisible(false)} title="Código PIN">
         <Text style={{ color: colors.text, marginBottom: 12, textAlign: 'center' }}>Confirme el pago con su código PIN</Text>
-        <Input label="Code PIN" value={pin} onChangeText={setPin} secureTextEntry keyboardType="number-pad" maxLength={6} />
-        <Button title={isLoading ? 'Procesando...' : 'Valider'} onPress={handleConfirmPayment} disabled={isLoading || pin.length < 4} />
+        <Input label="Código PIN" value={pin} onChangeText={setPin} secureTextEntry keyboardType="number-pad" maxLength={6} />
+        <Button title={isLoading ? 'Procesando...' : 'Confirmar'} onPress={handleConfirmPayment} disabled={isLoading || pin.length < 4} />
       </Modal>
       {isLoading && <LoadingSpinner />}
     </KeyboardAvoidingView>

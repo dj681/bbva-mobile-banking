@@ -147,7 +147,7 @@ const PinScreen: React.FC = () => {
           if (remaining <= 0) {
             dispatch(setAuthError('Demasiados intentos incorrectos. Por favor, contacte con el soporte.'));
           } else {
-            dispatch(setAuthError(`Code PIN incorrect. ${remaining} tentative${remaining > 1 ? 's' : ''} restante${remaining > 1 ? 's' : ''}.`));
+            dispatch(setAuthError(`Código PIN incorrecto. Quedan ${remaining} intento${remaining !== 1 ? 's' : ''}.`));
           }
           setPinValue('');
         }

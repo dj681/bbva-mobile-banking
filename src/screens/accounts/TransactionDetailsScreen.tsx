@@ -65,7 +65,7 @@ export const TransactionDetailsScreen: React.FC = () => {
   const handleShare = useCallback(async () => {
     if (!transaction) return;
     await Share.share({
-      message: `Transaction BBVA\n${transaction.description}\nMontant: ${formatCurrency(
+      message: `Transaction BBVA\n${transaction.description}\nImporte: ${formatCurrency(
         transaction.amount,
         transaction.currency,
       )}\nDate: ${formatDate(transaction.date, 'dd/MM/yyyy HH:mm')}\nReferencia: ${transaction.reference}`,

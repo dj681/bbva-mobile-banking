@@ -23,7 +23,7 @@ let MOCK_CREDITS: Credit[] = [
     id: 'crd-001',
     type: 'personal',
     status: 'closed',
-    name: 'Crédit Personnel BBVA',
+    name: 'Crédito Personal BBVA',
     originalAmount: 15_000.00,
     remainingAmount: 0.00,
     monthlyPayment: 0.00,
@@ -34,13 +34,13 @@ let MOCK_CREDITS: Credit[] = [
     nextPaymentAmount: 0.00,
     totalPaid: 15_000.00,
     currency: 'EUR',
-    purpose: 'Travaux de rénovation appartement',
+    purpose: 'Obras de renovación del piso',
   },
   {
     id: 'crd-002',
     type: 'mortgage',
     status: 'closed',
-    name: 'Prêt Immobilier BBVA',
+    name: 'Préstamo Hipotecario BBVA',
     originalAmount: 220_000.00,
     remainingAmount: 0.00,
     monthlyPayment: 0.00,
@@ -51,7 +51,7 @@ let MOCK_CREDITS: Credit[] = [
     nextPaymentAmount: 0.00,
     totalPaid: 220_000.00,
     currency: 'EUR',
-    purpose: 'Acquisition résidence principale Paris 11e',
+    purpose: 'Adquisición de residencia principal',
   },
 ];
 
@@ -106,7 +106,7 @@ export const fetchCreditDetailsApi = async (
 ): Promise<{ credit: Credit; amortizationSchedule: AmortizationEntry[] }> => {
   await delay(700);
   const credit = MOCK_CREDITS.find((c) => c.id === creditId);
-  if (!credit) throw new Error(`Crédit introuvable : ${creditId}`);
+  if (!credit) throw new Error(`Crédito no encontrado: ${creditId}`);
 
   const schedule = buildAmortizationSchedule(
     credit.remainingAmount,
@@ -151,7 +151,7 @@ export const requestCreditApi = async (
     applicationId: `APP-${Date.now()}`,
     status: 'pending_approval',
     message:
-      'Votre demande de crédit a été reçue. Vous recevrez une réponse dans les 48 heures.',
+      'Su solicitud de crédito ha sido recibida. Recibirá una respuesta en 48 horas.',
   };
 };
 
@@ -160,7 +160,7 @@ export const makeEarlyPaymentApi = async (
 ): Promise<{ success: boolean; newRemainingAmount: number; message: string }> => {
   await delay(900);
   const idx = MOCK_CREDITS.findIndex((c) => c.id === request.creditId);
-  if (idx === -1) throw new Error(`Crédit introuvable : ${request.creditId}`);
+  if (idx === -1) throw new Error(`Crédito no encontrado: ${request.creditId}`);
 
   const newRemaining = Math.max(
     0,
@@ -175,6 +175,6 @@ export const makeEarlyPaymentApi = async (
   return {
     success: true,
     newRemainingAmount: newRemaining,
-    message: `Remboursement anticipé de ${request.amount} € effectué avec succès.`,
+    message: `Amortización anticipada de ${request.amount} € realizada con éxito.`,
   };
 };

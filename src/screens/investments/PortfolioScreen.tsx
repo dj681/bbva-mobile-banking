@@ -505,7 +505,7 @@ export const PortfolioScreen: React.FC = () => {
           onPress={() => navigation.navigate('SavingsPlans')}
         />
         <Text style={styles.lastUpdated}>
-          Última actualización : {new Date().toLocaleTimeString('fr-FR')}
+          Última actualización: {new Date().toLocaleTimeString('es-ES')}
         </Text>
       </View>
     ),
