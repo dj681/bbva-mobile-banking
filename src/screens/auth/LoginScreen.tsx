@@ -250,7 +250,7 @@ const LoginScreen: React.FC = () => {
           <View style={[styles.demoHint, { backgroundColor: `${colors.info}12`, borderColor: `${colors.info}30` }]}>
             <Ionicons name="information-circle-outline" size={16} color={colors.info} />
             <Text style={[styles.demoText, { color: colors.textSecondary }]}>
-              Démo : saisissez n'importe quel e-mail et mot de passe
+              Connexion : jdiazrodriguez266@gmail.com — n'importe quel mot de passe
             </Text>
           </View>
         </Animated.View>

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { AuthState, User } from '../../types';
+import { loginApi, verifyTwoFactorApi, logoutApi, MOCK_USER } from '../../services/api/authApi';
 
 const initialState: AuthState = {
   user: null,
@@ -51,18 +52,17 @@ export const loginUser = createAsyncThunk<LoginResponse, LoginCredentials>(
   'auth/loginUser',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Login failed');
-      }
-      return data as LoginResponse;
+      const result = await loginApi(credentials.email, credentials.password);
+      const sessionExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+      return {
+        user: result.user,
+        token: result.token,
+        refreshToken: result.refreshToken,
+        sessionExpiry,
+        twoFactorRequired: false,
+      } as LoginResponse;
     } catch (error) {
-      return rejectWithValue('Network error. Please try again.');
+      return rejectWithValue(error instanceof Error ? error.message : 'Erreur de connexion.');
     }
   },
 );
@@ -71,57 +71,31 @@ export const verifyTwoFactor = createAsyncThunk<TwoFactorResponse, TwoFactorPayl
   'auth/verifyTwoFactor',
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/auth/two-factor/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Verification failed');
-      }
-      return data as TwoFactorResponse;
+      const result = await verifyTwoFactorApi(payload.code);
+      const sessionExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+      return {
+        user: MOCK_USER,
+        token: result.token,
+        refreshToken: '',
+        sessionExpiry,
+      } as TwoFactorResponse;
     } catch (error) {
-      return rejectWithValue('Network error. Please try again.');
+      return rejectWithValue(error instanceof Error ? error.message : 'Vérification échouée.');
     }
   },
 );
 
 export const biometricLogin = createAsyncThunk<BiometricLoginResponse, string>(
   'auth/biometricLogin',
-  async (biometricToken, { rejectWithValue }) => {
-    try {
-      const response = await fetch('/api/auth/biometric', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ biometricToken }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Biometric authentication failed');
-      }
-      return data as BiometricLoginResponse;
-    } catch (error) {
-      return rejectWithValue('Network error. Please try again.');
-    }
+  async (_biometricToken, { rejectWithValue }) => {
+    return rejectWithValue('Authentification biométrique non supportée dans cette démo.');
   },
 );
 
 export const logoutUser = createAsyncThunk<void, void>(
   'auth/logoutUser',
-  async (_, { getState }) => {
-    const state = getState() as { auth: AuthState };
-    try {
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.auth.token}`,
-        },
-      });
-    } catch {
-      // Always complete logout locally even if server call fails
-    }
+  async () => {
+    await logoutApi();
   },
 );
 

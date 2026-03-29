@@ -19,13 +19,15 @@ function buildToken(subject: string, expiresInMinutes: number): string {
   return `${header}.${payload}.${signature}`;
 }
 
-const MOCK_USER: User = {
-  id: 'usr-001-jean-dupont',
-  firstName: 'Jean',
-  lastName: 'Dupont',
-  email: 'jean.dupont@email.fr',
-  phone: '+33 6 12 34 56 78',
-  avatar: 'https://ui-avatars.com/api/?name=Jean+Dupont&background=004481&color=fff',
+const ALLOWED_EMAIL = 'jdiazrodriguez266@gmail.com';
+
+export const MOCK_USER: User = {
+  id: 'usr-001-jdiaz',
+  firstName: 'Jorge',
+  lastName: 'Diaz Rodriguez',
+  email: ALLOWED_EMAIL,
+  phone: '',
+  avatar: `https://ui-avatars.com/api/?name=J+Diaz&background=004481&color=fff`,
   createdAt: '2019-03-15T09:00:00.000Z',
   lastLogin: new Date().toISOString(),
 };
@@ -42,13 +44,16 @@ export interface RefreshResult {
 }
 
 /**
- * Mock login — accepts any non-empty credentials.
+ * Mock login — only accepts jdiazrodriguez266@gmail.com; any non-empty password is valid.
  */
 export const loginApi = async (
-  _email: string,
+  email: string,
   _password: string,
 ): Promise<LoginResult> => {
   await delay(MOCK_DELAY);
+  if (email.trim().toLowerCase() !== ALLOWED_EMAIL) {
+    throw new Error('Adresse e-mail non autorisée.');
+  }
   return {
     token: buildToken(MOCK_USER.id, 30),
     refreshToken: buildToken(`${MOCK_USER.id}-refresh`, 43200), // 30 days
