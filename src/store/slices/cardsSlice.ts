@@ -1,5 +1,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { CardsState, Card, CardTransaction } from '../../types';
+import {
+  fetchCardsApi,
+  fetchCardTransactionsApi,
+  blockCardApi,
+  unblockCardApi,
+  updateCardLimitsApi,
+} from '../../services/api/cardsApi';
 
 const initialState: CardsState = {
   cards: [],
@@ -20,19 +27,11 @@ interface UpdateCardLimitsPayload {
 
 export const fetchCards = createAsyncThunk<Card[], void>(
   'cards/fetchCards',
-  async (_, { rejectWithValue, getState }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch('/api/cards', {
-        headers: { Authorization: `Bearer ${state.auth.token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to fetch cards');
-      }
-      return data.data as Card[];
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      return await fetchCardsApi();
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement des cartes.');
     }
   },
 );
@@ -40,84 +39,48 @@ export const fetchCards = createAsyncThunk<Card[], void>(
 export const fetchCardTransactions = createAsyncThunk<
   { cardId: string; transactions: CardTransaction[] },
   { cardId: string; page?: number; pageSize?: number }
->('cards/fetchCardTransactions', async ({ cardId, page = 1, pageSize = 20 }, { rejectWithValue, getState }) => {
+>('cards/fetchCardTransactions', async ({ cardId }, { rejectWithValue }) => {
   try {
-    const state = getState() as { auth: { token: string | null } };
-    const query = new URLSearchParams({ page: String(page), pageSize: String(pageSize) });
-    const response = await fetch(`/api/cards/${cardId}/transactions?${query.toString()}`, {
-      headers: { Authorization: `Bearer ${state.auth.token}` },
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      return rejectWithValue(data.message ?? 'Failed to fetch card transactions');
-    }
-    return { cardId, transactions: data.data as CardTransaction[] };
-  } catch {
-    return rejectWithValue('Network error. Please try again.');
+    const transactions = await fetchCardTransactionsApi(cardId);
+    return { cardId, transactions };
+  } catch (err: unknown) {
+    return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement des transactions.');
   }
 });
 
 export const blockCard = createAsyncThunk<Card, string>(
   'cards/blockCard',
-  async (cardId, { rejectWithValue, getState }) => {
+  async (cardId, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch(`/api/cards/${cardId}/block`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${state.auth.token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to block card');
-      }
-      return data.data as Card;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      return await blockCardApi(cardId);
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du blocage de la carte.');
     }
   },
 );
 
 export const unblockCard = createAsyncThunk<Card, string>(
   'cards/unblockCard',
-  async (cardId, { rejectWithValue, getState }) => {
+  async (cardId, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch(`/api/cards/${cardId}/unblock`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${state.auth.token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to unblock card');
-      }
-      return data.data as Card;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      return await unblockCardApi(cardId);
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du déblocage de la carte.');
     }
   },
 );
 
 export const updateCardLimits = createAsyncThunk<Card, UpdateCardLimitsPayload>(
   'cards/updateCardLimits',
-  async (payload, { rejectWithValue, getState }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const { cardId, ...body } = payload;
-      const response = await fetch(`/api/cards/${cardId}/limits`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.auth.token}`,
-        },
-        body: JSON.stringify(body),
+      const { cardId, ...limits } = payload;
+      return await updateCardLimitsApi(cardId, {
+        spendingLimit: limits.spendingLimit ?? 0,
+        dailyLimit: limits.dailyLimit ?? 0,
       });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to update card limits');
-      }
-      return data.data as Card;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors de la mise à jour des limites.');
     }
   },
 );

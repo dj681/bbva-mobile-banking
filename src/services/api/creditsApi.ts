@@ -18,7 +18,42 @@ export interface EarlyPaymentRequest {
 
 // ── Mock data ────────────────────────────────────────────────────────────────
 
-let MOCK_CREDITS: Credit[] = [];
+let MOCK_CREDITS: Credit[] = [
+  {
+    id: 'crd-001',
+    type: 'personal',
+    status: 'closed',
+    name: 'Crédit Personnel BBVA',
+    originalAmount: 15_000.00,
+    remainingAmount: 0.00,
+    monthlyPayment: 0.00,
+    interestRate: 4.9,
+    startDate: '2022-03-01T00:00:00.000Z',
+    endDate: '2027-03-01T00:00:00.000Z',
+    nextPaymentDate: new Date(new Date().setDate(1)).toISOString(),
+    nextPaymentAmount: 0.00,
+    totalPaid: 15_000.00,
+    currency: 'EUR',
+    purpose: 'Travaux de rénovation appartement',
+  },
+  {
+    id: 'crd-002',
+    type: 'mortgage',
+    status: 'closed',
+    name: 'Prêt Immobilier BBVA',
+    originalAmount: 220_000.00,
+    remainingAmount: 0.00,
+    monthlyPayment: 0.00,
+    interestRate: 2.85,
+    startDate: '2021-06-15T00:00:00.000Z',
+    endDate: '2046-06-15T00:00:00.000Z',
+    nextPaymentDate: new Date(new Date().setDate(15)).toISOString(),
+    nextPaymentAmount: 0.00,
+    totalPaid: 220_000.00,
+    currency: 'EUR',
+    purpose: 'Acquisition résidence principale Paris 11e',
+  },
+];
 
 // ── Amortization calculator ──────────────────────────────────────────────────
 

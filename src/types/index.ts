@@ -110,6 +110,7 @@ export interface Card {
   onlinePaymentEnabled: boolean;
   internationalEnabled: boolean;
   contactlessEnabled: boolean;
+  isVirtual?: boolean;
   color: string;
   createdAt: string;
 }

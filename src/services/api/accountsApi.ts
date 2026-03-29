@@ -30,19 +30,19 @@ function daysAgo(n: number): string {
 
 const MOCK_TRANSACTIONS: Transaction[] = [
   {
-    id: 'txn-001',
+    id: 'txn-024',
     accountId: 'acc-001',
     type: 'credit',
     status: 'completed',
     amount: 200_000.00,
     currency: 'EUR',
-    description: 'VIREMENT REÇU MONECO BANK',
+    description: 'VIREMENT ENTRANT MONECO BANK',
     category: 'income',
-    reference: 'MNB20240115001',
-    date: daysAgo(1),
+    reference: 'MNB20260329',
+    date: daysAgo(0),
     balance: 200_000.00,
     counterpartName: 'Moneco Bank',
-    counterpartIban: 'ES76 0182 0099 8877 6655 4400',
+    counterpartIban: 'FR76 1690 6009 0000 2345 6789 012',
   },
 ];
 

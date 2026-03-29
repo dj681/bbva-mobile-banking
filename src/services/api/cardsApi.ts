@@ -28,6 +28,25 @@ let MOCK_CARDS: Card[] = [
     color: '#004481',
     createdAt: '2022-01-10T08:00:00.000Z',
   },
+  {
+    id: 'card-004',
+    accountId: 'acc-001',
+    type: 'debit',
+    network: 'visa',
+    status: 'active',
+    cardNumber: '**** **** **** 7755',
+    holderName: 'JOSE COMPTE',
+    expiryDate: '03/29',
+    cvv: '***',
+    spendingLimit: 10_000.00,
+    dailyLimit: 5_000.00,
+    onlinePaymentEnabled: true,
+    internationalEnabled: true,
+    contactlessEnabled: true,
+    isVirtual: true,
+    color: '#1B998B',
+    createdAt: '2026-03-29T09:00:00.000Z',
+  },
 ];
 
 function daysAgo(n: number): string {
