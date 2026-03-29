@@ -132,9 +132,9 @@ export const CreditSimulatorScreen: React.FC = () => {
               placeholder="48"
               placeholderTextColor={colors.subtext}
             />
-            <Text style={styles.inputUnit}>mois</Text>
+            <Text style={styles.inputUnit}>meses</Text>
           </View>
-          <View style={styles.rangeRow}><Text style={styles.rangeText}>Min: 6 meses</Text><Text style={styles.rangeText}>Max: 360 meses</Text></View>
+          <View style={styles.rangeRow}><Text style={styles.rangeText}>Mín: 6 meses</Text><Text style={styles.rangeText}>Máx: 360 meses</Text></View>
         </View>
 
         <View style={styles.section}>
@@ -160,7 +160,7 @@ export const CreditSimulatorScreen: React.FC = () => {
         </View>
 
         <TouchableOpacity style={styles.scheduleToggle} onPress={() => setShowSchedule(s => !s)}>
-          <Text style={styles.scheduleToggleText}>{showSchedule ? '▲ Ocultar tabla' : '▼ Afficher le tableau d\'amortissement'}</Text>
+          <Text style={styles.scheduleToggleText}>{showSchedule ? '▲ Ocultar tabla' : '▼ Mostrar tabla de amortización'}</Text>
         </TouchableOpacity>
 
         {showSchedule && (
@@ -181,7 +181,7 @@ export const CreditSimulatorScreen: React.FC = () => {
                 <Text style={styles.tcell}>{formatCurrency(r.balance, 'EUR')}</Text>
               </View>
             ))}
-            {schedule.length > 24 && <Text style={styles.moreRows}>+ {schedule.length - 24} lignes supplémentaires</Text>}
+            {schedule.length > 24 && <Text style={styles.moreRows}>+ {schedule.length - 24} filas adicionales</Text>}
           </View>
         )}
 

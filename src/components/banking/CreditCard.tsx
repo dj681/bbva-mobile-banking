@@ -70,7 +70,7 @@ export const CreditCard: React.FC<CreditCardProps> = ({ card, onPress, style }) 
       }}
       activeOpacity={0.95}
       accessibilityRole="button"
-      accessibilityLabel={`${card.holderName}'s ${card.type} card ending in ${card.cardNumber.slice(-4)}`}
+      accessibilityLabel={`Tarjeta ${card.type} de ${card.holderName} terminada en ${card.cardNumber.slice(-4)}`}
       style={[styles.wrapper, style]}
     >
       {/* Front */}
@@ -87,7 +87,7 @@ export const CreditCard: React.FC<CreditCardProps> = ({ card, onPress, style }) 
           <View style={styles.blockedOverlay}>
             <Ionicons name="lock-closed" size={20} color={COLORS.white} />
             <Text style={styles.blockedText}>
-              {card.status === 'expired' ? 'EXPIRED' : 'BLOCKED'}
+              {card.status === 'expired' ? 'VENCIDA' : 'BLOQUEADA'}
             </Text>
           </View>
         )}
@@ -105,13 +105,13 @@ export const CreditCard: React.FC<CreditCardProps> = ({ card, onPress, style }) 
           {/* Bottom row: holder + expiry */}
           <View style={styles.bottomRow}>
             <View>
-              <Text style={styles.cardFieldLabel}>Card Holder</Text>
+              <Text style={styles.cardFieldLabel}>Titular</Text>
               <Text style={styles.cardFieldValue} numberOfLines={1}>
                 {card.holderName.toUpperCase()}
               </Text>
             </View>
             <View style={styles.expiryBlock}>
-              <Text style={styles.cardFieldLabel}>Expires</Text>
+              <Text style={styles.cardFieldLabel}>Vence</Text>
               <Text style={styles.cardFieldValue}>{card.expiryDate}</Text>
             </View>
           </View>

@@ -21,7 +21,7 @@ type Route = RouteProp<CardsStackParamList, 'CardTransactions'>;
 
 const MOCK_CARD_TRANSACTIONS: CardTransaction[] = [];
 
-const CATEGORIES = ['Todas', 'Alimentación', 'Transporteee', 'Ocio', 'Restauranteee', 'Combustible', 'Retirada', 'Suscripción'];
+const CATEGORIES = ['Todas', 'Alimentación', 'Transporte', 'Ocio', 'Restaurante', 'Combustible', 'Retirada', 'Suscripción'];
 
 export const CardTransactionsScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -66,7 +66,7 @@ export const CardTransactionsScreen: React.FC = () => {
     .reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
 
   const categoryIcon = (cat: string) => {
-    const icons: Record<string, string> = { Alimentación: '🛒', Transportee: '🚌', Ocio: '🎮', Restaurantee: '🍽️', Combustible: '⛽', Retrait: '🏧', Suscripción: '📺', Reembolso: '↩️' };
+    const icons: Record<string, string> = { Alimentación: '🛒', Transporte: '🚌', Ocio: '🎮', Restaurante: '🍽️', Combustible: '⛽', Retirada: '🏧', Suscripción: '📺', Reembolso: '↩️' };
     return icons[cat] || '💳';
   };
 

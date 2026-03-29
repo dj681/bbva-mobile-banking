@@ -14,7 +14,7 @@ interface BalanceSummaryProps {
 
 function formatCurrency(amount: number, currency: string, hidden: boolean): string {
   if (hidden) return '••••••';
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency,
     minimumFractionDigits: 2,
@@ -45,10 +45,10 @@ export const BalanceSummary: React.FC<BalanceSummaryProps> = ({
     <View style={[styles.container, style]}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.sectionLabel}>Total Balance</Text>
+        <Text style={styles.sectionLabel}>Saldo total</Text>
         <TouchableOpacity
           onPress={() => setHidden(h => !h)}
-          accessibilityLabel={hidden ? 'Show balance' : 'Hide balance'}
+          accessibilityLabel={hidden ? 'Mostrar saldo' : 'Ocultar saldo'}
           accessibilityRole="button"
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
@@ -63,7 +63,7 @@ export const BalanceSummary: React.FC<BalanceSummaryProps> = ({
       {/* Main balance */}
       <View style={styles.balanceRow}>
         <Text style={styles.currencySymbol}>{currency}</Text>
-        <Text style={styles.totalBalance} accessibilityLabel={`Total balance: ${formatCurrency(totalBalance, currency, hidden)}`}>
+        <Text style={styles.totalBalance} accessibilityLabel={`Saldo total: ${formatCurrency(totalBalance, currency, hidden)}`}>
           {formatCurrency(totalBalance, currency, hidden)}
         </Text>
       </View>
@@ -73,16 +73,16 @@ export const BalanceSummary: React.FC<BalanceSummaryProps> = ({
         <View style={styles.trendRow}>
           <Ionicons name={trendIcon} size={14} color={trendColor} />
           <Text style={[styles.trendText, { color: trendColor }]}>
-            {trend !== 'neutral' ? `${trend === 'up' ? '+' : '-'}${Math.abs(trendPercent).toFixed(2)}%` : 'No change'}
+            {trend !== 'neutral' ? `${trend === 'up' ? '+' : '-'}${Math.abs(trendPercent).toFixed(2)}%` : 'Sin cambios'}
           </Text>
-          <Text style={styles.trendPeriod}> this month</Text>
+          <Text style={styles.trendPeriod}> este mes</Text>
         </View>
       )}
 
       {/* Available balance */}
       <View style={styles.divider} />
       <View style={styles.availableRow}>
-        <Text style={styles.availableLabel}>Available balance</Text>
+        <Text style={styles.availableLabel}>Saldo disponible</Text>
         <Text style={styles.availableAmount}>
           {formatCurrency(availableBalance, currency, hidden)}
         </Text>

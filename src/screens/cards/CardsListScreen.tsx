@@ -67,7 +67,7 @@ export const CardsListScreen: React.FC = () => {
 
   const styles = makeStyles(colors);
 
-  const statusLabel = (s: string) => s === 'active' ? 'Active' : s === 'blocked' ? 'Bloqueada' : s === 'expired' ? 'Vencida' : 'Pendiente';
+  const statusLabel = (s: string) => s === 'active' ? 'Activa' : s === 'blocked' ? 'Bloqueada' : s === 'expired' ? 'Vencida' : 'Pendiente';
   const statusVariant = (s: string): 'success' | 'error' | 'warning' | 'info' => s === 'active' ? 'success' : s === 'blocked' ? 'error' : s === 'expired' ? 'warning' : 'info';
 
   if (isLoading) return <LoadingSpinner />;
@@ -121,7 +121,7 @@ export const CardsListScreen: React.FC = () => {
               <View style={styles.cardDetails}>
                 <View style={styles.detailRow}><Text style={styles.detailKey}>Número</Text><Text style={styles.detailVal}>{card.cardNumber}</Text></View>
                 <View style={styles.detailRow}><Text style={styles.detailKey}>Vencimiento</Text><Text style={styles.detailVal}>{card.expiryDate}</Text></View>
-                <View style={styles.detailRow}><Text style={styles.detailKey}>Type</Text><Text style={styles.detailVal}>{card.isVirtual ? 'Tarjeta virtual' : 'Tarjeta física'}</Text></View>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>Tipo</Text><Text style={styles.detailVal}>{card.isVirtual ? 'Tarjeta virtual' : 'Tarjeta física'}</Text></View>
                 <View style={styles.detailRow}><Text style={styles.detailKey}>Estado</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
                 {card.creditLimit && (
                   <View style={styles.detailRow}><Text style={styles.detailKey}>Límite de crédito</Text><Text style={styles.detailVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>

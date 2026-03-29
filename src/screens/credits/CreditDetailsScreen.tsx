@@ -191,7 +191,7 @@ export const CreditDetailsScreen: React.FC = () => {
                 </View>
                 <View style={{ alignItems: 'flex-end' }}>
                   <Text style={styles.paymentAmount}>{formatCurrency(p.amount, 'EUR')}</Text>
-                  <Badge label="Payé" variant="success" />
+                  <Badge label="Pagado" variant="success" />
                 </View>
               </View>
             ))}
@@ -205,7 +205,7 @@ export const CreditDetailsScreen: React.FC = () => {
 
       <Modal visible={earlyPaymentModal} onClose={() => setEarlyPaymentModal(false)} title="Amortización anticipada">
         <Text style={{ color: colors.subtext, marginBottom: 12, textAlign: 'center' }}>Introduzca el importe que desea amortizar anticipadamente.</Text>
-        <Input label="Montant (EUR)" value={earlyAmount} onChangeText={setEarlyAmount} keyboardType="decimal-pad" placeholder="0.00" />
+        <Input label="Importe (EUR)" value={earlyAmount} onChangeText={setEarlyAmount} keyboardType="decimal-pad" placeholder="0.00" />
         <Text style={{ color: colors.subtext, fontSize: 12, marginTop: 8 }}>Pueden aplicarse comisiones por amortización anticipada según su contrato.</Text>
         <Button title="Validar" onPress={() => setEarlyPaymentModal(false)} style={{ marginTop: 12 }} />
         <Button title="Cancelar" onPress={() => setEarlyPaymentModal(false)} variant="outline" style={{ marginTop: 8 }} />

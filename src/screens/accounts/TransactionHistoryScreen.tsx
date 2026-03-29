@@ -232,7 +232,7 @@ export const TransactionHistoryScreen: React.FC = () => {
                 size={22}
                 color={colors.primary}
               />
-              <Text style={styles.exportOptionText}>Exporter en {format}</Text>
+              <Text style={styles.exportOptionText}>Exportar en {format}</Text>
             </TouchableOpacity>
           ))}
         </View>

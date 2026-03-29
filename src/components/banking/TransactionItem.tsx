@@ -47,15 +47,15 @@ function getRelativeDate(dateString: string): string {
   const diffMs = now.getTime() - date.getTime();
   const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffDays === 0) return 'Today';
-  if (diffDays === 1) return 'Yesterday';
-  if (diffDays < 7) return `${diffDays}d ago`;
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  if (diffDays === 0) return 'Hoy';
+  if (diffDays === 1) return 'Ayer';
+  if (diffDays < 7) return `hace ${diffDays} d`;
+  if (diffDays < 30) return `hace ${Math.floor(diffDays / 7)} sem`;
+  return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
 }
 
 function formatAmount(amount: number, currency: string, type: TransactionType): string {
-  const formatted = new Intl.NumberFormat('en-US', {
+  const formatted = new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency,
     minimumFractionDigits: 2,

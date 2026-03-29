@@ -66,7 +66,7 @@ export const CardDetailsScreen: React.FC = () => {
     else await blockCard(cardId);
   };
 
-  const statusLabel = (s: string) => s === 'active' ? 'Active' : s === 'blocked' ? 'Bloqueada' : s === 'expired' ? 'Vencida' : 'Pendiente';
+  const statusLabel = (s: string) => s === 'active' ? 'Activa' : s === 'blocked' ? 'Bloqueada' : s === 'expired' ? 'Vencida' : 'Pendiente';
   const statusVariant = (s: string): 'success' | 'error' | 'warning' | 'info' => s === 'active' ? 'success' : s === 'blocked' ? 'error' : s === 'expired' ? 'warning' : 'info';
 
   return (
@@ -87,7 +87,7 @@ export const CardDetailsScreen: React.FC = () => {
           <Divider />
           <View style={styles.infoRow}><Text style={styles.infoKey}>Vencimiento</Text><Text style={styles.infoVal}>{card.expiryDate}</Text></View>
           <Divider />
-          <View style={styles.infoRow}><Text style={styles.infoKey}>Titulaire</Text><Text style={styles.infoVal}>{card.holderName}</Text></View>
+          <View style={styles.infoRow}><Text style={styles.infoKey}>Titular</Text><Text style={styles.infoVal}>{card.holderName}</Text></View>
           <Divider />
           <View style={styles.infoRow}><Text style={styles.infoKey}>Estado</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
           {card.creditLimit && (

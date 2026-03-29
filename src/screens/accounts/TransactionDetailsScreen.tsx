@@ -87,9 +87,9 @@ export const TransactionDetailsScreen: React.FC = () => {
   const amountPrefix = isCredit ? '+' : '-';
 
   const fields: { label: string; value: string; mono?: boolean }[] = [
-    { label: 'Fecha y hora', value: formatDate(transaction.date, "dd/MM/yyyy 'à' HH:mm") },
+    { label: 'Fecha y hora', value: formatDate(transaction.date, "dd/MM/yyyy 'a las' HH:mm") },
     {
-      label: 'Type',
+      label: 'Tipo',
       value:
         transaction.type === 'credit'
           ? 'Crédito'

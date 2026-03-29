@@ -25,12 +25,12 @@ interface QuickActionsProps {
 }
 
 const DEFAULT_ACTIONS: Omit<QuickAction, 'onPress'>[] = [
-  { id: 'transfer', label: 'Transfer', icon: 'swap-horizontal-outline' },
-  { id: 'pay', label: 'Pay', icon: 'receipt-outline' },
-  { id: 'cards', label: 'Cards', icon: 'card-outline' },
-  { id: 'credits', label: 'Credits', icon: 'cash-outline' },
-  { id: 'invest', label: 'Invest', icon: 'trending-up-outline' },
-  { id: 'more', label: 'More', icon: 'grid-outline' },
+  { id: 'transfer', label: 'Transferir', icon: 'swap-horizontal-outline' },
+  { id: 'pay', label: 'Pagar', icon: 'receipt-outline' },
+  { id: 'cards', label: 'Tarjetas', icon: 'card-outline' },
+  { id: 'credits', label: 'Créditos', icon: 'cash-outline' },
+  { id: 'invest', label: 'Invertir', icon: 'trending-up-outline' },
+  { id: 'more', label: 'Más', icon: 'grid-outline' },
 ];
 
 export const QuickActions: React.FC<QuickActionsProps> = ({ actions, style }) => {

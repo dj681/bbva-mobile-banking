@@ -23,25 +23,25 @@ const TYPE_CONFIG: Record<
   { label: string; icon: keyof typeof Ionicons.glyphMap; gradientTop: string; gradientBottom: string }
 > = {
   checking: {
-    label: 'Checking',
+    label: 'Corriente',
     icon: 'card-outline',
     gradientTop: '#004B9A',
     gradientBottom: '#002F6C',
   },
   savings: {
-    label: 'Savings',
+    label: 'Ahorro',
     icon: 'wallet-outline',
     gradientTop: '#0071CE',
     gradientBottom: '#003E88',
   },
   investment: {
-    label: 'Investment',
+    label: 'Inversión',
     icon: 'trending-up-outline',
     gradientTop: '#00A8E8',
     gradientBottom: '#006BAA',
   },
   credit: {
-    label: 'Credit',
+    label: 'Crédito',
     icon: 'logo-usd',
     gradientTop: '#1A237E',
     gradientBottom: '#0D0D5C',
@@ -54,7 +54,7 @@ function maskAccountNumber(number: string): string {
 }
 
 function formatAmount(amount: number, currency: string): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency,
     minimumFractionDigits: 2,
@@ -77,7 +77,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
       onPress={handlePress}
       activeOpacity={0.9}
       accessibilityRole="button"
-      accessibilityLabel={`${account.name}, balance ${formatAmount(account.balance, account.currency)}`}
+      accessibilityLabel={`${account.name}, saldo ${formatAmount(account.balance, account.currency)}`}
     >
       {/* Gradient simulation using layered views */}
       <View style={[StyleSheet.absoluteFill, { backgroundColor: config.gradientTop }]} />
@@ -101,7 +101,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
           </View>
           {!account.isActive && (
             <View style={styles.inactivePill}>
-              <Text style={styles.inactiveLabel}>Inactive</Text>
+              <Text style={styles.inactiveLabel}>Inactiva</Text>
             </View>
           )}
         </View>
@@ -117,13 +117,13 @@ export const AccountCard: React.FC<AccountCardProps> = ({
         {!compact && (
           <View style={styles.balanceRow}>
             <View>
-              <Text style={styles.balanceLabel}>Balance</Text>
+              <Text style={styles.balanceLabel}>Saldo</Text>
               <Text style={styles.balanceAmount}>
                 {formatAmount(account.balance, account.currency)}
               </Text>
             </View>
             <View style={styles.availableBlock}>
-              <Text style={styles.balanceLabel}>Available</Text>
+              <Text style={styles.balanceLabel}>Disponible</Text>
               <Text style={styles.availableAmount}>
                 {formatAmount(account.availableBalance, account.currency)}
               </Text>
