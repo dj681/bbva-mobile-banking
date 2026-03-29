@@ -33,14 +33,14 @@ const MOCK_CONNECTIONS: ConnectionEntry[] = [
   {
     id: '1',
     device: 'iPhone 15 Pro',
-    date: "Aujourd'hui, 09:42",
+    date: 'Hoy, 09:42',
     location: 'Paris, France',
     isCurrent: true,
   },
   {
     id: '2',
     device: 'MacBook Pro',
-    date: 'Hier, 18:15',
+    date: 'Ayer, 18:15',
     location: 'Paris, France',
     isCurrent: false,
   },
@@ -54,10 +54,10 @@ const MOCK_CONNECTIONS: ConnectionEntry[] = [
 ];
 
 const TIMEOUT_OPTIONS = [
-  { label: '5 minutes', value: 5 },
-  { label: '10 minutes', value: 10 },
-  { label: '15 minutes', value: 15 },
-  { label: '30 minutes', value: 30 },
+  { label: '5 minutos', value: 5 },
+  { label: '10 minutos', value: 10 },
+  { label: '15 minutos', value: 15 },
+  { label: '30 minutos', value: 30 },
 ];
 
 const SecuritySettingsScreen: React.FC = () => {
@@ -117,7 +117,7 @@ const SecuritySettingsScreen: React.FC = () => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={colors.headerText} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Sécurité</Text>
+        <Text style={styles.headerTitle}>Seguridad</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
@@ -128,13 +128,13 @@ const SecuritySettingsScreen: React.FC = () => {
       >
         {/* Biometric */}
         <View style={styles.card}>
-          {renderSectionHeader('Biométrie', 'finger-print-outline')}
+          {renderSectionHeader('Biometría', 'finger-print-outline')}
           <Divider />
           {renderToggleRow(
-            'Face ID / Empreinte digitale',
+            'Face ID / Huella dactilar',
             biometricEnabled,
             setBiometricEnabled,
-            biometricEnabled ? 'Activé — connexion rapide disponible' : 'Désactivé',
+            biometricEnabled ? 'Activado — acceso rápido disponible' : 'Desactivado',
           )}
           <View style={styles.statusRow}>
             <View
@@ -145,17 +145,17 @@ const SecuritySettingsScreen: React.FC = () => {
             />
             <Text style={styles.statusText}>
               {biometricEnabled
-                ? 'La biométrie est configurée et active'
-                : 'La biométrie est désactivée'}
+                ? 'La biometría está configurada y activa'
+                : 'La biometría está desactivada'}
             </Text>
           </View>
         </View>
 
         {/* PIN */}
         <View style={styles.card}>
-          {renderSectionHeader('Code PIN', 'keypad-outline')}
+          {renderSectionHeader('Código PIN', 'keypad-outline')}
           <Divider />
-          {renderToggleRow('Activer le code PIN', pinEnabled, setPinEnabled)}
+          {renderToggleRow('Activar código PIN', pinEnabled, setPinEnabled)}
           {pinEnabled && (
             <>
               <Divider />
@@ -164,7 +164,7 @@ const SecuritySettingsScreen: React.FC = () => {
                 onPress={() => navigation.navigate('ChangePassword')}
                 activeOpacity={0.7}
               >
-                <Text style={styles.actionLabel}>Modifier le PIN</Text>
+                <Text style={styles.actionLabel}>Cambiar PIN</Text>
                 <Ionicons name="chevron-forward" size={16} color={colors.textSecondary} />
               </TouchableOpacity>
             </>
@@ -173,7 +173,7 @@ const SecuritySettingsScreen: React.FC = () => {
 
         {/* Session */}
         <View style={styles.card}>
-          {renderSectionHeader('Session', 'time-outline')}
+          {renderSectionHeader('Sesión', 'time-outline')}
           <Divider />
           <TouchableOpacity
             style={styles.actionRow}
@@ -181,7 +181,7 @@ const SecuritySettingsScreen: React.FC = () => {
             activeOpacity={0.7}
           >
             <View style={styles.actionLeft}>
-              <Text style={styles.actionLabel}>Expiration de session</Text>
+              <Text style={styles.actionLabel}>Expiración de sesión</Text>
               <Text style={styles.actionValue}>
                 {TIMEOUT_OPTIONS.find((o) => o.value === sessionTimeout)?.label}
               </Text>
@@ -195,7 +195,7 @@ const SecuritySettingsScreen: React.FC = () => {
             activeOpacity={0.7}
           >
             <Text style={[styles.actionLabel, { color: colors.error }]}>
-              Déconnecter tous les appareils
+              Cerrar sesión en todos los dispositivos
             </Text>
             <Ionicons name="chevron-forward" size={16} color={colors.error} />
           </TouchableOpacity>
@@ -203,33 +203,33 @@ const SecuritySettingsScreen: React.FC = () => {
 
         {/* Security alerts */}
         <View style={styles.card}>
-          {renderSectionHeader('Alertes de sécurité', 'notifications-outline')}
+          {renderSectionHeader('Alertas de seguridad', 'notifications-outline')}
           <Divider />
           {renderToggleRow(
-            'Alertes de transaction',
+            'Alertas de transacción',
             transactionAlerts,
             setTransactionAlerts,
-            'Notification à chaque transaction',
+            'Notificación por cada transacción',
           )}
           <Divider />
           {renderToggleRow(
-            'Alertes de connexion',
+            'Alertas de acceso',
             loginAlerts,
             setLoginAlerts,
-            'Notification à chaque connexion',
+            'Notificación por cada acceso',
           )}
           <Divider />
           {renderToggleRow(
-            'Activité suspecte',
+            'Actividad sospechosa',
             suspiciousAlerts,
             setSuspiciousAlerts,
-            "Notification en cas d'activité anormale",
+            'Notificación ante actividad anómala',
           )}
         </View>
 
         {/* Connection history */}
         <View style={styles.card}>
-          {renderSectionHeader('Historique des connexions', 'list-outline')}
+          {renderSectionHeader('Historial de accesos', 'list-outline')}
           <Divider />
           {MOCK_CONNECTIONS.map((conn, index) => (
             <React.Fragment key={conn.id}>
@@ -246,7 +246,7 @@ const SecuritySettingsScreen: React.FC = () => {
                     <Text style={styles.connectionDevice}>{conn.device}</Text>
                     {conn.isCurrent && (
                       <View style={styles.currentBadge}>
-                        <Text style={styles.currentBadgeText}>Actuel</Text>
+                        <Text style={styles.currentBadgeText}>Actual</Text>
                       </View>
                     )}
                   </View>
@@ -266,7 +266,7 @@ const SecuritySettingsScreen: React.FC = () => {
       {/* Timeout selector modal */}
       <Modal
         visible={timeoutModalVisible}
-        title="Expiration de session"
+        title="Expiración de sesión"
         onClose={() => setTimeoutModalVisible(false)}
       >
         {TIMEOUT_OPTIONS.map((opt) => (
@@ -300,16 +300,16 @@ const SecuritySettingsScreen: React.FC = () => {
       {/* Logout all modal */}
       <Modal
         visible={logoutAllModalVisible}
-        title="Déconnecter tous les appareils"
+        title="Cerrar sesión en todos los dispositivos"
         onClose={() => setLogoutAllModalVisible(false)}
       >
         <Text style={styles.modalBody}>
-          Cette action déconnectera tous les appareils associés à votre compte, y compris
+          Esta acción cerrará la sesión en todos los dispositivos asociados a su cuenta, incluidos
           cet appareil.
         </Text>
         <View style={styles.modalActions}>
           <Button
-            label="Annuler"
+            label="Cancelar"
             variant="outline"
             onPress={() => setLogoutAllModalVisible(false)}
             style={styles.modalBtn}

@@ -66,14 +66,14 @@ export const CardDetailsScreen: React.FC = () => {
     else await blockCard(cardId);
   };
 
-  const statusLabel = (s: string) => s === 'active' ? 'Active' : s === 'blocked' ? 'Bloquée' : s === 'expired' ? 'Expirée' : 'En attente';
+  const statusLabel = (s: string) => s === 'active' ? 'Active' : s === 'blocked' ? 'Bloqueada' : s === 'expired' ? 'Vencida' : 'Pendiente';
   const statusVariant = (s: string): 'success' | 'error' | 'warning' | 'info' => s === 'active' ? 'success' : s === 'blocked' ? 'error' : s === 'expired' ? 'warning' : 'info';
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Retour</Text></TouchableOpacity>
-        <Text style={styles.headerTitle}>Détails de la carte</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Volver</Text></TouchableOpacity>
+        <Text style={styles.headerTitle}>Detalles de la tarjeta</Text>
         <View style={{ width: 60 }} />
       </View>
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
@@ -82,80 +82,80 @@ export const CardDetailsScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Informations</Text>
-          <View style={styles.infoRow}><Text style={styles.infoKey}>Numéro</Text><Text style={styles.infoVal}>{card.cardNumber}</Text></View>
+          <Text style={styles.sectionTitle}>Información</Text>
+          <View style={styles.infoRow}><Text style={styles.infoKey}>Número</Text><Text style={styles.infoVal}>{card.cardNumber}</Text></View>
           <Divider />
-          <View style={styles.infoRow}><Text style={styles.infoKey}>Expiration</Text><Text style={styles.infoVal}>{card.expiryDate}</Text></View>
+          <View style={styles.infoRow}><Text style={styles.infoKey}>Vencimiento</Text><Text style={styles.infoVal}>{card.expiryDate}</Text></View>
           <Divider />
           <View style={styles.infoRow}><Text style={styles.infoKey}>Titulaire</Text><Text style={styles.infoVal}>{card.holderName}</Text></View>
           <Divider />
-          <View style={styles.infoRow}><Text style={styles.infoKey}>Statut</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
+          <View style={styles.infoRow}><Text style={styles.infoKey}>Estado</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
           {card.creditLimit && (
             <>
               <Divider />
-              <View style={styles.infoRow}><Text style={styles.infoKey}>Limite crédit</Text><Text style={styles.infoVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>
+              <View style={styles.infoRow}><Text style={styles.infoKey}>Límite de crédito</Text><Text style={styles.infoVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>
               <Divider />
-              <View style={styles.infoRow}><Text style={styles.infoKey}>Crédit disponible</Text><Text style={[styles.infoVal, { color: colors.success }]}>{formatCurrency(card.availableCredit ?? 0, 'EUR')}</Text></View>
+              <View style={styles.infoRow}><Text style={styles.infoKey}>Crédito disponible</Text><Text style={[styles.infoVal, { color: colors.success }]}>{formatCurrency(card.availableCredit ?? 0, 'EUR')}</Text></View>
             </>
           )}
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Statut de la carte</Text>
+          <Text style={styles.sectionTitle}>Estado de la tarjeta</Text>
           <TouchableOpacity style={[styles.blockBtn, isBlocked ? styles.unblockBtn : styles.blockBtnRed]} onPress={() => setBlockModalVisible(true)}>
-            <Text style={styles.blockBtnText}>{isBlocked ? '🔓 Débloquer la carte' : '🔒 Bloquer la carte'}</Text>
+            <Text style={styles.blockBtnText}>{isBlocked ? '🔓 Desbloquear tarjeta' : '🔒 Bloquear tarjeta'}</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Limites de paiement</Text>
-          <Input label="Plafond journalier (EUR)" value={dailyLimit} onChangeText={setDailyLimit} keyboardType="number-pad" />
-          <Input label="Plafond mensuel (EUR)" value={monthlyLimit} onChangeText={setMonthlyLimit} keyboardType="number-pad" />
-          <View style={styles.switchRow}><Text style={styles.switchLabel}>Paiement en ligne</Text><Switch value={onlineEnabled} onValueChange={setOnlineEnabled} trackColor={{ true: colors.secondary }} /></View>
-          <View style={styles.switchRow}><Text style={styles.switchLabel}>Paiement international</Text><Switch value={intlEnabled} onValueChange={setIntlEnabled} trackColor={{ true: colors.secondary }} /></View>
-          <View style={styles.switchRow}><Text style={styles.switchLabel}>Paiement sans contact</Text><Switch value={contactlessEnabled} onValueChange={setContactlessEnabled} trackColor={{ true: colors.secondary }} /></View>
-          <Button title="Enregistrer les limites" onPress={() => {}} style={{ marginTop: 8 }} />
+          <Text style={styles.sectionTitle}>Límites de pago</Text>
+          <Input label="Límite diario (EUR)" value={dailyLimit} onChangeText={setDailyLimit} keyboardType="number-pad" />
+          <Input label="Límite mensual (EUR)" value={monthlyLimit} onChangeText={setMonthlyLimit} keyboardType="number-pad" />
+          <View style={styles.switchRow}><Text style={styles.switchLabel}>Pago en línea</Text><Switch value={onlineEnabled} onValueChange={setOnlineEnabled} trackColor={{ true: colors.secondary }} /></View>
+          <View style={styles.switchRow}><Text style={styles.switchLabel}>Pago internacional</Text><Switch value={intlEnabled} onValueChange={setIntlEnabled} trackColor={{ true: colors.secondary }} /></View>
+          <View style={styles.switchRow}><Text style={styles.switchLabel}>Pago sin contacto</Text><Switch value={contactlessEnabled} onValueChange={setContactlessEnabled} trackColor={{ true: colors.secondary }} /></View>
+          <Button title="Guardar límites" onPress={() => {}} style={{ marginTop: 8 }} />
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Sécurité</Text>
+          <Text style={styles.sectionTitle}>Seguridad</Text>
           <TouchableOpacity style={styles.securityBtn} onPress={() => setPinModalVisible(true)}>
             <Text style={styles.securityIcon}>🔑</Text>
-            <Text style={styles.securityLabel}>Modifier le code PIN</Text>
+            <Text style={styles.securityLabel}>Cambiar código PIN</Text>
             <Text style={styles.chevron}>›</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.securityBtn} onPress={() => {}}>
             <Text style={styles.securityIcon}>💳</Text>
-            <Text style={styles.securityLabel}>Voir le numéro virtuel</Text>
+            <Text style={styles.securityLabel}>Ver número virtual</Text>
             <Text style={styles.chevron}>›</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.securityBtn, { borderColor: colors.error }]} onPress={() => setReportModalVisible(true)}>
             <Text style={styles.securityIcon}>🚨</Text>
-            <Text style={[styles.securityLabel, { color: colors.error }]}>Signaler perte / vol</Text>
+            <Text style={[styles.securityLabel, { color: colors.error }]}>Reportar pérdida / robo</Text>
             <Text style={[styles.chevron, { color: colors.error }]}>›</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
 
-      <Modal visible={blockModalVisible} onClose={() => setBlockModalVisible(false)} title={isBlocked ? 'Débloquer la carte' : 'Bloquer la carte'}>
+      <Modal visible={blockModalVisible} onClose={() => setBlockModalVisible(false)} title={isBlocked ? 'Desbloquear tarjeta' : 'Bloquear tarjeta'}>
         <Text style={{ color: colors.text, marginBottom: 16, textAlign: 'center' }}>
-          {isBlocked ? 'Êtes-vous sûr de vouloir débloquer cette carte ?' : 'Êtes-vous sûr de vouloir bloquer cette carte ? Aucune transaction ne sera possible.'}
+          {isBlocked ? '¿Está seguro de que desea desbloquear esta tarjeta?' : '¿Está seguro de que desea bloquear esta tarjeta? No se podrá realizar ninguna transacción.'}
         </Text>
-        <Button title={isBlocked ? 'Débloquer' : 'Bloquer'} onPress={handleToggleBlock} disabled={isLoading} />
-        <Button title="Annuler" onPress={() => setBlockModalVisible(false)} variant="outline" style={{ marginTop: 8 }} />
+        <Button title={isBlocked ? 'Desbloquear' : 'Bloquear'} onPress={handleToggleBlock} disabled={isLoading} />
+        <Button title="Cancelar" onPress={() => setBlockModalVisible(false)} variant="outline" style={{ marginTop: 8 }} />
       </Modal>
 
-      <Modal visible={pinModalVisible} onClose={() => setPinModalVisible(false)} title="Modifier le code PIN">
-        <Input label="Ancien code PIN" secureTextEntry keyboardType="number-pad" maxLength={4} value="" onChangeText={() => {}} />
-        <Input label="Nouveau code PIN" secureTextEntry keyboardType="number-pad" maxLength={4} value="" onChangeText={() => {}} />
-        <Input label="Confirmer le nouveau PIN" secureTextEntry keyboardType="number-pad" maxLength={4} value="" onChangeText={() => {}} />
-        <Button title="Changer le PIN" onPress={() => setPinModalVisible(false)} style={{ marginTop: 8 }} />
+      <Modal visible={pinModalVisible} onClose={() => setPinModalVisible(false)} title="Cambiar código PIN">
+        <Input label="PIN actual" secureTextEntry keyboardType="number-pad" maxLength={4} value="" onChangeText={() => {}} />
+        <Input label="Nuevo PIN" secureTextEntry keyboardType="number-pad" maxLength={4} value="" onChangeText={() => {}} />
+        <Input label="Confirmar nuevo PIN" secureTextEntry keyboardType="number-pad" maxLength={4} value="" onChangeText={() => {}} />
+        <Button title="Cambiar PIN" onPress={() => setPinModalVisible(false)} style={{ marginTop: 8 }} />
       </Modal>
 
-      <Modal visible={reportModalVisible} onClose={() => setReportModalVisible(false)} title="Signaler perte / vol">
-        <Text style={{ color: colors.text, textAlign: 'center', marginBottom: 16 }}>Votre carte sera immédiatement bloquée et un conseiller vous contactera dans les plus brefs délais.</Text>
-        <Button title="Confirmer le signalement" onPress={() => { handleToggleBlock(); setReportModalVisible(false); }} />
-        <Button title="Annuler" onPress={() => setReportModalVisible(false)} variant="outline" style={{ marginTop: 8 }} />
+      <Modal visible={reportModalVisible} onClose={() => setReportModalVisible(false)} title="Reportar pérdida / robo">
+        <Text style={{ color: colors.text, textAlign: 'center', marginBottom: 16 }}>Su tarjeta será bloqueada inmediatamente y un asesor se pondrá en contacto con usted a la brevedad posible.</Text>
+        <Button title="Confirmar el reporte" onPress={() => { handleToggleBlock(); setReportModalVisible(false); }} />
+        <Button title="Cancelar" onPress={() => setReportModalVisible(false)} variant="outline" style={{ marginTop: 8 }} />
       </Modal>
 
       {isLoading && <LoadingSpinner />}

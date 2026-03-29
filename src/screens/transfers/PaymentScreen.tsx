@@ -43,7 +43,7 @@ const BILLERS: Biller[] = [
   { id: '2', name: 'Free', category: 'Télécom', icon: '📡' },
   { id: '3', name: 'Orange', category: 'Télécom', icon: '📱' },
   { id: '4', name: 'SFR', category: 'Télécom', icon: '📶' },
-  { id: '5', name: 'Vinci Autoroutes', category: 'Transport', icon: '🛣️' },
+  { id: '5', name: 'Vinci Autoroutes', category: 'Transportee', icon: '🛣️' },
   { id: '6', name: 'Bouygues', category: 'Télécom', icon: '📲' },
   { id: '7', name: 'Engie', category: 'Énergie', icon: '🔥' },
   { id: '8', name: 'Veolia', category: 'Eau', icon: '💧' },
@@ -100,15 +100,15 @@ export const PaymentScreen: React.FC = () => {
   const validate = () => {
     const errs: Record<string, string> = {};
     if (activeTab === 'bills') {
-      if (!selectedBiller) errs.biller = 'Veuillez sélectionner un organisme';
-      if (!reference.trim()) errs.reference = 'La référence est requise';
-      if (!amount || parseFloat(amount) <= 0) errs.amount = 'Montant invalide';
-      if (!selectedAccountId) errs.account = 'Veuillez sélectionner un compte';
+      if (!selectedBiller) errs.biller = 'Por favor, seleccione un organismo';
+      if (!reference.trim()) errs.reference = 'La referencia es obligatoria';
+      if (!amount || parseFloat(amount) <= 0) errs.amount = 'Importe no válido';
+      if (!selectedAccountId) errs.account = 'Por favor, seleccione una cuenta';
     }
     if (activeTab === 'topup') {
-      if (!selectedOperator) errs.operator = 'Veuillez sélectionner un opérateur';
-      if (!phoneNumber.trim()) errs.phone = 'Le numéro est requis';
-      if (!topUpAmount || parseFloat(topUpAmount) <= 0) errs.topUpAmount = 'Montant invalide';
+      if (!selectedOperator) errs.operator = 'Por favor, seleccione un operador';
+      if (!phoneNumber.trim()) errs.phone = 'El número es obligatorio';
+      if (!topUpAmount || parseFloat(topUpAmount) <= 0) errs.topUpAmount = 'Importe no válido';
     }
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -134,7 +134,7 @@ export const PaymentScreen: React.FC = () => {
 
   const renderBillsTab = () => (
     <View>
-      <Text style={styles.sectionTitle}>Sélectionner un organisme</Text>
+      <Text style={styles.sectionTitle}>Seleccionar un organismo</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
         {BILLERS.map(b => (
           <TouchableOpacity key={b.id} style={[styles.billerCard, selectedBiller?.id === b.id && styles.billerCardActive]} onPress={() => setSelectedBiller(b)}>
@@ -145,9 +145,9 @@ export const PaymentScreen: React.FC = () => {
         ))}
       </ScrollView>
       {errors.biller && <Text style={styles.errorText}>{errors.biller}</Text>}
-      <Input label="Numéro de contrat / référence" value={reference} onChangeText={setReference} placeholder="Ex: 123456789" error={errors.reference} />
-      <Input label="Montant (EUR)" value={amount} onChangeText={setAmount} keyboardType="decimal-pad" placeholder="0.00" error={errors.amount} />
-      <Text style={styles.sectionTitle}>Compte à débiter</Text>
+      <Input label="Número de contrato / referencia" value={reference} onChangeText={setReference} placeholder="Ej: 123456789" error={errors.reference} />
+      <Input label="Importe (EUR)" value={amount} onChangeText={setAmount} keyboardType="decimal-pad" placeholder="0,00" error={errors.amount} />
+      <Text style={styles.sectionTitle}>Cuenta a debitar</Text>
       {accounts.map(acc => (
         <TouchableOpacity key={acc.id} onPress={() => setSelectedAccountId(acc.id)} style={[styles.accountRow, selectedAccountId === acc.id && styles.accountRowActive]}>
           <View><Text style={styles.accountName}>{acc.name}</Text><Text style={styles.accountSub}>{formatCurrency(acc.balance, acc.currency)}</Text></View>
@@ -155,13 +155,13 @@ export const PaymentScreen: React.FC = () => {
         </TouchableOpacity>
       ))}
       {errors.account && <Text style={styles.errorText}>{errors.account}</Text>}
-      <Input label="Date de paiement (optionnel)" value={paymentDate} onChangeText={setPaymentDate} placeholder="YYYY-MM-DD" />
+      <Input label="Fecha de pago (opcional)" value={paymentDate} onChangeText={setPaymentDate} placeholder="AAAA-MM-DD" />
     </View>
   );
 
   const renderTopUpTab = () => (
     <View>
-      <Text style={styles.sectionTitle}>Sélectionner un opérateur</Text>
+      <Text style={styles.sectionTitle}>Seleccionar un operador</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
         {TOP_UP_OPERATORS.map(op => (
           <TouchableOpacity key={op.id} style={[styles.billerCard, selectedOperator?.id === op.id && styles.billerCardActive]} onPress={() => setSelectedOperator(op)}>
@@ -171,24 +171,24 @@ export const PaymentScreen: React.FC = () => {
         ))}
       </ScrollView>
       {errors.operator && <Text style={styles.errorText}>{errors.operator}</Text>}
-      <Input label="Numéro de téléphone" value={phoneNumber} onChangeText={setPhoneNumber} keyboardType="phone-pad" placeholder="06 12 34 56 78" error={errors.phone} />
-      <Input label="Montant de recharge (EUR)" value={topUpAmount} onChangeText={setTopUpAmount} keyboardType="decimal-pad" placeholder="10, 20, 50..." error={errors.topUpAmount} />
+      <Input label="Número de teléfono" value={phoneNumber} onChangeText={setPhoneNumber} keyboardType="phone-pad" placeholder="6XX XXX XXX" error={errors.phone} />
+      <Input label="Importe de recarga (EUR)" value={topUpAmount} onChangeText={setTopUpAmount} keyboardType="decimal-pad" placeholder="10, 20, 50..." error={errors.topUpAmount} />
     </View>
   );
 
   const renderServicesTab = () => (
     <View style={styles.centered}>
       <Text style={styles.comingSoon}>🔧</Text>
-      <Text style={styles.comingSoonText}>Services disponibles prochainement</Text>
-      <Text style={styles.comingSoonSub}>Paiement d'impôts, amendes, télépéages et plus encore</Text>
+      <Text style={styles.comingSoonText}>Servicios disponibles próximamente</Text>
+      <Text style={styles.comingSoonSub}>Pago de impuestos, multas, peajes y mucho más</Text>
     </View>
   );
 
   const renderRecentPayments = () => (
     <View style={{ marginTop: 24 }}>
-      <Text style={styles.sectionTitle}>Paiements récents</Text>
+      <Text style={styles.sectionTitle}>Pagos recientes</Text>
       {MOCK_RECENT.length === 0 ? (
-        <EmptyState title="Aucun paiement" description="Vos paiements apparaîtront ici" />
+        <EmptyState title="Sin pagos" description="Sus pagos aparecerán aquí" />
       ) : (
         MOCK_RECENT.map(p => (
           <Card key={p.id} style={styles.recentCard}>
@@ -201,7 +201,7 @@ export const PaymentScreen: React.FC = () => {
               <View style={{ alignItems: 'flex-end' }}>
                 <Text style={styles.recentAmount}>{formatCurrency(p.amount, 'EUR')}</Text>
                 <View style={[styles.statusBadge, { backgroundColor: statusColor(p.status) + '22' }]}>
-                  <Text style={[styles.statusText, { color: statusColor(p.status) }]}>{p.status === 'completed' ? 'Effectué' : p.status === 'pending' ? 'En cours' : 'Échoué'}</Text>
+                  <Text style={[styles.statusText, { color: statusColor(p.status) }]}>{p.status === 'completed' ? 'Realizado' : p.status === 'pending' ? 'En proceso' : 'Fallido'}</Text>
                 </View>
               </View>
             </View>
@@ -214,12 +214,12 @@ export const PaymentScreen: React.FC = () => {
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: colors.bg }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Retour</Text></TouchableOpacity>
-        <Text style={styles.headerTitle}>Paiements</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Volver</Text></TouchableOpacity>
+        <Text style={styles.headerTitle}>Pagos</Text>
         <TouchableOpacity style={styles.qrBtn}><Text style={styles.qrIcon}>⊡</Text></TouchableOpacity>
       </View>
       <View style={styles.tabBar}>
-        {([['bills', 'Factures'], ['topup', 'Recharges'], ['services', 'Services']] as [PaymentTab, string][]).map(([tab, label]) => (
+        {([['bills', 'Facturas'], ['topup', 'Recargas'], ['services', 'Servicios']] as [PaymentTab, string][]).map(([tab, label]) => (
           <TouchableOpacity key={tab} style={[styles.tabItem, activeTab === tab && styles.tabItemActive]} onPress={() => setActiveTab(tab)}>
             <Text style={[styles.tabLabel, activeTab === tab && styles.tabLabelActive]}>{label}</Text>
           </TouchableOpacity>
@@ -233,13 +233,13 @@ export const PaymentScreen: React.FC = () => {
       </ScrollView>
       {activeTab !== 'services' && (
         <View style={styles.footer}>
-          <Button title="Payer" onPress={handlePay} disabled={isLoading} />
+          <Button title="Pagar" onPress={handlePay} disabled={isLoading} />
         </View>
       )}
-      <Modal visible={pinModalVisible} onClose={() => setPinModalVisible(false)} title="Code PIN">
-        <Text style={{ color: colors.text, marginBottom: 12, textAlign: 'center' }}>Confirmez le paiement avec votre code PIN</Text>
+      <Modal visible={pinModalVisible} onClose={() => setPinModalVisible(false)} title="Código PIN">
+        <Text style={{ color: colors.text, marginBottom: 12, textAlign: 'center' }}>Confirme el pago con su código PIN</Text>
         <Input label="Code PIN" value={pin} onChangeText={setPin} secureTextEntry keyboardType="number-pad" maxLength={6} />
-        <Button title={isLoading ? 'Traitement...' : 'Valider'} onPress={handleConfirmPayment} disabled={isLoading || pin.length < 4} />
+        <Button title={isLoading ? 'Procesando...' : 'Valider'} onPress={handleConfirmPayment} disabled={isLoading || pin.length < 4} />
       </Modal>
       {isLoading && <LoadingSpinner />}
     </KeyboardAvoidingView>

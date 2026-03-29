@@ -96,7 +96,7 @@ const SplashScreen: React.FC = () => {
         {/* Subtitle */}
         <Animated.View style={{ opacity: subtitleOpacity }}>
           <Text style={styles.subtitle}>Banque Mobile</Text>
-          <Text style={styles.tagline}>Votre banque, partout avec vous</Text>
+          <Text style={styles.tagline}>Su banco, siempre con usted</Text>
         </Animated.View>
       </View>
 

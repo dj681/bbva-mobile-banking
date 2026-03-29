@@ -21,10 +21,10 @@ type Nav = NativeStackNavigationProp<CreditsStackParamList, 'CreditSimulator'>;
 type CreditTypeKey = 'personal' | 'mortgage' | 'auto' | 'student';
 
 const CREDIT_TYPES: { key: CreditTypeKey; label: string; icon: string; rate: number }[] = [
-  { key: 'personal', label: 'Personnel', icon: '💼', rate: 4.9 },
-  { key: 'mortgage', label: 'Immobilier', icon: '🏠', rate: 2.15 },
-  { key: 'auto', label: 'Auto', icon: '🚗', rate: 3.5 },
-  { key: 'student', label: 'Étudiant', icon: '🎓', rate: 1.5 },
+  { key: 'personal', label: 'Personal', icon: '💼', rate: 4.9 },
+  { key: 'mortgage', label: 'Hipotecario', icon: '🏠', rate: 2.15 },
+  { key: 'auto', label: 'Vehículo', icon: '🚗', rate: 3.5 },
+  { key: 'student', label: 'Estudiantil', icon: '🎓', rate: 1.5 },
 ];
 
 const computeMonthlyPayment = (principal: number, annualRate: number, months: number): number => {
@@ -87,13 +87,13 @@ export const CreditSimulatorScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Retour</Text></TouchableOpacity>
-        <Text style={styles.headerTitle}>Simulateur de crédit</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Volver</Text></TouchableOpacity>
+        <Text style={styles.headerTitle}>Simulador de crédito</Text>
         <View style={{ width: 60 }} />
       </View>
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Type de crédit</Text>
+          <Text style={styles.sectionTitle}>Tipo de crédito</Text>
           <View style={styles.typeRow}>
             {CREDIT_TYPES.map(t => (
               <TouchableOpacity key={t.key} style={[styles.typeCard, creditType === t.key && styles.typeCardActive]} onPress={() => setCreditType(t.key)}>
@@ -106,7 +106,7 @@ export const CreditSimulatorScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Montant souhaité</Text>
+          <Text style={styles.sectionTitle}>Importe deseado</Text>
           <View style={styles.inputRow}>
             <TextInput
               style={styles.sliderInput}
@@ -118,11 +118,11 @@ export const CreditSimulatorScreen: React.FC = () => {
             />
             <Text style={styles.inputUnit}>EUR</Text>
           </View>
-          <View style={styles.rangeRow}><Text style={styles.rangeText}>Min: 1 000€</Text><Text style={styles.rangeText}>Max: 100 000€</Text></View>
+          <View style={styles.rangeRow}><Text style={styles.rangeText}>Mín: 1.000 €</Text><Text style={styles.rangeText}>Máx: 100.000 €</Text></View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Durée</Text>
+          <Text style={styles.sectionTitle}>Plazo</Text>
           <View style={styles.inputRow}>
             <TextInput
               style={styles.sliderInput}
@@ -134,43 +134,43 @@ export const CreditSimulatorScreen: React.FC = () => {
             />
             <Text style={styles.inputUnit}>mois</Text>
           </View>
-          <View style={styles.rangeRow}><Text style={styles.rangeText}>Min: 6 mois</Text><Text style={styles.rangeText}>Max: 360 mois</Text></View>
+          <View style={styles.rangeRow}><Text style={styles.rangeText}>Min: 6 meses</Text><Text style={styles.rangeText}>Max: 360 meses</Text></View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Taux d'intérêt</Text>
+          <Text style={styles.sectionTitle}>Tipo de interés</Text>
           <View style={styles.rateBox}>
-            <Text style={styles.rateValue}>{rate}% / an</Text>
-            <Text style={styles.rateNote}>Taux fixe selon le type de crédit</Text>
+            <Text style={styles.rateValue}>{rate}% / año</Text>
+            <Text style={styles.rateNote}>Tipo fijo según el tipo de crédito</Text>
           </View>
         </View>
 
         <View style={styles.resultsCard}>
-          <Text style={styles.resultsTitle}>Résultat de la simulation</Text>
+          <Text style={styles.resultsTitle}>Resultado de la simulación</Text>
           <View style={styles.resultMain}>
-            <Text style={styles.resultMainLabel}>Mensualité</Text>
+            <Text style={styles.resultMainLabel}>Cuota</Text>
             <Text style={styles.resultMainAmount}>{formatCurrency(monthly, 'EUR')}</Text>
-            <Text style={styles.resultMainSub}>sur {months} mois</Text>
+            <Text style={styles.resultMainSub}>en {months} meses</Text>
           </View>
           <Divider />
-          <View style={styles.resultRow}><Text style={styles.resultKey}>Coût total du crédit</Text><Text style={styles.resultVal}>{formatCurrency(totalPayment, 'EUR')}</Text></View>
-          <View style={styles.resultRow}><Text style={styles.resultKey}>Total des intérêts</Text><Text style={[styles.resultVal, { color: colors.error }]}>{formatCurrency(totalInterest, 'EUR')}</Text></View>
-          <View style={styles.resultRow}><Text style={styles.resultKey}>Montant emprunté</Text><Text style={styles.resultVal}>{formatCurrency(principal, 'EUR')}</Text></View>
-          <View style={styles.resultRow}><Text style={styles.resultKey}>TEG</Text><Text style={[styles.resultVal, { color: colors.secondary }]}>{teg}%</Text></View>
+          <View style={styles.resultRow}><Text style={styles.resultKey}>Coste total del crédito</Text><Text style={styles.resultVal}>{formatCurrency(totalPayment, 'EUR')}</Text></View>
+          <View style={styles.resultRow}><Text style={styles.resultKey}>Total de intereses</Text><Text style={[styles.resultVal, { color: colors.error }]}>{formatCurrency(totalInterest, 'EUR')}</Text></View>
+          <View style={styles.resultRow}><Text style={styles.resultKey}>Importe prestado</Text><Text style={styles.resultVal}>{formatCurrency(principal, 'EUR')}</Text></View>
+          <View style={styles.resultRow}><Text style={styles.resultKey}>TAE</Text><Text style={[styles.resultVal, { color: colors.secondary }]}>{teg}%</Text></View>
         </View>
 
         <TouchableOpacity style={styles.scheduleToggle} onPress={() => setShowSchedule(s => !s)}>
-          <Text style={styles.scheduleToggleText}>{showSchedule ? '▲ Masquer le tableau' : '▼ Afficher le tableau d\'amortissement'}</Text>
+          <Text style={styles.scheduleToggleText}>{showSchedule ? '▲ Ocultar tabla' : '▼ Afficher le tableau d\'amortissement'}</Text>
         </TouchableOpacity>
 
         {showSchedule && (
           <View style={styles.tableContainer}>
             <View style={styles.tableHeader}>
               <Text style={[styles.tcell, styles.th, { flex: 0.5 }]}>M.</Text>
-              <Text style={[styles.tcell, styles.th]}>Mens.</Text>
+              <Text style={[styles.tcell, styles.th]}>Cuota</Text>
               <Text style={[styles.tcell, styles.th]}>Capital</Text>
               <Text style={[styles.tcell, styles.th]}>Int.</Text>
-              <Text style={[styles.tcell, styles.th]}>Solde</Text>
+              <Text style={[styles.tcell, styles.th]}>Saldo</Text>
             </View>
             {schedule.slice(0, 24).map(r => (
               <View key={r.month} style={[styles.trow, r.month % 2 === 0 && { backgroundColor: colors.bg }]}>
@@ -186,7 +186,7 @@ export const CreditSimulatorScreen: React.FC = () => {
         )}
 
         <View style={styles.footer}>
-          <Button title="📄 Faire une demande" onPress={() => navigation.navigate('CreditRequest')} />
+          <Button title="📄 Solicitar crédito" onPress={() => navigation.navigate('CreditRequest')} />
         </View>
       </ScrollView>
     </View>

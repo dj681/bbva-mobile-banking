@@ -357,7 +357,7 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, styles, colors }) => {
           </View>
         </View>
         <Badge
-          label={isAlmostDone ? 'Bientôt atteint' : 'En cours'}
+          label={isAlmostDone ? 'Próximo a alcanzar' : 'En curso'}
           variant={isAlmostDone ? 'success' : 'info'}
           size="small"
         />
@@ -384,21 +384,21 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, styles, colors }) => {
       {/* Details grid */}
       <View style={styles.planDetailsGrid}>
         <View style={styles.planDetailItem}>
-          <Text style={styles.planDetailLabel}>Contribution mensuelle</Text>
+          <Text style={styles.planDetailLabel}>Aportación mensual</Text>
           <Text style={styles.planDetailValueAccent}>
             {formatCurrency(plan.monthlyContribution)}
           </Text>
         </View>
         <View style={styles.planDetailItem}>
-          <Text style={styles.planDetailLabel}>Date cible</Text>
+          <Text style={styles.planDetailLabel}>Fecha objetivo</Text>
           <Text style={styles.planDetailValue}>{formatDate(plan.targetDate)}</Text>
         </View>
         <View style={styles.planDetailItem}>
-          <Text style={styles.planDetailLabel}>Montant actuel</Text>
+          <Text style={styles.planDetailLabel}>Importe actual</Text>
           <Text style={styles.planDetailValue}>{formatCurrency(plan.currentAmount)}</Text>
         </View>
         <View style={styles.planDetailItem}>
-          <Text style={styles.planDetailLabel}>Complétion estimée</Text>
+          <Text style={styles.planDetailLabel}>Fecha estimada de consecución</Text>
           <Text style={styles.planDetailValue}>{projected}</Text>
         </View>
       </View>
@@ -496,12 +496,12 @@ export const SavingsPlansScreen: React.FC = () => {
         {/* Summary */}
         <View style={styles.summaryCard}>
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>Épargne mensuelle totale</Text>
+            <Text style={styles.summaryLabel}>Ahorro mensual total</Text>
             <Text style={styles.summaryValue}>{formatCurrency(totalMonthly)}</Text>
           </View>
           <View style={styles.summaryDivider} />
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>Total épargné</Text>
+            <Text style={styles.summaryLabel}>Total ahorrado</Text>
             <Text style={styles.summaryValue}>{formatCurrency(totalSaved)}</Text>
           </View>
         </View>
@@ -516,7 +516,7 @@ export const SavingsPlansScreen: React.FC = () => {
     () => (
       <View style={styles.createSection}>
         <Button
-          label="Créer un plan"
+          label="Crear un plan"
           variant="primary"
           fullWidth
           leftIcon={<Ionicons name="add-circle-outline" size={18} color="#FFFFFF" />}
@@ -532,10 +532,10 @@ export const SavingsPlansScreen: React.FC = () => {
       <View style={styles.emptyWrapper}>
         <EmptyState
           icon="trending-up-outline"
-          title="Aucun plan d'épargne"
-          message="Commencez à épargner pour réaliser vos projets en créant votre premier plan."
+          title="Sin planes de ahorro"
+          message="Empiece a ahorrar para alcanzar sus objetivos creando su primer plan."
           actionButton={{
-            label: 'Créer un plan',
+            label: 'Crear un plan',
             onPress: handleOpenCreate,
             variant: 'primary',
           }}
@@ -554,7 +554,7 @@ export const SavingsPlansScreen: React.FC = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Plans d'Épargne</Text>
+        <Text style={styles.headerTitle}>Planes de Ahorro</Text>
         <TouchableOpacity onPress={handleOpenCreate}>
           <Ionicons name="add-outline" size={26} color="#FFFFFF" />
         </TouchableOpacity>
@@ -583,17 +583,17 @@ export const SavingsPlansScreen: React.FC = () => {
       <Modal
         visible={createModalVisible}
         onClose={handleCloseCreate}
-        title="Nouveau plan d'épargne"
+        title="Nuevo plan de ahorro"
         size="large"
         animation="slide"
         dismissOnBackdrop
         confirmButton={{
-          label: 'Créer le plan',
+          label: 'Crear el plan',
           onPress: handleCreatePlan,
           disabled: !isFormValid,
         }}
         cancelButton={{
-          label: 'Annuler',
+          label: 'Cancelar',
           onPress: handleCloseCreate,
         }}
       >
@@ -605,38 +605,38 @@ export const SavingsPlansScreen: React.FC = () => {
             keyboardShouldPersistTaps="handled"
           >
             <Input
-              label="Nom du plan"
+              label="Nombre del plan"
               value={form.name}
               onChangeText={(v) => setForm((f) => ({ ...f, name: v }))}
-              placeholder="ex: Retraite, Maison, Voyage…"
+              placeholder="ej: Jubilación, Casa, Viaje…"
             />
 
             <View style={styles.inputSpacing}>
               <Input
-                label="Objectif (€)"
+                label="Objetivo (€)"
                 value={form.targetAmount}
                 onChangeText={(v) => setForm((f) => ({ ...f, targetAmount: v }))}
                 keyboardType="decimal-pad"
-                placeholder="ex: 50 000"
+                placeholder="ej: 50.000"
               />
             </View>
 
             <View style={styles.inputSpacing}>
               <Input
-                label="Contribution mensuelle (€)"
+                label="Aportación mensual (€)"
                 value={form.monthlyContribution}
                 onChangeText={(v) => setForm((f) => ({ ...f, monthlyContribution: v }))}
                 keyboardType="decimal-pad"
-                placeholder="ex: 300"
+                placeholder="ej: 300"
               />
             </View>
 
             <View style={styles.inputSpacing}>
               <Input
-                label="Date cible (JJ/MM/AAAA)"
+                label="Fecha objetivo (DD/MM/AAAA)"
                 value={form.targetDate}
                 onChangeText={(v) => setForm((f) => ({ ...f, targetDate: v }))}
-                placeholder="ex: 01/01/2035"
+                placeholder="ej: 01/01/2035"
                 keyboardType="numbers-and-punctuation"
               />
             </View>
@@ -644,17 +644,17 @@ export const SavingsPlansScreen: React.FC = () => {
             {/* Interest rate note */}
             <View style={styles.interestRateNote}>
               <Text style={styles.interestRateText}>
-                Taux d'intérêt appliqué : {PLAN_INTEREST_RATE} % / an (capitalisation mensuelle)
+                Tipo de interés appliqué : {PLAN_INTEREST_RATE} % / año (capitalisation mensuelle)
               </Text>
             </View>
 
             {/* Projected completion */}
             {projectedCompletion && (
               <View style={styles.projectionCard}>
-                <Text style={styles.projectionTitle}>Complétion estimée</Text>
+                <Text style={styles.projectionTitle}>Fecha estimada de consecución</Text>
                 <Text style={styles.projectionValue}>{projectedCompletion}</Text>
                 <Text style={styles.projectionSubtext}>
-                  Basé sur {form.monthlyContribution} €/mois à {PLAN_INTEREST_RATE} %/an
+                  Basado en {form.monthlyContribution} €/mes a {PLAN_INTEREST_RATE} %/año
                 </Text>
               </View>
             )}

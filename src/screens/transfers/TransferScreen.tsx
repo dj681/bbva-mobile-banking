@@ -25,7 +25,7 @@ import { formatCurrency } from '@/utils/formatters';
 import { validateIBAN, validateAmount } from '@/utils/validators';
 import type { Account, Beneficiary, Transfer } from '@/types';
 
-const STEPS = ['Compte source', 'Destinataire', 'Montant', 'Confirmation'];
+const STEPS = ['Cuenta origen', 'Destinatario', 'Importe', 'Confirmación'];
 
 type TransferTypeOption = 'internal' | 'scheduled' | 'recurring';
 type RecurringInterval = 'weekly' | 'monthly' | 'quarterly';
@@ -73,19 +73,19 @@ export const TransferScreen: React.FC = () => {
 
   const validateStep = useCallback((): boolean => {
     const errs: Record<string, string> = {};
-    if (step === 0 && !fromAccount) errs.fromAccount = 'Veuillez sélectionner un compte source';
+    if (step === 0 && !fromAccount) errs.fromAccount = 'Por favor, seleccione una cuenta origen';
     if (step === 1) {
-      if (destinationTab === 'accounts' && !toAccount) errs.toAccount = 'Veuillez sélectionner un compte';
-      if (destinationTab === 'beneficiaries' && !selectedBeneficiary) errs.beneficiary = 'Veuillez sélectionner un bénéficiaire';
+      if (destinationTab === 'accounts' && !toAccount) errs.toAccount = 'Por favor, seleccione una cuenta';
+      if (destinationTab === 'beneficiaries' && !selectedBeneficiary) errs.beneficiary = 'Por favor, seleccione un beneficiario';
       if (destinationTab === 'new') {
-        if (!newName.trim()) errs.newName = 'Le nom est requis';
-        if (!validateIBAN(newIban)) errs.newIban = 'IBAN invalide';
+        if (!newName.trim()) errs.newName = 'El nombre es obligatorio';
+        if (!validateIBAN(newIban)) errs.newIban = 'IBAN no válido';
       }
     }
     if (step === 2) {
-      if (!validateAmount(amount)) errs.amount = 'Montant invalide';
-      if (!description.trim()) errs.description = 'Le motif est requis';
-      if (transferType === 'scheduled' && !scheduledDate) errs.scheduledDate = 'La date est requise';
+      if (!validateAmount(amount)) errs.amount = 'Importe no válido';
+      if (!description.trim()) errs.description = 'El concepto es obligatorio';
+      if (transferType === 'scheduled' && !scheduledDate) errs.scheduledDate = 'La fecha es obligatoria';
     }
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -166,7 +166,7 @@ export const TransferScreen: React.FC = () => {
 
   const renderStep0 = () => (
     <View>
-      <Text style={styles.stepTitle}>Depuis quel compte ?</Text>
+      <Text style={styles.stepTitle}>¿Desde qué cuenta?</Text>
       {accounts.map(acc => (
         <TouchableOpacity key={acc.id} onPress={() => setFromAccount(acc)} style={[styles.accountRow, fromAccount?.id === acc.id && styles.accountRowSelected]}>
           <View style={styles.accountInfo}>
@@ -182,12 +182,12 @@ export const TransferScreen: React.FC = () => {
 
   const renderStep1 = () => (
     <View>
-      <Text style={styles.stepTitle}>Vers quel compte / bénéficiaire ?</Text>
+      <Text style={styles.stepTitle}>¿Hacia qué cuenta / beneficiario?</Text>
       <View style={styles.tabRow}>
         {(['accounts', 'beneficiaries', 'new'] as DestinationTab[]).map(tab => (
           <TouchableOpacity key={tab} style={[styles.tab, destinationTab === tab && styles.tabActive]} onPress={() => setDestinationTab(tab)}>
             <Text style={[styles.tabText, destinationTab === tab && styles.tabTextActive]}>
-              {tab === 'accounts' ? 'Mes comptes' : tab === 'beneficiaries' ? 'Bénéficiaires' : 'Nouveau'}
+              {tab === 'accounts' ? 'Mis cuentas' : tab === 'beneficiaries' ? 'Beneficiarios' : 'Nuevo'}
             </Text>
           </TouchableOpacity>
         ))}
@@ -222,10 +222,10 @@ export const TransferScreen: React.FC = () => {
       )}
       {destinationTab === 'new' && (
         <View>
-          <Input label="Nom du bénéficiaire" value={newName} onChangeText={setNewName} placeholder="Jean Dupont" error={errors.newName} />
-          <Input label="IBAN" value={newIban} onChangeText={setNewIban} placeholder="FR76..." autoCapitalize="characters" error={errors.newIban} />
+          <Input label="Nombre del beneficiario" value={newName} onChangeText={setNewName} placeholder="Juan García" error={errors.newName} />
+          <Input label="IBAN" value={newIban} onChangeText={setNewIban} placeholder="ES76..." autoCapitalize="characters" error={errors.newIban} />
           <View style={styles.toggleRow}>
-            <Text style={styles.toggleLabel}>Ajouter aux favoris</Text>
+            <Text style={styles.toggleLabel}>Añadir a favoritos</Text>
             <Switch value={addToFavorites} onValueChange={setAddToFavorites} trackColor={{ true: colors.secondary }} />
           </View>
         </View>
@@ -235,27 +235,27 @@ export const TransferScreen: React.FC = () => {
 
   const renderStep2 = () => (
     <View>
-      <Text style={styles.stepTitle}>Montant et détails</Text>
+      <Text style={styles.stepTitle}>Importe y detalles</Text>
       <View style={styles.amountContainer}>
-        <Input label="Montant (EUR)" value={amount} onChangeText={setAmount} keyboardType="decimal-pad" placeholder="0.00" error={errors.amount} />
+        <Input label="Importe (EUR)" value={amount} onChangeText={setAmount} keyboardType="decimal-pad" placeholder="0,00" error={errors.amount} />
       </View>
-      <Input label="Motif du virement" value={description} onChangeText={setDescription} placeholder="Ex: Loyer mars 2024" error={errors.description} />
-      <Text style={styles.sectionLabel}>Type de virement</Text>
+      <Input label="Concepto de la transferencia" value={description} onChangeText={setDescription} placeholder="Ej: Alquiler marzo 2024" error={errors.description} />
+      <Text style={styles.sectionLabel}>Tipo de transferencia</Text>
       <View style={styles.typeRow}>
-        {([['internal', 'Immédiat'], ['scheduled', 'Programmé'], ['recurring', 'Récurrent']] as [TransferTypeOption, string][]).map(([val, label]) => (
+        {([['internal', 'Inmediata'], ['scheduled', 'Programada'], ['recurring', 'Recurrente']] as [TransferTypeOption, string][]).map(([val, label]) => (
           <TouchableOpacity key={val} style={[styles.typeBtn, transferType === val && styles.typeBtnActive]} onPress={() => setTransferType(val)}>
             <Text style={[styles.typeBtnText, transferType === val && styles.typeBtnTextActive]}>{label}</Text>
           </TouchableOpacity>
         ))}
       </View>
       {transferType === 'scheduled' && (
-        <Input label="Date d'exécution (YYYY-MM-DD)" value={scheduledDate} onChangeText={setScheduledDate} placeholder="2024-04-01" error={errors.scheduledDate} />
+        <Input label='Fecha de ejecución (AAAA-MM-DD)' value={scheduledDate} onChangeText={setScheduledDate} placeholder="2024-04-01" error={errors.scheduledDate} />
       )}
       {transferType === 'recurring' && (
         <View>
-          <Text style={styles.sectionLabel}>Fréquence</Text>
+          <Text style={styles.sectionLabel}>Frecuencia</Text>
           <View style={styles.typeRow}>
-            {([['weekly', 'Hebdomadaire'], ['monthly', 'Mensuel'], ['quarterly', 'Trimestriel']] as [RecurringInterval, string][]).map(([val, label]) => (
+            {([['weekly', 'Semanal'], ['monthly', 'Mensual'], ['quarterly', 'Trimestral']] as [RecurringInterval, string][]).map(([val, label]) => (
               <TouchableOpacity key={val} style={[styles.typeBtn, recurringInterval === val && styles.typeBtnActive]} onPress={() => setRecurringInterval(val)}>
                 <Text style={[styles.typeBtnText, recurringInterval === val && styles.typeBtnTextActive]}>{label}</Text>
               </TouchableOpacity>
@@ -271,19 +271,19 @@ export const TransferScreen: React.FC = () => {
     const iban = destinationTab === 'accounts' ? toAccount?.iban : destinationTab === 'beneficiaries' ? selectedBeneficiary?.iban : newIban;
     return (
       <View>
-        <Text style={styles.stepTitle}>Confirmation du virement</Text>
+        <Text style={styles.stepTitle}>Confirmación de la transferencia</Text>
         <Card style={styles.summaryCard}>
-          <View style={styles.summaryRow}><Text style={styles.summaryKey}>Depuis</Text><Text style={styles.summaryVal}>{fromAccount?.name}</Text></View>
+          <View style={styles.summaryRow}><Text style={styles.summaryKey}>Desde</Text><Text style={styles.summaryVal}>{fromAccount?.name}</Text></View>
           <Divider />
-          <View style={styles.summaryRow}><Text style={styles.summaryKey}>Vers</Text><Text style={styles.summaryVal}>{dest}</Text></View>
+          <View style={styles.summaryRow}><Text style={styles.summaryKey}>Hacia</Text><Text style={styles.summaryVal}>{dest}</Text></View>
           <View style={styles.summaryRow}><Text style={styles.summaryKey}>IBAN</Text><Text style={styles.summaryVal}>{iban}</Text></View>
           <Divider />
-          <View style={styles.summaryRow}><Text style={styles.summaryKey}>Montant</Text><Text style={[styles.summaryVal, styles.summaryAmount]}>{formatCurrency(parseFloat(amount) || 0, 'EUR')}</Text></View>
+          <View style={styles.summaryRow}><Text style={styles.summaryKey}>Importe</Text><Text style={[styles.summaryVal, styles.summaryAmount]}>{formatCurrency(parseFloat(amount) || 0, 'EUR')}</Text></View>
           <View style={styles.summaryRow}><Text style={styles.summaryKey}>Motif</Text><Text style={styles.summaryVal}>{description}</Text></View>
-          <View style={styles.summaryRow}><Text style={styles.summaryKey}>Type</Text><Text style={styles.summaryVal}>{transferType === 'internal' ? 'Immédiat' : transferType === 'scheduled' ? `Programmé – ${scheduledDate}` : `Récurrent (${recurringInterval})`}</Text></View>
+          <View style={styles.summaryRow}><Text style={styles.summaryKey}>Type</Text><Text style={styles.summaryVal}>{transferType === 'internal' ? 'Inmediata' : transferType === 'scheduled' ? `Programmé – ${scheduledDate}` : `Récurrent (${recurringInterval})`}</Text></View>
         </Card>
         <View style={styles.termsBox}>
-          <Text style={styles.termsText}>En confirmant ce virement, vous acceptez les conditions générales de BBVA. Le virement sera exécuté conformément aux délais réglementaires en vigueur.</Text>
+          <Text style={styles.termsText}>Al confirmar esta transferencia, acepta las condiciones generales de BBVA. La transferencia se ejecutará conforme a los plazos reglamentarios vigentes.</Text>
         </View>
       </View>
     );
@@ -293,9 +293,9 @@ export const TransferScreen: React.FC = () => {
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: colors.bg }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backBtn}>
-          <Text style={styles.backBtnText}>‹ Retour</Text>
+          <Text style={styles.backBtnText}>‹ Volver</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Virement</Text>
+        <Text style={styles.headerTitle}>Transferencia</Text>
         <Text style={styles.stepCount}>{step + 1}/{STEPS.length}</Text>
       </View>
       {renderStepIndicator()}
@@ -306,13 +306,13 @@ export const TransferScreen: React.FC = () => {
         {step === 3 && renderStep3()}
       </ScrollView>
       <View style={styles.footer}>
-        <Button title={step === 3 ? 'Confirmer' : 'Suivant'} onPress={handleNext} disabled={isLoading} style={styles.nextBtn} />
+        <Button title={step === 3 ? 'Confirmar' : 'Siguiente'} onPress={handleNext} disabled={isLoading} style={styles.nextBtn} />
       </View>
 
-      <Modal visible={pinModalVisible} onClose={() => setPinModalVisible(false)} title="Saisir votre code PIN">
-        <Text style={styles.pinLabel}>Confirmez le virement avec votre code PIN</Text>
+      <Modal visible={pinModalVisible} onClose={() => setPinModalVisible(false)} title="Introduzca su código PIN">
+        <Text style={styles.pinLabel}>Confirme la transferencia con su código PIN</Text>
         <Input label="Code PIN" value={pin} onChangeText={setPin} secureTextEntry keyboardType="number-pad" maxLength={6} />
-        <Button title={isLoading ? 'Traitement...' : 'Valider'} onPress={handleConfirm} disabled={isLoading || pin.length < 4} />
+        <Button title={isLoading ? 'Procesando...' : 'Validar'} onPress={handleConfirm} disabled={isLoading || pin.length < 4} />
       </Modal>
 
       {isLoading && <LoadingSpinner />}

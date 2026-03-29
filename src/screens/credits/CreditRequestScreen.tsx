@@ -18,21 +18,21 @@ import { formatCurrency } from '@/utils/formatters';
 
 type CreditTypeKey = 'personal' | 'mortgage' | 'auto' | 'student';
 
-const STEPS = ['Type & Montant', 'Informations', 'Documents', 'Récapitulatif'];
+const STEPS = ['Tipo e Importe', 'Información', 'Documentos', 'Resumen'];
 
 const CREDIT_TYPES = [
-  { key: 'personal' as CreditTypeKey, label: 'Personnel', icon: '💼', desc: 'Pour tous vos projets personnels' },
-  { key: 'mortgage' as CreditTypeKey, label: 'Immobilier', icon: '🏠', desc: 'Achat ou travaux immobiliers' },
-  { key: 'auto' as CreditTypeKey, label: 'Auto', icon: '🚗', desc: 'Financement véhicule' },
-  { key: 'student' as CreditTypeKey, label: 'Étudiant', icon: '🎓', desc: 'Études et formation' },
+  { key: 'personal' as CreditTypeKey, label: 'Personal', icon: '💼', desc: 'Para todos sus proyectos personales' },
+  { key: 'mortgage' as CreditTypeKey, label: 'Hipotecario', icon: '🏠', desc: 'Compra o reforma inmobiliaria' },
+  { key: 'auto' as CreditTypeKey, label: 'Vehículo', icon: '🚗', desc: 'Financiación de vehículo' },
+  { key: 'student' as CreditTypeKey, label: 'Estudiantil', icon: '🎓', desc: 'Estudios y formación' },
 ];
 
 const DOCUMENTS = [
-  { id: '1', label: "Pièce d'identité", icon: '🪪', uploaded: false },
-  { id: '2', label: 'Justificatif de domicile', icon: '🏠', uploaded: false },
-  { id: '3', label: '3 derniers bulletins de salaire', icon: '📄', uploaded: false },
-  { id: '4', label: '2 derniers avis d\'imposition', icon: '📋', uploaded: false },
-  { id: '5', label: 'RIB bancaire', icon: '🏦', uploaded: false },
+  { id: '1', label: 'Documento de identidad', icon: '🪪', uploaded: false },
+  { id: '2', label: 'Justificante de domicilio', icon: '🏠', uploaded: false },
+  { id: '3', label: '3 últimas nóminas', icon: '📄', uploaded: false },
+  { id: '4', label: '2 últimas declaraciones de la renta', icon: '📋', uploaded: false },
+  { id: '5', label: 'Datos bancarios (IBAN)', icon: '🏦', uploaded: false },
 ];
 
 interface FormData {
@@ -85,13 +85,13 @@ export const CreditRequestScreen: React.FC = () => {
   const validateStep = (): boolean => {
     const errs: Record<string, string> = {};
     if (step === 0) {
-      if (!form.creditType) errs.creditType = 'Veuillez sélectionner un type de crédit';
-      if (!form.amount || parseFloat(form.amount) < 1000) errs.amount = 'Montant minimum : 1 000€';
-      if (!form.duration || parseInt(form.duration) < 6) errs.duration = 'Durée minimum : 6 mois';
+      if (!form.creditType) errs.creditType = 'Por favor, seleccione un tipo de crédito';
+      if (!form.amount || parseFloat(form.amount) < 1000) errs.amount = 'Importe mínimo: 1.000 €';
+      if (!form.duration || parseInt(form.duration) < 6) errs.duration = 'Plazo mínimo: 6 meses';
     }
     if (step === 1) {
-      if (!form.profession.trim()) errs.profession = 'La profession est requise';
-      if (!form.income.trim()) errs.income = 'Le revenu mensuel est requis';
+      if (!form.profession.trim()) errs.profession = 'La profesión es obligatoria';
+      if (!form.income.trim()) errs.income = 'Los ingresos mensuales son obligatorios';
     }
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -116,17 +116,17 @@ export const CreditRequestScreen: React.FC = () => {
     return (
       <View style={[styles.container, styles.successContainer]}>
         <Text style={styles.successIcon}>✅</Text>
-        <Text style={styles.successTitle}>Demande envoyée !</Text>
-        <Text style={styles.successMessage}>Votre demande de crédit a été soumise avec succès. Un conseiller BBVA vous contactera dans les 48h ouvrables.</Text>
-        <Text style={styles.successRef}>Référence : BBVA-{Date.now().toString().slice(-8)}</Text>
-        <Button title="Retour à l'accueil" onPress={() => navigation.goBack()} style={{ marginTop: 24 }} />
+        <Text style={styles.successTitle}>¡Solicitud enviada!</Text>
+        <Text style={styles.successMessage}>Su solicitud de crédito ha sido enviada con éxito. Un asesor de BBVA se pondrá en contacto con usted en un plazo de 48 horas hábiles.</Text>
+        <Text style={styles.successRef}>Referencia: BBVA-{Date.now().toString().slice(-8)}</Text>
+        <Button title='Volver al inicio' onPress={() => navigation.goBack()} style={{ marginTop: 24 }} />
       </View>
     );
   }
 
   const renderStep0 = () => (
     <View>
-      <Text style={styles.stepTitle}>Type de crédit et montant</Text>
+      <Text style={styles.stepTitle}>Tipo de crédito e importe</Text>
       <View style={styles.typeGrid}>
         {CREDIT_TYPES.map(t => (
           <TouchableOpacity key={t.key} style={[styles.typeCard, form.creditType === t.key && styles.typeCardActive]} onPress={() => updateForm('creditType', t.key)}>
@@ -137,26 +137,26 @@ export const CreditRequestScreen: React.FC = () => {
         ))}
       </View>
       {errors.creditType && <Text style={styles.errorText}>{errors.creditType}</Text>}
-      <Input label="Montant souhaité (EUR)" value={form.amount} onChangeText={v => updateForm('amount', v)} keyboardType="decimal-pad" placeholder="Ex: 10000" error={errors.amount} />
-      <Input label="Durée souhaitée (mois)" value={form.duration} onChangeText={v => updateForm('duration', v)} keyboardType="number-pad" placeholder="Ex: 48" error={errors.duration} />
-      <Input label="Objet du crédit" value={form.purpose} onChangeText={v => updateForm('purpose', v)} placeholder="Ex: Achat véhicule" />
+      <Input label="Importe deseado (EUR)" value={form.amount} onChangeText={v => updateForm('amount', v)} keyboardType="decimal-pad" placeholder="Ej: 10000" error={errors.amount} />
+      <Input label="Plazo deseado (meses)" value={form.duration} onChangeText={v => updateForm('duration', v)} keyboardType="number-pad" placeholder="Ej: 48" error={errors.duration} />
+      <Input label="Finalidad del crédito" value={form.purpose} onChangeText={v => updateForm('purpose', v)} placeholder="Ej: Compra de vehículo" />
     </View>
   );
 
   const renderStep1 = () => (
     <View>
-      <Text style={styles.stepTitle}>Informations personnelles</Text>
-      <Input label="Profession" value={form.profession} onChangeText={v => updateForm('profession', v)} placeholder="Ex: Ingénieur" error={errors.profession} />
-      <Input label="Employeur" value={form.employer} onChangeText={v => updateForm('employer', v)} placeholder="Ex: BBVA France" />
-      <Input label="Revenu mensuel net (EUR)" value={form.income} onChangeText={v => updateForm('income', v)} keyboardType="decimal-pad" placeholder="Ex: 3500" error={errors.income} />
-      <Input label="Autres revenus mensuels (EUR)" value={form.otherIncome} onChangeText={v => updateForm('otherIncome', v)} keyboardType="decimal-pad" placeholder="Ex: 0" />
+      <Text style={styles.stepTitle}>Información personal</Text>
+      <Input label="Profesión" value={form.profession} onChangeText={v => updateForm('profession', v)} placeholder="Ej: Ingeniero" error={errors.profession} />
+      <Input label="Empleador" value={form.employer} onChangeText={v => updateForm('employer', v)} placeholder="Ej: BBVA España" />
+      <Input label="Ingresos mensuales netos (EUR)" value={form.income} onChangeText={v => updateForm('income', v)} keyboardType="decimal-pad" placeholder="Ej: 3500" error={errors.income} />
+      <Input label="Otros ingresos mensuales (EUR)" value={form.otherIncome} onChangeText={v => updateForm('otherIncome', v)} keyboardType="decimal-pad" placeholder="Ej: 0" />
     </View>
   );
 
   const renderStep2 = () => (
     <View>
-      <Text style={styles.stepTitle}>Documents requis</Text>
-      <Text style={styles.docSubtitle}>Veuillez préparer les documents suivants. Vous pourrez les envoyer par e-mail à votre conseiller.</Text>
+      <Text style={styles.stepTitle}>Documentos requeridos</Text>
+      <Text style={styles.docSubtitle}>Por favor, prepare los siguientes documentos. Podrá enviarlos por correo electrónico a su asesor.</Text>
       {documents.map(doc => (
         <TouchableOpacity key={doc.id} style={[styles.docRow, doc.uploaded && styles.docRowUploaded]} onPress={() => toggleDocument(doc.id)}>
           <Text style={styles.docIcon}>{doc.icon}</Text>
@@ -164,24 +164,24 @@ export const CreditRequestScreen: React.FC = () => {
           <Text style={doc.uploaded ? styles.docCheck : styles.docUpload}>{doc.uploaded ? '✓' : '↑'}</Text>
         </TouchableOpacity>
       ))}
-      <Text style={styles.docNote}>📎 Formats acceptés : PDF, JPEG, PNG (max 10 Mo par fichier)</Text>
+      <Text style={styles.docNote}>📎 Formatos aceptados: PDF, JPEG, PNG (máx. 10 MB por archivo)</Text>
     </View>
   );
 
   const renderStep3 = () => (
     <View>
-      <Text style={styles.stepTitle}>Récapitulatif de la demande</Text>
+      <Text style={styles.stepTitle}>Resumen de la solicitud</Text>
       <Card style={styles.summaryCard}>
-        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Type</Text><Text style={styles.summaryVal}>{selectedType?.label}</Text></View>
-        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Montant</Text><Text style={styles.summaryVal}>{formatCurrency(parseFloat(form.amount) || 0, 'EUR')}</Text></View>
-        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Durée</Text><Text style={styles.summaryVal}>{form.duration} mois</Text></View>
-        {form.purpose ? <View style={styles.summaryRow}><Text style={styles.summaryKey}>Objet</Text><Text style={styles.summaryVal}>{form.purpose}</Text></View> : null}
-        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Profession</Text><Text style={styles.summaryVal}>{form.profession}</Text></View>
-        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Revenu mensuel</Text><Text style={styles.summaryVal}>{formatCurrency(parseFloat(form.income) || 0, 'EUR')}</Text></View>
-        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Documents</Text><Text style={styles.summaryVal}>{documents.filter(d => d.uploaded).length}/{documents.length} fournis</Text></View>
+        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Tipo</Text><Text style={styles.summaryVal}>{selectedType?.label}</Text></View>
+        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Importe</Text><Text style={styles.summaryVal}>{formatCurrency(parseFloat(form.amount) || 0, 'EUR')}</Text></View>
+        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Plazo</Text><Text style={styles.summaryVal}>{form.duration} meses</Text></View>
+        {form.purpose ? <View style={styles.summaryRow}><Text style={styles.summaryKey}>Finalidad</Text><Text style={styles.summaryVal}>{form.purpose}</Text></View> : null}
+        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Profesión</Text><Text style={styles.summaryVal}>{form.profession}</Text></View>
+        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Ingresos mensuales</Text><Text style={styles.summaryVal}>{formatCurrency(parseFloat(form.income) || 0, 'EUR')}</Text></View>
+        <View style={styles.summaryRow}><Text style={styles.summaryKey}>Documentos</Text><Text style={styles.summaryVal}>{documents.filter(d => d.uploaded).length}/{documents.length} adjuntados</Text></View>
       </Card>
       <View style={styles.termsBox}>
-        <Text style={styles.termsText}>En soumettant cette demande, vous acceptez que BBVA traite vos données personnelles conformément à la réglementation RGPD. Cette demande est soumise à une étude de votre dossier.</Text>
+        <Text style={styles.termsText}>Al enviar esta solicitud, acepta que BBVA trate sus datos personales de conformidad con el Reglamento General de Protección de Datos (RGPD). Esta solicitud está sujeta al estudio de su expediente.</Text>
       </View>
     </View>
   );
@@ -189,8 +189,8 @@ export const CreditRequestScreen: React.FC = () => {
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: colors.bg }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => step > 0 ? setStep(s => s - 1) : navigation.goBack()}><Text style={styles.backText}>‹ Retour</Text></TouchableOpacity>
-        <Text style={styles.headerTitle}>Demande de crédit</Text>
+        <TouchableOpacity onPress={() => step > 0 ? setStep(s => s - 1) : navigation.goBack()}><Text style={styles.backText}>‹ Volver</Text></TouchableOpacity>
+        <Text style={styles.headerTitle}>Solicitud de crédito</Text>
         <Text style={styles.stepCount}>{step + 1}/{STEPS.length}</Text>
       </View>
       <View style={styles.progressBar}>
@@ -208,7 +208,7 @@ export const CreditRequestScreen: React.FC = () => {
         {step === 3 && renderStep3()}
       </ScrollView>
       <View style={styles.footer}>
-        <Button title={step === 3 ? (isLoading ? 'Envoi en cours...' : 'Soumettre la demande') : 'Continuer'} onPress={handleNext} disabled={isLoading} />
+        <Button title={step === 3 ? (isLoading ? 'Enviando...' : 'Enviar solicitud') : 'Continuar'} onPress={handleNext} disabled={isLoading} />
       </View>
       {isLoading && <LoadingSpinner />}
     </KeyboardAvoidingView>

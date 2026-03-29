@@ -30,8 +30,8 @@ type InputMode = 'quantity' | 'amount';
 type OrderType = 'market' | 'limit' | 'stop';
 
 const ORDER_TYPE_LABELS: Record<OrderType, string> = {
-  market: 'Marché',
-  limit: 'Limite',
+  market: 'Mercado',
+  limit: 'Límite',
   stop: 'Stop',
 };
 
@@ -129,14 +129,14 @@ const SuccessView: React.FC<SuccessViewProps> = ({
     <View style={styles.successIconWrapper}>
       <Ionicons name="checkmark-circle" size={72} color={colors.success} />
     </View>
-    <Text style={styles.successTitle}>Ordre transmis !</Text>
+    <Text style={styles.successTitle}>¡Orden transmitida!</Text>
     <Text style={styles.successSubtitle}>
-      Votre ordre de {action === 'buy' ? 'achat' : 'vente'} a été envoyé avec succès.
+      Su orden de {action === 'buy' ? 'compra' : 'venta'} ha sido enviada con éxito.
     </Text>
 
     <View style={styles.successCard}>
       <View style={styles.successRow}>
-        <Text style={styles.successRowLabel}>Référence</Text>
+        <Text style={styles.successRowLabel}>Referencia</Text>
         <Text style={styles.successRowValue}>{orderRef}</Text>
       </View>
       <View style={styles.successRow}>
@@ -145,10 +145,10 @@ const SuccessView: React.FC<SuccessViewProps> = ({
       </View>
       <View style={styles.successRow}>
         <Text style={styles.successRowLabel}>Quantité</Text>
-        <Text style={styles.successRowValue}>{quantity} titre(s)</Text>
+        <Text style={styles.successRowValue}>{quantity} título(s)</Text>
       </View>
       <View style={[styles.successRow, { borderBottomWidth: 0 }]}>
-        <Text style={styles.successRowLabel}>Montant estimé</Text>
+        <Text style={styles.successRowLabel}>Importe estimado</Text>
         <Text style={[styles.successRowValue, { fontWeight: '700' }]}>
           {formatCurrency(totalAmount)}
         </Text>
@@ -156,10 +156,10 @@ const SuccessView: React.FC<SuccessViewProps> = ({
     </View>
 
     <Text style={styles.successNote}>
-      L'exécution est soumise aux conditions de marché. Vous serez notifié(e) dès confirmation.
+      La ejecución está sujeta a las condiciones del mercado. Recibirá una notificación en cuanto se confirme.
     </Text>
 
-    <Button label="Retour au portefeuille" variant="primary" fullWidth onPress={onDone} />
+    <Button label="Volver a la cartera" variant="primary" fullWidth onPress={onDone} />
   </View>
 );
 
@@ -604,7 +604,7 @@ export const BuySellScreen: React.FC = () => {
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Ordre de bourse</Text>
+          <Text style={styles.headerTitle}>Orden bursátil</Text>
         </View>
       </View>
     );
@@ -655,21 +655,21 @@ export const BuySellScreen: React.FC = () => {
         {/* Current price */}
         <View style={styles.priceCard}>
           <View>
-            <Text style={styles.priceLabel}>Prix actuel</Text>
+            <Text style={styles.priceLabel}>Precio actual</Text>
             <Text style={styles.priceValue}>{formatCurrency(currentPrice)}</Text>
             <Text style={styles.priceUpdateTime}>
-              Mis à jour à {new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+              Actualizado a las {new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
             </Text>
           </View>
           <View style={styles.liveDot}>
             <View style={styles.liveDotCircle} />
-            <Text style={styles.liveDotText}>En direct</Text>
+            <Text style={styles.liveDotText}>En vivo</Text>
           </View>
         </View>
 
         {/* Input mode toggle */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Saisie</Text>
+          <Text style={styles.sectionTitle}>Entrada</Text>
           <View style={styles.toggleRow}>
             <TouchableOpacity
               style={[styles.toggleTab, inputMode === 'quantity' && styles.toggleTabActive]}
@@ -681,7 +681,7 @@ export const BuySellScreen: React.FC = () => {
                   inputMode === 'quantity' && styles.toggleTabTextActive,
                 ]}
               >
-                Par quantité
+                Por cantidad
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -694,7 +694,7 @@ export const BuySellScreen: React.FC = () => {
                   inputMode === 'amount' && styles.toggleTabTextActive,
                 ]}
               >
-                Par montant
+                Por importe
               </Text>
             </TouchableOpacity>
           </View>
@@ -702,33 +702,33 @@ export const BuySellScreen: React.FC = () => {
           <View style={styles.inputSpacing}>
             {inputMode === 'quantity' ? (
               <Input
-                label="Nombre de titres"
+                label="Número de títulos"
                 value={quantity}
                 onChangeText={setQuantity}
                 keyboardType="numeric"
-                placeholder="ex: 5"
+                placeholder="ej: 5"
               />
             ) : (
               <Input
-                label="Montant à investir (€)"
+                label="Importe a invertir (€)"
                 value={amount}
                 onChangeText={setAmount}
                 keyboardType="decimal-pad"
-                placeholder="ex: 1 000,00"
+                placeholder="ej: 1.000,00"
               />
             )}
           </View>
 
           {inputMode === 'amount' && numAmount > 0 && (
             <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 6 }}>
-              ≈ {Math.floor(effectiveQuantity)} titre(s) au prix actuel
+              ≈ {Math.floor(effectiveQuantity)} título(s) au prix actuel
             </Text>
           )}
         </View>
 
         {/* Order type */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Type d'ordre</Text>
+          <Text style={styles.sectionTitle}>Tipo de orden</Text>
           <View style={styles.orderTypeRow}>
             {(Object.entries(ORDER_TYPE_LABELS) as [OrderType, string][]).map(([key, label]) => (
               <TouchableOpacity
@@ -751,7 +751,7 @@ export const BuySellScreen: React.FC = () => {
           {orderType !== 'market' && (
             <View style={styles.inputSpacing}>
               <Input
-                label={`Prix ${orderType === 'limit' ? 'limite' : 'stop'} (€)`}
+                label={`Precio ${orderType === 'limit' ? 'límite' : 'stop'} (€)`}
                 value={limitPrice}
                 onChangeText={setLimitPrice}
                 keyboardType="decimal-pad"
@@ -764,7 +764,7 @@ export const BuySellScreen: React.FC = () => {
         {/* Account selector */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
-            {isBuy ? 'Compte à débiter' : 'Compte à créditer'}
+            {isBuy ? 'Cuenta a debitar' : 'Cuenta a abonar'}
           </Text>
           {accounts.map((acc) => (
             <TouchableOpacity
@@ -804,16 +804,16 @@ export const BuySellScreen: React.FC = () => {
 
         {/* Order summary */}
         <View style={styles.summaryCard}>
-          <Text style={styles.sectionTitle}>Récapitulatif de l'ordre</Text>
+          <Text style={styles.sectionTitle}>Resumen de la orden</Text>
 
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Quantité</Text>
             <Text style={styles.summaryValue}>
-              {effectiveQuantityDisplay > 0 ? `${effectiveQuantityDisplay} titre(s)` : '—'}
+              {effectiveQuantityDisplay > 0 ? `${effectiveQuantityDisplay} título(s)` : '—'}
             </Text>
           </View>
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Prix estimé</Text>
+            <Text style={styles.summaryLabel}>Precio estimado</Text>
             <Text style={styles.summaryValue}>
               {orderType === 'market' || !limitPrice
                 ? formatCurrency(currentPrice)
@@ -821,19 +821,19 @@ export const BuySellScreen: React.FC = () => {
             </Text>
           </View>
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Montant total estimé</Text>
+            <Text style={styles.summaryLabel}>Importe total estimado</Text>
             <Text style={styles.summaryValue}>
               {totalAmount > 0 ? formatCurrency(totalAmount) : '—'}
             </Text>
           </View>
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Frais de courtage (0,1 %)</Text>
+            <Text style={styles.summaryLabel}>Comisión de intermediación (0,1 %)</Text>
             <Text style={styles.summaryValue}>
               {brokerage > 0 ? formatCurrency(brokerage) : '—'}
             </Text>
           </View>
           <View style={[styles.summaryRow, styles.summaryTotal]}>
-            <Text style={styles.summaryTotalLabel}>Montant net</Text>
+            <Text style={styles.summaryTotalLabel}>Importe neto</Text>
             <Text style={styles.summaryTotalValue}>
               {netAmount > 0 ? formatCurrency(netAmount) : '—'}
             </Text>
@@ -843,7 +843,7 @@ export const BuySellScreen: React.FC = () => {
         {/* Submit */}
         <View style={styles.submitSection}>
           <Button
-            label="Confirmer l'ordre"
+            label='Confirmar la orden'
             variant={isBuy ? 'primary' : 'danger'}
             fullWidth
             loading={isLoading}
@@ -856,12 +856,12 @@ export const BuySellScreen: React.FC = () => {
         <View style={styles.disclaimer}>
           <View style={styles.disclaimerIcon}>
             <Ionicons name="warning-outline" size={14} color="#E65100" />
-            <Text style={styles.disclaimerTitle}>Risques de marché</Text>
+            <Text style={styles.disclaimerTitle}>Riesgos de mercado</Text>
           </View>
           <Text style={styles.disclaimerText}>
-            Les investissements en bourse comportent des risques de perte en capital. Les performances
-            passées ne préjugent pas des performances futures. Ce document ne constitue pas un conseil
-            en investissement. Assurez-vous de comprendre les risques avant de passer un ordre.
+            Las inversiones en bolsa conllevan riesgos de pérdida de capital. La rentabilidad
+            pasada no garantiza resultados futuros. Este documento no constituye asesoramiento
+            de inversión. Asegúrese de comprender los riesgos antes de emitir una orden.
           </Text>
         </View>
       </ScrollView>
@@ -870,12 +870,12 @@ export const BuySellScreen: React.FC = () => {
       <Modal
         visible={confirmModalVisible}
         onClose={() => setConfirmModalVisible(false)}
-        title={`Confirmer l'ordre`}
+        title={`Confirmar la orden`}
         size="medium"
         animation="center"
         dismissOnBackdrop
-        confirmButton={{ label: isBuy ? "Confirmer l'achat" : 'Confirmer la vente', onPress: handleSubmit, loading: isLoading }}
-        cancelButton={{ label: 'Annuler', onPress: () => setConfirmModalVisible(false) }}
+        confirmButton={{ label: isBuy ? 'Confirmar la compra' : 'Confirmar la venta', onPress: handleSubmit, loading: isLoading }}
+        cancelButton={{ label: 'Cancelar', onPress: () => setConfirmModalVisible(false) }}
       >
         <Text style={styles.confirmTitle}>
           {isBuy ? 'Acheter' : 'Vendre'} {investment.symbol}
@@ -887,18 +887,18 @@ export const BuySellScreen: React.FC = () => {
         </View>
         <View style={styles.confirmRow}>
           <Text style={styles.confirmLabel}>Quantité</Text>
-          <Text style={styles.confirmValue}>{effectiveQuantityDisplay} titre(s)</Text>
+          <Text style={styles.confirmValue}>{effectiveQuantityDisplay} título(s)</Text>
         </View>
         <View style={styles.confirmRow}>
-          <Text style={styles.confirmLabel}>Prix estimé</Text>
+          <Text style={styles.confirmLabel}>Precio estimado</Text>
           <Text style={styles.confirmValue}>{formatCurrency(currentPrice)}</Text>
         </View>
         <View style={styles.confirmRow}>
-          <Text style={styles.confirmLabel}>Frais</Text>
+          <Text style={styles.confirmLabel}>Comisiones</Text>
           <Text style={styles.confirmValue}>{formatCurrency(brokerage)}</Text>
         </View>
         <View style={[styles.confirmRow, { borderBottomWidth: 0 }]}>
-          <Text style={[styles.confirmLabel, { fontWeight: '700' }]}>Montant net</Text>
+          <Text style={[styles.confirmLabel, { fontWeight: '700' }]}>Importe neto</Text>
           <Text style={[styles.confirmValue, { color: colors.primary, fontWeight: '800' }]}>
             {formatCurrency(netAmount)}
           </Text>

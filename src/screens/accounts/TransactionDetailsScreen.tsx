@@ -23,10 +23,10 @@ import { formatCurrency, formatDate } from '@/utils';
 type TransactionDetailsRouteProp = RouteProp<AccountsStackParamList, 'TransactionDetails'>;
 
 const STATUS_LABELS: Record<TransactionStatus, string> = {
-  completed: 'Complété',
-  pending: 'En attente',
-  failed: 'Échoué',
-  cancelled: 'Annulé',
+  completed: 'Completada',
+  pending: 'Pendiente',
+  failed: 'Fallida',
+  cancelled: 'Cancelada',
 };
 
 const STATUS_VARIANT: Record<TransactionStatus, 'success' | 'warning' | 'error' | 'default'> = {
@@ -68,7 +68,7 @@ export const TransactionDetailsScreen: React.FC = () => {
       message: `Transaction BBVA\n${transaction.description}\nMontant: ${formatCurrency(
         transaction.amount,
         transaction.currency,
-      )}\nDate: ${formatDate(transaction.date, 'dd/MM/yyyy HH:mm')}\nRéférence: ${transaction.reference}`,
+      )}\nDate: ${formatDate(transaction.date, 'dd/MM/yyyy HH:mm')}\nReferencia: ${transaction.reference}`,
     });
   }, [transaction]);
 
@@ -76,7 +76,7 @@ export const TransactionDetailsScreen: React.FC = () => {
     return (
       <View style={[styles.container, styles.centered]}>
         <Ionicons name="alert-circle-outline" size={48} color={colors.error} />
-        <Text style={styles.errorText}>Transaction introuvable</Text>
+        <Text style={styles.errorText}>Transacción no encontrada</Text>
       </View>
     );
   }
@@ -87,32 +87,32 @@ export const TransactionDetailsScreen: React.FC = () => {
   const amountPrefix = isCredit ? '+' : '-';
 
   const fields: { label: string; value: string; mono?: boolean }[] = [
-    { label: 'Date et heure', value: formatDate(transaction.date, "dd/MM/yyyy 'à' HH:mm") },
+    { label: 'Fecha y hora', value: formatDate(transaction.date, "dd/MM/yyyy 'à' HH:mm") },
     {
       label: 'Type',
       value:
         transaction.type === 'credit'
-          ? 'Crédit'
+          ? 'Crédito'
           : transaction.type === 'debit'
-          ? 'Débit'
+          ? 'Débito'
           : transaction.type === 'transfer'
-          ? 'Virement'
-          : 'Paiement',
+          ? 'Transferencia'
+          : 'Pago',
     },
-    { label: 'Catégorie', value: transaction.category },
-    { label: 'Référence', value: transaction.reference, mono: true },
-    { label: 'Description', value: transaction.description },
+    { label: 'Categoría', value: transaction.category },
+    { label: 'Referencia', value: transaction.reference, mono: true },
+    { label: 'Descripción', value: transaction.description },
     ...(transaction.counterpartName
       ? [
           {
             label:
-              transaction.type === 'credit' ? 'Expéditeur' : 'Destinataire',
+              transaction.type === 'credit' ? 'Remitente' : 'Destinatario',
             value: transaction.counterpartName,
           },
         ]
       : []),
     ...(transaction.counterpartIban
-      ? [{ label: 'IBAN contrepartie', value: transaction.counterpartIban, mono: true }]
+      ? [{ label: 'IBAN de la contraparte', value: transaction.counterpartIban, mono: true }]
       : []),
   ];
 
@@ -154,7 +154,7 @@ export const TransactionDetailsScreen: React.FC = () => {
       {/* Notes */}
       <View style={styles.notesCard}>
         <View style={styles.notesHeader}>
-          <Text style={styles.notesTitle}>Notes</Text>
+          <Text style={styles.notesTitle}>Notas</Text>
           <TouchableOpacity onPress={() => setEditingNotes((e) => !e)}>
             <Ionicons
               name={editingNotes ? 'checkmark-outline' : 'pencil-outline'}
@@ -168,21 +168,21 @@ export const TransactionDetailsScreen: React.FC = () => {
             style={styles.notesInput}
             value={notes}
             onChangeText={setNotes}
-            placeholder="Ajouter une note..."
+            placeholder="Añadir una nota..."
             placeholderTextColor={colors.placeholder}
             multiline
             autoFocus
           />
         ) : (
           <Text style={styles.notesText}>
-            {notes || 'Aucune note. Appuyez sur le crayon pour en ajouter.'}
+            {notes || 'Sin notas. Pulse el lápiz para añadir una.'}
           </Text>
         )}
       </View>
 
       {/* Share Button */}
       <Button
-        title="Partager / Exporter"
+        title="Compartir / Exportar"
         onPress={handleShare}
         variant="outline"
         icon="share-outline"

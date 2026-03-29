@@ -96,9 +96,9 @@ const BiometricScreen: React.FC = () => {
 
     try {
       const result = await LocalAuthentication.authenticateAsync({
-        promptMessage: 'Connexion à BBVA',
-        fallbackLabel: 'Utiliser le code PIN',
-        cancelLabel: 'Annuler',
+        promptMessage: 'Acceso a BBVA',
+        fallbackLabel: 'Usar el código PIN',
+        cancelLabel: 'Cancelar',
         disableDeviceFallback: false,
       });
 
@@ -110,7 +110,7 @@ const BiometricScreen: React.FC = () => {
         setAuthStatus('failed');
         const msg =
           result.error === 'user_cancel'
-            ? 'Authentification annulée.'
+            ? 'Autenticación cancelada.'
             : 'Échec de l\'authentification biométrique. Veuillez réessayer.';
         dispatch(setAuthError(msg));
       }
@@ -137,8 +137,8 @@ const BiometricScreen: React.FC = () => {
     biometricType === 'face'
       ? 'Face ID'
       : biometricType === 'fingerprint'
-      ? 'Empreinte digitale'
-      : 'Biométrie';
+      ? 'Huella dactilar'
+      : 'Biometría';
 
   const statusColor =
     authStatus === 'success'
@@ -167,7 +167,7 @@ const BiometricScreen: React.FC = () => {
           Authentification{'\n'}biométrique
         </Text>
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-          {biometricLabel} — {authStatus === 'scanning' ? 'Scan en cours…' : authStatus === 'success' ? 'Identité confirmée !' : authStatus === 'failed' ? 'Échec d\'authentification' : 'Appuyez pour vous authentifier'}
+          {biometricLabel} — {authStatus === 'scanning' ? 'Escaneando…' : authStatus === 'success' ? '¡Identidad confirmada!' : authStatus === 'failed' ? 'Échec d\'authentification' : 'Pulse para autenticarse'}
         </Text>
 
         {/* Biometric icon area */}
@@ -260,7 +260,7 @@ const BiometricScreen: React.FC = () => {
         >
           <Ionicons name="keypad-outline" size={18} color={colors.textSecondary} />
           <Text style={[styles.pinButtonText, { color: colors.textSecondary }]}>
-            Utiliser le code PIN
+            Usar el código PIN
           </Text>
         </TouchableOpacity>
 
@@ -270,7 +270,7 @@ const BiometricScreen: React.FC = () => {
           onPress={() => navigation.navigate('Login')}
         >
           <Text style={[styles.loginLinkText, { color: colors.secondary }]}>
-            Retour à la connexion
+            Volver al acceso
           </Text>
         </TouchableOpacity>
       </View>

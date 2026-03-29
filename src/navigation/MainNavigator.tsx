@@ -118,7 +118,7 @@ const MainNavigator: React.FC = () => {
         name="CreditsTab"
         component={CreditsStackNavigator}
         options={{
-          tabBarLabel: 'Crédits',
+          tabBarLabel: 'Créditos',
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}

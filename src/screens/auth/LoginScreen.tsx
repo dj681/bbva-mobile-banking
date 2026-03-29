@@ -78,7 +78,7 @@ const LoginScreen: React.FC = () => {
   const handleLogin = useCallback(async () => {
     dispatch(setAuthError(null));
     if (!email.trim() || !password.trim()) {
-      dispatch(setAuthError('Veuillez saisir votre e-mail et votre mot de passe.'));
+      dispatch(setAuthError('Por favor, introduzca su correo electrónico y contraseña.'));
       return;
     }
     await login(email.trim(), password);
@@ -107,8 +107,8 @@ const LoginScreen: React.FC = () => {
           <View style={styles.logoWrapper}>
             <Text style={styles.logoText}>BBVA</Text>
           </View>
-          <Text style={styles.headerTitle}>Bienvenue</Text>
-          <Text style={styles.headerSubtitle}>Connectez-vous à votre espace bancaire</Text>
+          <Text style={styles.headerTitle}>Bienvenido</Text>
+          <Text style={styles.headerSubtitle}>Acceda a su área bancaria personal</Text>
         </View>
 
         {/* Form */}
@@ -132,7 +132,7 @@ const LoginScreen: React.FC = () => {
 
           {/* Email */}
           <View style={styles.fieldGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Adresse e-mail</Text>
+            <Text style={[styles.label, { color: colors.text }]}>Correo electrónico</Text>
             <View
               style={[
                 styles.inputRow,
@@ -146,7 +146,7 @@ const LoginScreen: React.FC = () => {
                 onChangeText={setEmail}
                 onFocus={() => setEmailFocused(true)}
                 onBlur={() => setEmailFocused(false)}
-                placeholder="exemple@bbva.fr"
+                placeholder="ejemplo@bbva.es"
                 placeholderTextColor={colors.placeholder}
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -160,7 +160,7 @@ const LoginScreen: React.FC = () => {
 
           {/* Password */}
           <View style={styles.fieldGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Mot de passe</Text>
+            <Text style={[styles.label, { color: colors.text }]}>Contraseña</Text>
             <View
               style={[
                 styles.inputRow,
@@ -174,7 +174,7 @@ const LoginScreen: React.FC = () => {
                 onChangeText={setPassword}
                 onFocus={() => setPassFocused(true)}
                 onBlur={() => setPassFocused(false)}
-                placeholder="Votre mot de passe"
+                placeholder="Su contraseña"
                 placeholderTextColor={colors.placeholder}
                 secureTextEntry={!showPassword}
                 returnKeyType="done"
@@ -202,12 +202,12 @@ const LoginScreen: React.FC = () => {
                 thumbColor={rememberMe ? colors.primary : colors.surface}
               />
               <Text style={[styles.rememberText, { color: colors.textSecondary }]}>
-                Se souvenir de moi
+                Recordarme
               </Text>
             </View>
             <TouchableOpacity onPress={() => {}}>
               <Text style={[styles.forgotText, { color: colors.secondary }]}>
-                Mot de passe oublié ?
+                ¿Olvidó su contraseña?
               </Text>
             </TouchableOpacity>
           </View>
@@ -226,7 +226,7 @@ const LoginScreen: React.FC = () => {
               <ActivityIndicator color="#FFFFFF" />
             ) : (
               <>
-                <Text style={styles.loginButtonText}>Se connecter</Text>
+                <Text style={styles.loginButtonText}>Iniciar sesión</Text>
                 <Ionicons name="arrow-forward" size={20} color="#FFFFFF" />
               </>
             )}
@@ -241,7 +241,7 @@ const LoginScreen: React.FC = () => {
             >
               <Ionicons name="finger-print-outline" size={24} color={colors.primary} />
               <Text style={[styles.biometricText, { color: colors.primary }]}>
-                Connexion biométrique
+                Acceso biométrico
               </Text>
             </TouchableOpacity>
           )}
@@ -250,7 +250,7 @@ const LoginScreen: React.FC = () => {
           <View style={[styles.demoHint, { backgroundColor: `${colors.info}12`, borderColor: `${colors.info}30` }]}>
             <Ionicons name="information-circle-outline" size={16} color={colors.info} />
             <Text style={[styles.demoText, { color: colors.textSecondary }]}>
-              Connexion : jdiazrodriguez266@gmail.com — n'importe quel mot de passe
+              Acceso: jdiazrodriguez266@gmail.com — cualquier contraseña
             </Text>
           </View>
         </Animated.View>
@@ -258,7 +258,7 @@ const LoginScreen: React.FC = () => {
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={[styles.footerText, { color: colors.textSecondary }]}>
-            © 2024 BBVA — Tous droits réservés
+            © 2024 BBVA — Todos los derechos reservados
           </Text>
         </View>
       </ScrollView>

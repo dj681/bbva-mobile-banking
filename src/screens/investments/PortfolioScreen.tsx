@@ -58,9 +58,9 @@ const CHART_CONFIG: Record<Period, { labels: string[]; data: number[] }> = {
 };
 
 const ALLOCATIONS = [
-  { label: 'Actions', percentage: 60, color: '#003366' },
+  { label: 'Acciones', percentage: 60, color: '#003366' },
   { label: 'ETF', percentage: 25, color: '#00A8E8' },
-  { label: 'Obligations', percentage: 15, color: '#4CAF50' },
+  { label: 'Bonos', percentage: 15, color: '#4CAF50' },
 ];
 
 const makeStyles = (colors: ThemeColors) =>
@@ -341,7 +341,7 @@ export const PortfolioScreen: React.FC = () => {
         {/* Portfolio Summary Card */}
         <View style={styles.summaryCard}>
           <View style={styles.summaryHeader}>
-            <Text style={styles.summaryLabel}>Valeur totale du portefeuille</Text>
+            <Text style={styles.summaryLabel}>Valor total de la cartera</Text>
             <TouchableOpacity onPress={() => setBalanceVisible((v) => !v)}>
               <Ionicons
                 name={balanceVisible ? 'eye-outline' : 'eye-off-outline'}
@@ -385,13 +385,13 @@ export const PortfolioScreen: React.FC = () => {
 
           <View style={styles.summaryRowGrid}>
             <View style={styles.summaryGridItem}>
-              <Text style={styles.summaryGridLabel}>Investi</Text>
+              <Text style={styles.summaryGridLabel}>Invertido</Text>
               <Text style={styles.summaryGridValue}>
                 {balanceVisible ? formatCurrency(effectivePortfolio.totalInvested) : '• • •'}
               </Text>
             </View>
             <View style={[styles.summaryGridItem, { alignItems: 'flex-end' }]}>
-              <Text style={styles.summaryGridLabel}>Placements</Text>
+              <Text style={styles.summaryGridLabel}>Inversiones</Text>
               <Text style={styles.summaryGridValue}>{effectiveInvestments.length}</Text>
             </View>
           </View>
@@ -399,7 +399,7 @@ export const PortfolioScreen: React.FC = () => {
 
         {/* Performance Chart */}
         <View style={styles.chartSection}>
-          <Text style={styles.sectionTitle}>Performance</Text>
+          <Text style={styles.sectionTitle}>Rentabilidad</Text>
           <View style={styles.periodSelector}>
             {PERIODS.map((p) => (
               <TouchableOpacity
@@ -442,7 +442,7 @@ export const PortfolioScreen: React.FC = () => {
 
         {/* Asset Allocation */}
         <View style={styles.allocationSection}>
-          <Text style={styles.sectionTitle}>Allocation d'actifs</Text>
+          <Text style={styles.sectionTitle}>Asignación de activos</Text>
           {ALLOCATIONS.map((alloc) => (
             <View key={alloc.label} style={styles.allocationRow}>
               <View style={styles.allocationRowHeader}>
@@ -466,7 +466,7 @@ export const PortfolioScreen: React.FC = () => {
 
         {/* Holdings Header */}
         <View style={styles.holdingsHeader}>
-          <Text style={styles.sectionTitle}>Mes Placements</Text>
+          <Text style={styles.sectionTitle}>Mis Inversiones</Text>
           <Badge label={`${effectiveInvestments.length}`} variant="info" size="small" />
         </View>
 
@@ -474,8 +474,8 @@ export const PortfolioScreen: React.FC = () => {
           {effectiveInvestments.length === 0 && (
             <EmptyState
               icon="bar-chart-outline"
-              title="Aucun placement"
-              message="Vous n'avez pas encore de placements dans votre portefeuille."
+              title="Sin inversiones"
+              message="Todavía no tiene inversiones en su cartera."
             />
           )}
         </View>
@@ -498,14 +498,14 @@ export const PortfolioScreen: React.FC = () => {
     () => (
       <View style={styles.savingsSection}>
         <Button
-          label="Plans d'Épargne"
+          label="Planes de Ahorro"
           variant="outline"
           fullWidth
           leftIcon={<Ionicons name="trending-up-outline" size={18} color={colors.primary} />}
           onPress={() => navigation.navigate('SavingsPlans')}
         />
         <Text style={styles.lastUpdated}>
-          Dernière mise à jour : {new Date().toLocaleTimeString('fr-FR')}
+          Última actualización : {new Date().toLocaleTimeString('fr-FR')}
         </Text>
       </View>
     ),
@@ -517,9 +517,9 @@ export const PortfolioScreen: React.FC = () => {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Mon Portefeuille</Text>
+          <Text style={styles.headerTitle}>Mi Cartera</Text>
         </View>
-        <LoadingSpinner message="Chargement du portefeuille…" />
+        <LoadingSpinner message="Cargando la cartera…" />
       </View>
     );
   }
@@ -528,7 +528,7 @@ export const PortfolioScreen: React.FC = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Mon Portefeuille</Text>
+        <Text style={styles.headerTitle}>Mi Cartera</Text>
         <TouchableOpacity style={styles.refreshBtn} onPress={handleRefresh}>
           <Ionicons name="refresh-outline" size={22} color="#FFFFFF" />
         </TouchableOpacity>

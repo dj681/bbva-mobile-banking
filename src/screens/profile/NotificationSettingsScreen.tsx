@@ -38,53 +38,53 @@ interface NotificationSection {
 
 const SECTIONS: NotificationSection[] = [
   {
-    title: 'TRANSACTIONS',
+    title: 'TRANSACCIONES',
     icon: 'swap-horizontal-outline',
     items: [
-      { id: 'debits', label: 'Débits', subtitle: 'Transactions sortantes' },
-      { id: 'credits', label: 'Crédits', subtitle: 'Transactions entrantes' },
-      { id: 'transfers', label: 'Virements reçus', subtitle: 'Notification à la réception' },
+      { id: 'debits', label: 'Débitos', subtitle: 'Transacciones salientes' },
+      { id: 'credits', label: 'Créditos', subtitle: 'Transacciones entrantes' },
+      { id: 'transfers', label: 'Transferencias recibidas', subtitle: 'Notificación al recibirlas' },
     ],
   },
   {
-    title: 'SÉCURITÉ',
+    title: 'SEGURIDAD',
     icon: 'shield-outline',
     items: [
       {
         id: 'suspicious_login',
-        label: 'Connexions suspectes',
-        subtitle: 'Activité inhabituelle détectée',
+        label: 'Accesos sospechosos',
+        subtitle: 'Actividad inusual detectada',
       },
       {
         id: 'new_device',
-        label: 'Nouvel appareil',
-        subtitle: 'Connexion depuis un nouvel appareil',
+        label: 'Nuevo dispositivo',
+        subtitle: 'Acceso desde un nuevo dispositivo',
       },
       {
         id: 'password_change',
-        label: 'Changement de mot de passe',
-        subtitle: 'Modification du mot de passe',
+        label: 'Cambio de contraseña',
+        subtitle: 'Modificación de contraseña',
       },
     ],
   },
   {
-    title: 'COMPTES',
+    title: 'CUENTAS',
     icon: 'wallet-outline',
     items: [
       {
         id: 'low_balance',
-        label: 'Solde insuffisant',
-        subtitle: 'Alerte de solde bas',
+        label: 'Saldo insuficiente',
+        subtitle: 'Alerta de saldo bajo',
       },
       {
         id: 'credit_payment',
-        label: 'Paiement de crédit à venir',
-        subtitle: 'Rappel avant échéance',
+        label: 'Próximo pago de crédito',
+        subtitle: 'Recordatorio antes del vencimiento',
       },
       {
         id: 'statement',
-        label: 'Relevé disponible',
-        subtitle: 'Nouveau relevé mensuel',
+        label: 'Extracto disponible',
+        subtitle: 'Nuevo extracto mensual',
       },
     ],
   },
@@ -94,13 +94,13 @@ const SECTIONS: NotificationSection[] = [
     items: [
       {
         id: 'offers',
-        label: 'Offres et promotions',
-        subtitle: 'Offres personnalisées BBVA',
+        label: 'Ofertas y promociones',
+        subtitle: 'Ofertas personalizadas de BBVA',
       },
       {
         id: 'features',
-        label: 'Nouvelles fonctionnalités',
-        subtitle: "Mises à jour de l'application",
+        label: 'Nuevas funciones',
+        subtitle: 'Actualizaciones de la aplicación',
       },
     ],
   },
@@ -154,7 +154,7 @@ const NotificationSettingsScreen: React.FC = () => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={colors.headerText} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Paramètres des notifications</Text>
+        <Text style={styles.headerTitle}>Configuración de notificaciones</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
@@ -167,7 +167,7 @@ const NotificationSettingsScreen: React.FC = () => {
         {saved && (
           <View style={styles.savedBanner}>
             <Ionicons name="checkmark-circle" size={18} color="#FFFFFF" />
-            <Text style={styles.savedBannerText}>Préférences sauvegardées</Text>
+            <Text style={styles.savedBannerText}>Preferencias guardadas</Text>
           </View>
         )}
 
@@ -178,9 +178,9 @@ const NotificationSettingsScreen: React.FC = () => {
               <Ionicons name="notifications" size={24} color={colors.primary} />
             </View>
             <View>
-              <Text style={styles.masterLabel}>Activer les notifications</Text>
+              <Text style={styles.masterLabel}>Activar notificaciones</Text>
               <Text style={styles.masterSubtitle}>
-                {masterEnabled ? 'Notifications activées' : 'Toutes les notifications désactivées'}
+                {masterEnabled ? 'Notificaciones activadas' : 'Todas las notificaciones desactivadas'}
               </Text>
             </View>
           </View>
@@ -226,7 +226,7 @@ const NotificationSettingsScreen: React.FC = () => {
         ))}
 
         <Button
-          label="Sauvegarder les préférences"
+          label="Guardar preferencias"
           variant="primary"
           fullWidth
           loading={saving}

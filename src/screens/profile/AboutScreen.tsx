@@ -30,17 +30,17 @@ interface LinkItem {
 }
 
 const APP_INFO: InfoRow[] = [
-  { label: "Version de l'application", value: '1.0.0' },
-  { label: "Version de l'API", value: '2.0.0' },
-  { label: 'Dernière mise à jour', value: '15 janvier 2025' },
-  { label: 'Plateforme', value: 'iOS & Android' },
+  { label: 'Versión de la aplicación', value: '1.0.0' },
+  { label: 'Versión de la API', value: '2.0.0' },
+  { label: 'Última actualización', value: '15 de enero de 2025' },
+  { label: 'Plataforma', value: 'iOS & Android' },
 ];
 
 const LINKS: LinkItem[] = [
-  { id: 'privacy', label: 'Politique de confidentialité', icon: 'shield-outline' },
-  { id: 'terms', label: "Conditions d'utilisation", icon: 'document-text-outline' },
-  { id: 'legal', label: 'Mentions légales', icon: 'newspaper-outline' },
-  { id: 'licenses', label: 'Licences open source', icon: 'code-slash-outline' },
+  { id: 'privacy', label: 'Política de privacidad', icon: 'shield-outline' },
+  { id: 'terms', label: 'Condiciones de uso', icon: 'document-text-outline' },
+  { id: 'legal', label: 'Aviso legal', icon: 'newspaper-outline' },
+  { id: 'licenses', label: 'Licencias de código abierto', icon: 'code-slash-outline' },
 ];
 
 const SOCIAL = [
@@ -84,7 +84,7 @@ const AboutScreen: React.FC = () => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={colors.headerText} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>À propos</Text>
+        <Text style={styles.headerTitle}>Acerca de</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
@@ -98,17 +98,17 @@ const AboutScreen: React.FC = () => {
             <Text style={styles.logoText}>BBVA</Text>
           </View>
           <Text style={styles.appName}>BBVA Mobile Banking</Text>
-          <Text style={styles.appTagline}>Votre banque, partout avec vous</Text>
+          <Text style={styles.appTagline}>Su banco, siempre con usted</Text>
           <Text style={styles.appDescription}>
-            BBVA Mobile Banking vous offre une expérience bancaire complète et sécurisée
-            depuis votre smartphone. Gérez vos comptes, effectuez des virements,
-            suivez vos investissements et bien plus encore.
+            BBVA Mobile Banking le ofrece una experiencia bancaria completa y segura
+            desde su smartphone. Gestione sus cuentas, realice transferencias,
+            siga sus inversiones y mucho más.
           </Text>
         </View>
 
         {/* App info */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>INFORMATIONS</Text>
+          <Text style={styles.cardTitle}>INFORMACIÓN</Text>
           {APP_INFO.map((row, index) => (
             <React.Fragment key={row.label}>
               <View style={styles.infoRow}>
@@ -122,7 +122,7 @@ const AboutScreen: React.FC = () => {
 
         {/* Links */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>INFORMATIONS LÉGALES</Text>
+          <Text style={styles.cardTitle}>INFORMACIÓN LEGAL</Text>
           {LINKS.map((link, index) => (
             <React.Fragment key={link.id}>
               <TouchableOpacity
@@ -141,7 +141,7 @@ const AboutScreen: React.FC = () => {
 
         {/* Social */}
         <View style={styles.socialSection}>
-          <Text style={styles.socialTitle}>Suivez-nous</Text>
+          <Text style={styles.socialTitle}>Síguenos</Text>
           <View style={styles.socialRow}>
             {SOCIAL.map((item) => (
               <TouchableOpacity
@@ -159,9 +159,9 @@ const AboutScreen: React.FC = () => {
 
         {/* Copyright */}
         <View style={styles.copyrightSection}>
-          <Text style={styles.copyrightText}>© 2024 BBVA. Tous droits réservés.</Text>
+          <Text style={styles.copyrightText}>© 2024 BBVA. Todos los derechos reservados.</Text>
           <Text style={styles.copyrightSubtext}>
-            BBVA est une marque déposée de Banco Bilbao Vizcaya Argentaria, S.A.
+            BBVA es una marca registrada de Banco Bilbao Vizcaya Argentaria, S.A.
           </Text>
         </View>
       </ScrollView>

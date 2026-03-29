@@ -92,10 +92,10 @@ export const CreditDetailsScreen: React.FC = () => {
     return (
       <View style={styles.container}>
         <View style={[styles.header, { justifyContent: 'flex-start' }]}>
-          <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Retour</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Volver</Text></TouchableOpacity>
         </View>
         <View style={{ padding: 24 }}>
-          <Text style={{ color: colors.text }}>Crédit introuvable.</Text>
+          <Text style={{ color: colors.text }}>Crédito no encontrado.</Text>
         </View>
       </View>
     );
@@ -107,8 +107,8 @@ export const CreditDetailsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Retour</Text></TouchableOpacity>
-        <Text style={styles.headerTitle}>Détails du crédit</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Volver</Text></TouchableOpacity>
+        <Text style={styles.headerTitle}>Detalles del crédito</Text>
         <TouchableOpacity><Text style={styles.downloadBtn}>⬇</Text></TouchableOpacity>
       </View>
 
@@ -116,44 +116,44 @@ export const CreditDetailsScreen: React.FC = () => {
         <View style={styles.overviewCard}>
           <Text style={styles.overviewName}>{credit.name}</Text>
           <Text style={styles.overviewAmount}>{formatCurrency(credit.remainingAmount, credit.currency)}</Text>
-          <Text style={styles.overviewLabel}>Restant à rembourser</Text>
+          <Text style={styles.overviewLabel}>Pendiente de amortización</Text>
           <View style={styles.progressBg}>
             <View style={[styles.progressFill, { width: `${progress}%` as any }]} />
           </View>
-          <Text style={styles.progressText}>{Math.round(progress)}% remboursé</Text>
+          <Text style={styles.progressText}>{Math.round(progress)}% amortizado</Text>
         </View>
 
         <View style={styles.metricsGrid}>
           <View style={styles.metricCard}>
             <Text style={styles.metricIcon}>💰</Text>
-            <Text style={styles.metricLabel}>Montant initial</Text>
+            <Text style={styles.metricLabel}>Importe inicial</Text>
             <Text style={styles.metricVal}>{formatCurrency(credit.originalAmount, credit.currency)}</Text>
           </View>
           <View style={styles.metricCard}>
             <Text style={styles.metricIcon}>✅</Text>
-            <Text style={styles.metricLabel}>Déjà remboursé</Text>
+            <Text style={styles.metricLabel}>Ya amortizado</Text>
             <Text style={[styles.metricVal, { color: colors.success }]}>{formatCurrency(credit.totalPaid, credit.currency)}</Text>
           </View>
           <View style={styles.metricCard}>
             <Text style={styles.metricIcon}>📅</Text>
-            <Text style={styles.metricLabel}>Prochain paiement</Text>
+            <Text style={styles.metricLabel}>Próximo pago</Text>
             <Text style={styles.metricVal}>{formatDate(credit.nextPaymentDate)}</Text>
           </View>
           <View style={styles.metricCard}>
             <Text style={styles.metricIcon}>📊</Text>
-            <Text style={styles.metricLabel}>Taux d'intérêt</Text>
+            <Text style={styles.metricLabel}>Tipo de interés</Text>
             <Text style={styles.metricVal}>{credit.interestRate}%</Text>
           </View>
         </View>
 
         <View style={styles.nextPaymentCard}>
-          <Text style={styles.nextLabel}>Prochaine mensualité</Text>
+          <Text style={styles.nextLabel}>Próxima cuota mensual</Text>
           <Text style={styles.nextAmount}>{formatCurrency(credit.nextPaymentAmount, credit.currency)}</Text>
-          <Text style={styles.nextDate}>le {formatDate(credit.nextPaymentDate)}</Text>
+          <Text style={styles.nextDate}>el {formatDate(credit.nextPaymentDate)}</Text>
         </View>
 
         <View style={styles.tabRow}>
-          {([['amortization', 'Amortissement'], ['payments', 'Paiements']] as ['amortization' | 'payments', string][]).map(([tab, label]) => (
+          {([['amortization', 'Amortización'], ['payments', 'Pagos']] as ['amortization' | 'payments', string][]).map(([tab, label]) => (
             <TouchableOpacity key={tab} style={[styles.tabBtn, activeTab === tab && styles.tabBtnActive]} onPress={() => setActiveTab(tab)}>
               <Text style={[styles.tabBtnText, activeTab === tab && styles.tabBtnTextActive]}>{label}</Text>
             </TouchableOpacity>
@@ -163,11 +163,11 @@ export const CreditDetailsScreen: React.FC = () => {
         {activeTab === 'amortization' && (
           <View style={styles.tableContainer}>
             <View style={styles.tableHeader}>
-              <Text style={[styles.tableCell, styles.tableHeaderText, { flex: 0.5 }]}>Mois</Text>
-              <Text style={[styles.tableCell, styles.tableHeaderText]}>Mensualité</Text>
+              <Text style={[styles.tableCell, styles.tableHeaderText, { flex: 0.5 }]}>Mes</Text>
+              <Text style={[styles.tableCell, styles.tableHeaderText]}>Cuota</Text>
               <Text style={[styles.tableCell, styles.tableHeaderText]}>Capital</Text>
-              <Text style={[styles.tableCell, styles.tableHeaderText]}>Intérêts</Text>
-              <Text style={[styles.tableCell, styles.tableHeaderText]}>Solde</Text>
+              <Text style={[styles.tableCell, styles.tableHeaderText]}>Intereses</Text>
+              <Text style={[styles.tableCell, styles.tableHeaderText]}>Saldo</Text>
             </View>
             {amortization.map(row => (
               <View key={row.month} style={[styles.tableRow, row.month % 2 === 0 && styles.tableRowAlt]}>
@@ -187,7 +187,7 @@ export const CreditDetailsScreen: React.FC = () => {
               <View key={p.id} style={styles.paymentRow}>
                 <View>
                   <Text style={styles.paymentDate}>{formatDate(p.date)}</Text>
-                  <Text style={styles.paymentRef}>Échéance #{p.id}</Text>
+                  <Text style={styles.paymentRef}>Vencimiento #{p.id}</Text>
                 </View>
                 <View style={{ alignItems: 'flex-end' }}>
                   <Text style={styles.paymentAmount}>{formatCurrency(p.amount, 'EUR')}</Text>
@@ -199,16 +199,16 @@ export const CreditDetailsScreen: React.FC = () => {
         )}
 
         <View style={styles.actions}>
-          <Button title="💸 Paiement anticipé" onPress={() => setEarlyPaymentModal(true)} variant="outline" />
+          <Button title="💸 Amortización anticipada" onPress={() => setEarlyPaymentModal(true)} variant="outline" />
         </View>
       </ScrollView>
 
-      <Modal visible={earlyPaymentModal} onClose={() => setEarlyPaymentModal(false)} title="Remboursement anticipé">
-        <Text style={{ color: colors.subtext, marginBottom: 12, textAlign: 'center' }}>Entrez le montant que vous souhaitez rembourser par anticipation.</Text>
+      <Modal visible={earlyPaymentModal} onClose={() => setEarlyPaymentModal(false)} title="Amortización anticipada">
+        <Text style={{ color: colors.subtext, marginBottom: 12, textAlign: 'center' }}>Introduzca el importe que desea amortizar anticipadamente.</Text>
         <Input label="Montant (EUR)" value={earlyAmount} onChangeText={setEarlyAmount} keyboardType="decimal-pad" placeholder="0.00" />
-        <Text style={{ color: colors.subtext, fontSize: 12, marginTop: 8 }}>Des indemnités de remboursement anticipé peuvent s'appliquer selon votre contrat.</Text>
-        <Button title="Valider" onPress={() => setEarlyPaymentModal(false)} style={{ marginTop: 12 }} />
-        <Button title="Annuler" onPress={() => setEarlyPaymentModal(false)} variant="outline" style={{ marginTop: 8 }} />
+        <Text style={{ color: colors.subtext, fontSize: 12, marginTop: 8 }}>Pueden aplicarse comisiones por amortización anticipada según su contrato.</Text>
+        <Button title="Validar" onPress={() => setEarlyPaymentModal(false)} style={{ marginTop: 12 }} />
+        <Button title="Cancelar" onPress={() => setEarlyPaymentModal(false)} variant="outline" style={{ marginTop: 8 }} />
       </Modal>
     </View>
   );

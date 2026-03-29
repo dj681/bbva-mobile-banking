@@ -21,7 +21,7 @@ type Route = RouteProp<CardsStackParamList, 'CardTransactions'>;
 
 const MOCK_CARD_TRANSACTIONS: CardTransaction[] = [];
 
-const CATEGORIES = ['Toutes', 'Alimentation', 'Transport', 'Loisirs', 'Restaurant', 'Carburant', 'Retrait', 'Abonnement'];
+const CATEGORIES = ['Todas', 'Alimentación', 'Transporteee', 'Ocio', 'Restauranteee', 'Combustible', 'Retirada', 'Suscripción'];
 
 export const CardTransactionsScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -33,7 +33,7 @@ export const CardTransactionsScreen: React.FC = () => {
   const card = cards.find(c => c.id === cardId);
 
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('Toutes');
+  const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [dateFilter, setDateFilter] = useState('');
   const [transactions, setTransactions] = useState<CardTransaction[]>(MOCK_CARD_TRANSACTIONS);
 
@@ -58,7 +58,7 @@ export const CardTransactionsScreen: React.FC = () => {
   }, []);
 
   const filtered = transactions.filter(tx =>
-    (selectedCategory === 'Toutes' || tx.category === selectedCategory)
+    (selectedCategory === 'Todas' || tx.category === selectedCategory)
   );
 
   const currentMonthSpend = transactions
@@ -66,7 +66,7 @@ export const CardTransactionsScreen: React.FC = () => {
     .reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
 
   const categoryIcon = (cat: string) => {
-    const icons: Record<string, string> = { Alimentation: '🛒', Transport: '🚌', Loisirs: '🎮', Restaurant: '🍽️', Carburant: '⛽', Retrait: '🏧', Abonnement: '📺', Remboursement: '↩️' };
+    const icons: Record<string, string> = { Alimentación: '🛒', Transportee: '🚌', Ocio: '🎮', Restaurantee: '🍽️', Combustible: '⛽', Retrait: '🏧', Suscripción: '📺', Reembolso: '↩️' };
     return icons[cat] || '💳';
   };
 
@@ -78,7 +78,7 @@ export const CardTransactionsScreen: React.FC = () => {
       <View style={styles.txInfo}>
         <Text style={styles.txMerchant}>{item.merchant}</Text>
         <Text style={styles.txMeta}>{item.category} • {formatDate(item.date)}</Text>
-        {item.isPending && <Text style={styles.pendingBadge}>En attente</Text>}
+        {item.isPending && <Text style={styles.pendingBadge}>Pendiente</Text>}
       </View>
       <Text style={[styles.txAmount, { color: item.amount < 0 ? colors.error : colors.success }]}>
         {item.amount > 0 ? '+' : ''}{formatCurrency(item.amount, item.currency)}
@@ -89,18 +89,18 @@ export const CardTransactionsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Retour</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Volver</Text></TouchableOpacity>
         <View style={{ alignItems: 'center' }}>
-          <Text style={styles.headerTitle}>{card?.holderName ?? 'Carte'}</Text>
+          <Text style={styles.headerTitle}>{card?.holderName ?? 'Tarjeta'}</Text>
           <Text style={styles.headerSub}>{card?.cardNumber ?? ''}</Text>
         </View>
         <View style={{ width: 60 }} />
       </View>
 
       <View style={styles.summaryCard}>
-        <Text style={styles.summaryLabel}>Dépenses du mois</Text>
+        <Text style={styles.summaryLabel}>Gastos del mes</Text>
         <Text style={styles.summaryAmount}>{formatCurrency(currentMonthSpend, 'EUR')}</Text>
-        <Text style={styles.summaryCount}>{filtered.filter(t => t.amount < 0).length} opération(s)</Text>
+        <Text style={styles.summaryCount}>{filtered.filter(t => t.amount < 0).length} operación(es)</Text>
       </View>
 
       <FlatList
@@ -128,7 +128,7 @@ export const CardTransactionsScreen: React.FC = () => {
           </View>
         }
         ListEmptyComponent={
-          isLoading ? <LoadingSpinner /> : <EmptyState title="Aucune transaction" description="Aucune transaction trouvée pour cette carte" />
+          isLoading ? <LoadingSpinner /> : <EmptyState title="Sin transacciones" description="No se encontraron transacciones para esta tarjeta" />
         }
         contentContainerStyle={{ paddingBottom: 20 }}
       />

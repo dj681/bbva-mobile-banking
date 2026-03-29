@@ -128,7 +128,7 @@ const TwoFactorScreen: React.FC = () => {
     async (codeStr?: string) => {
       const fullCode = codeStr ?? code.join('');
       if (fullCode.length < CODE_LENGTH) {
-        dispatch(setAuthError('Veuillez saisir le code à 6 chiffres complet.'));
+        dispatch(setAuthError('Por favor, introduzca el código completo de 6 dígitos.'));
         return;
       }
       dispatch(setAuthError(null));
@@ -178,7 +178,7 @@ const TwoFactorScreen: React.FC = () => {
           <Ionicons name="shield-checkmark-outline" size={48} color={colors.secondary} />
         </View>
 
-        <Text style={[styles.title, { color: colors.text }]}>Vérification en deux étapes</Text>
+        <Text style={[styles.title, { color: colors.text }]}>Verificación en dos pasos</Text>
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
           Un code de vérification a été envoyé par{' '}
           <Text style={{ fontWeight: '600' }}>{methodLabel}</Text> au
@@ -235,7 +235,7 @@ const TwoFactorScreen: React.FC = () => {
             <View style={styles.countdownRow}>
               <Ionicons name="time-outline" size={16} color={colors.textSecondary} />
               <Text style={[styles.countdownText, { color: colors.textSecondary }]}>
-                Nouveau code disponible dans{' '}
+                Nuevo código disponible en{' '}
                 <Text style={{ color: colors.secondary, fontWeight: '700' }}>
                   {formatCountdown(countdown)}
                 </Text>
@@ -245,7 +245,7 @@ const TwoFactorScreen: React.FC = () => {
             <TouchableOpacity onPress={handleResend} style={styles.resendButton}>
               <Ionicons name="refresh-outline" size={16} color={colors.secondary} />
               <Text style={[styles.resendText, { color: colors.secondary }]}>
-                Renvoyer le code
+                Reenviar el código
               </Text>
             </TouchableOpacity>
           )}
@@ -270,14 +270,14 @@ const TwoFactorScreen: React.FC = () => {
             <ActivityIndicator color="#FFFFFF" />
           ) : (
             <>
-              <Text style={styles.verifyButtonText}>Vérifier</Text>
+              <Text style={styles.verifyButtonText}>Verificar</Text>
               <Ionicons name="checkmark-circle-outline" size={20} color="#FFFFFF" />
             </>
           )}
         </TouchableOpacity>
 
         <Text style={[styles.helpText, { color: colors.textSecondary }]}>
-          Vous n'avez pas reçu le code ? Vérifiez vos {methodLabel === 'SMS' ? 'messages' : 'courriers indésirables'}.
+          ¿No ha recibido el código? Revise sus {methodLabel === 'SMS' ? 'messages' : 'courriers indésirables'}.
         </Text>
       </ScrollView>
     </KeyboardAvoidingView>

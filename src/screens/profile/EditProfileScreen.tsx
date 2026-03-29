@@ -71,16 +71,16 @@ const EditProfileScreen: React.FC = () => {
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!form.firstName.trim()) newErrors.firstName = 'Le prénom est requis';
-    if (!form.lastName.trim()) newErrors.lastName = 'Le nom est requis';
+    if (!form.firstName.trim()) newErrors.firstName = 'El nombre es obligatorio';
+    if (!form.lastName.trim()) newErrors.lastName = 'Los apellidos son obligatorios';
     if (form.phone && !/^[\d\s+()-]{8,}$/.test(form.phone)) {
-      newErrors.phone = 'Numéro de téléphone invalide';
+      newErrors.phone = 'Número de teléfono no válido';
     }
     if (form.postalCode && !/^\d{5}$/.test(form.postalCode)) {
-      newErrors.postalCode = 'Code postal invalide (5 chiffres)';
+      newErrors.postalCode = 'Código postal no válido (5 dígitos)';
     }
     if (form.city && form.city.trim().length < 2) {
-      newErrors.city = 'Ville invalide';
+      newErrors.city = 'Ciudad no válida';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -100,7 +100,7 @@ const EditProfileScreen: React.FC = () => {
   };
 
   const styles = makeStyles(colors, spacing, borderRadius);
-  const fullName = `${form.firstName} ${form.lastName}`.trim() || 'Utilisateur';
+  const fullName = `${form.firstName} ${form.lastName}`.trim() || 'Usuario';
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -113,7 +113,7 @@ const EditProfileScreen: React.FC = () => {
         >
           <Ionicons name="arrow-back" size={24} color={colors.headerText} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Modifier le profil</Text>
+        <Text style={styles.headerTitle}>Editar perfil</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
@@ -131,7 +131,7 @@ const EditProfileScreen: React.FC = () => {
           {successVisible && (
             <View style={styles.successToast}>
               <Ionicons name="checkmark-circle" size={20} color="#FFFFFF" />
-              <Text style={styles.successToastText}>Profil mis à jour avec succès</Text>
+              <Text style={styles.successToastText}>Perfil actualizado correctamente</Text>
             </View>
           )}
 
@@ -141,21 +141,21 @@ const EditProfileScreen: React.FC = () => {
               <Avatar name={fullName} size="xlarge" />
               <TouchableOpacity
                 style={styles.avatarEditBtn}
-                onPress={() => Alert.alert('Photo de profil', 'Fonctionnalité à venir')}
+                onPress={() => Alert.alert('Foto de perfil', 'Función próximamente disponible')}
                 activeOpacity={0.8}
               >
                 <Ionicons name="camera" size={16} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
-            <Text style={styles.avatarHint}>Appuyez pour modifier la photo</Text>
+            <Text style={styles.avatarHint}>Pulse para cambiar la foto</Text>
           </View>
 
           {/* Form */}
           <View style={styles.formSection}>
-            <Text style={styles.sectionLabel}>INFORMATIONS PERSONNELLES</Text>
+            <Text style={styles.sectionLabel}>INFORMACIÓN PERSONAL</Text>
 
             <Input
-              label="Prénom"
+              label="Nombre"
               value={form.firstName}
               onChangeText={updateField('firstName')}
               error={errors.firstName}
@@ -163,7 +163,7 @@ const EditProfileScreen: React.FC = () => {
               returnKeyType="next"
             />
             <Input
-              label="Nom"
+              label="Apellidos"
               value={form.lastName}
               onChangeText={updateField('lastName')}
               error={errors.lastName}
@@ -172,7 +172,7 @@ const EditProfileScreen: React.FC = () => {
             />
             <View style={styles.readOnlyContainer}>
               <Input
-                label="Email"
+                label="Correo electrónico"
                 value={form.email}
                 onChangeText={() => {}}
                 editable={false}
@@ -181,13 +181,13 @@ const EditProfileScreen: React.FC = () => {
               <View style={styles.readOnlyBadge}>
                 <Ionicons name="lock-closed" size={12} color={colors.textSecondary} />
                 <Text style={styles.readOnlyText}>
-                  L'adresse email ne peut pas être modifiée ici. Contactez le support.
+                  La dirección de correo electrónico no se puede modificar aquí. Contacte con el soporte.
                 </Text>
               </View>
             </View>
 
             <Input
-              label="Numéro de téléphone"
+              label="Número de teléfono"
               value={form.phone}
               onChangeText={updateField('phone')}
               error={errors.phone}
@@ -195,20 +195,20 @@ const EditProfileScreen: React.FC = () => {
               returnKeyType="next"
             />
             <Input
-              label="Date de naissance"
+              label="Fecha de nacimiento"
               value={form.birthDate}
               onChangeText={updateField('birthDate')}
               error={errors.birthDate}
-              placeholder="JJ/MM/AAAA"
+              placeholder="DD/MM/AAAA"
               returnKeyType="next"
             />
           </View>
 
           <View style={styles.formSection}>
-            <Text style={styles.sectionLabel}>ADRESSE</Text>
+            <Text style={styles.sectionLabel}>DIRECCIÓN</Text>
 
             <Input
-              label="Adresse"
+              label="Dirección"
               value={form.address}
               onChangeText={updateField('address')}
               multiline
@@ -216,7 +216,7 @@ const EditProfileScreen: React.FC = () => {
               returnKeyType="next"
             />
             <Input
-              label="Code postal"
+              label="Código postal"
               value={form.postalCode}
               onChangeText={updateField('postalCode')}
               error={errors.postalCode}
@@ -225,7 +225,7 @@ const EditProfileScreen: React.FC = () => {
               returnKeyType="next"
             />
             <Input
-              label="Ville"
+              label="Ciudad"
               value={form.city}
               onChangeText={updateField('city')}
               error={errors.city}

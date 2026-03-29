@@ -120,7 +120,7 @@ const PinScreen: React.FC = () => {
           } else {
             shake();
             setAttempts((a) => a + 1);
-            dispatch(setAuthError('Les codes PIN ne correspondent pas. Veuillez réessayer.'));
+            dispatch(setAuthError('Los códigos PIN no coinciden. Por favor, inténtelo de nuevo.'));
             setPinValue('');
             setIsConfirmStep(false);
             setConfirmPin('');
@@ -145,7 +145,7 @@ const PinScreen: React.FC = () => {
           setAttempts(newAttempts);
           const remaining = 5 - newAttempts;
           if (remaining <= 0) {
-            dispatch(setAuthError('Trop de tentatives incorrectes. Veuillez contacter le support.'));
+            dispatch(setAuthError('Demasiados intentos incorrectos. Por favor, contacte con el soporte.'));
           } else {
             dispatch(setAuthError(`Code PIN incorrect. ${remaining} tentative${remaining > 1 ? 's' : ''} restante${remaining > 1 ? 's' : ''}.`));
           }
@@ -187,20 +187,20 @@ const PinScreen: React.FC = () => {
 
   const titleText = () => {
     if (mode === 'setup') {
-      return isConfirmStep ? 'Confirmez votre\ncode PIN' : 'Créez votre\ncode PIN';
+      return isConfirmStep ? 'Confirme su\ncódigo PIN' : 'Cree su\ncódigo PIN';
     }
-    if (mode === 'transaction') return 'Confirmez la\ntransaction';
-    if (mode === 'settings') return 'Confirmez votre\nidentité';
-    return 'Saisissez votre\ncode PIN';
+    if (mode === 'transaction') return 'Confirme la\ntransacción';
+    if (mode === 'settings') return 'Confirme su\nidentidad';
+    return 'Introduzca su\ncódigo PIN';
   };
 
   const subtitleText = () => {
     if (mode === 'setup') {
       return isConfirmStep
-        ? `Ressaisissez les ${PIN_LENGTH} chiffres pour confirmer`
-        : `Choisissez ${PIN_LENGTH} chiffres pour votre code PIN`;
+        ? `Vuelva a introducir los ${PIN_LENGTH} dígitos para confirmar`
+        : `Elija ${PIN_LENGTH} dígitos para su código PIN`;
     }
-    return 'Entrez votre code PIN pour continuer';
+    return 'Introduzca su código PIN para continuar';
   };
 
   const purposeIcon = () => {
@@ -338,7 +338,7 @@ const PinScreen: React.FC = () => {
             onPress={() => navigation.navigate('Login')}
             style={styles.cancelLink}
           >
-            <Text style={[styles.cancelText, { color: colors.textSecondary }]}>Annuler</Text>
+            <Text style={[styles.cancelText, { color: colors.textSecondary }]}>Cancelar</Text>
           </TouchableOpacity>
         )}
       </View>

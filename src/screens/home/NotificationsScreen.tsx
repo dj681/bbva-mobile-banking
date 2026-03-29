@@ -81,10 +81,10 @@ export const NotificationsScreen: React.FC = () => {
     <View style={styles.container}>
       {/* Screen Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Notifications</Text>
+        <Text style={styles.headerTitle}>Notificaciones</Text>
         {unreadCount > 0 && (
           <TouchableOpacity onPress={markAllRead}>
-            <Text style={styles.markAllText}>Tout lire</Text>
+            <Text style={styles.markAllText}>Marcar todo como leído</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -96,8 +96,8 @@ export const NotificationsScreen: React.FC = () => {
         ListHeaderComponent={ListHeader}
         ListEmptyComponent={
           <EmptyState
-            title="Aucune notification"
-            message="Vous n'avez pas encore de notifications."
+            title="Sin notificaciones"
+            message='Todavía no tiene notificaciones.'
             icon="notifications-off-outline"
           />
         }

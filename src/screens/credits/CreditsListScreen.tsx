@@ -22,7 +22,7 @@ import type { CreditsStackParamList, Credit } from '@/types';
 type Nav = NativeStackNavigationProp<CreditsStackParamList, 'CreditsList'>;
 
 const typeIcon = (type: string) => ({ mortgage: '🏠', auto: '🚗', personal: '💼', business: '🏢', student: '🎓' }[type] || '💳');
-const typeLabel = (type: string) => ({ mortgage: 'Immobilier', auto: 'Auto', personal: 'Personnel', business: 'Professionnel', student: 'Étudiant' }[type] || type);
+const typeLabel = (type: string) => ({ mortgage: 'Hipotecario', auto: 'Vehículo', personal: 'Personal', business: 'Empresarial', student: 'Estudiantil' }[type] || type);
 
 export const CreditsListScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -67,7 +67,7 @@ export const CreditsListScreen: React.FC = () => {
             <Text style={styles.creditName} numberOfLines={2}>{item.name}</Text>
             <Text style={styles.creditType}>{typeLabel(item.type)} • {item.interestRate}%</Text>
           </View>
-          <Badge label={item.status === 'closed' ? 'Soldé' : 'Actif'} variant={item.status === 'closed' ? 'info' : 'success'} />
+          <Badge label={item.status === 'closed' ? 'Saldado' : 'Activo'} variant={item.status === 'closed' ? 'info' : 'success'} />
         </View>
         <View style={styles.progressRow}>
           <View style={styles.progressBg}>
@@ -76,9 +76,9 @@ export const CreditsListScreen: React.FC = () => {
           <Text style={styles.progressText}>{Math.round(progress)}%</Text>
         </View>
         <View style={styles.creditMetrics}>
-          <View style={styles.metric}><Text style={styles.metricLabel}>Restant</Text><Text style={styles.metricVal}>{formatCurrency(item.remainingAmount, item.currency)}</Text></View>
-          <View style={styles.metric}><Text style={styles.metricLabel}>Mensualité</Text><Text style={styles.metricVal}>{formatCurrency(item.monthlyPayment, item.currency)}</Text></View>
-          <View style={styles.metric}><Text style={styles.metricLabel}>Prochain</Text><Text style={styles.metricVal}>{formatDate(item.nextPaymentDate)}</Text></View>
+          <View style={styles.metric}><Text style={styles.metricLabel}>Pendiente</Text><Text style={styles.metricVal}>{formatCurrency(item.remainingAmount, item.currency)}</Text></View>
+          <View style={styles.metric}><Text style={styles.metricLabel}>Cuota</Text><Text style={styles.metricVal}>{formatCurrency(item.monthlyPayment, item.currency)}</Text></View>
+          <View style={styles.metric}><Text style={styles.metricLabel}>Próximo</Text><Text style={styles.metricVal}>{formatDate(item.nextPaymentDate)}</Text></View>
         </View>
       </TouchableOpacity>
     );
@@ -87,7 +87,7 @@ export const CreditsListScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Mes Crédits</Text>
+        <Text style={styles.headerTitle}>Mis Créditos</Text>
       </View>
       <FlatList
         data={credits}
@@ -95,25 +95,25 @@ export const CreditsListScreen: React.FC = () => {
         renderItem={renderCredit}
         ListHeaderComponent={
           <View style={styles.summaryCard}>
-            <Text style={styles.summaryTitle}>Résumé de mes crédits</Text>
+            <Text style={styles.summaryTitle}>Resumen de mis créditos</Text>
             <View style={styles.summaryRow}>
               <View style={styles.summaryItem}>
-                <Text style={styles.summaryLabel}>Encours total</Text>
+                <Text style={styles.summaryLabel}>Saldo pendiente total</Text>
                 <Text style={styles.summaryVal}>{formatCurrency(totalDebt, 'EUR')}</Text>
               </View>
               <View style={styles.summaryDivider} />
               <View style={styles.summaryItem}>
-                <Text style={styles.summaryLabel}>Prochaine échéance</Text>
+                <Text style={styles.summaryLabel}>Próximo vencimiento</Text>
                 <Text style={styles.summaryVal}>{formatCurrency(nextPayment, 'EUR')}</Text>
               </View>
             </View>
           </View>
         }
-        ListEmptyComponent={<EmptyState title="Aucun crédit" description="Vous n'avez pas de crédit en cours" />}
+        ListEmptyComponent={<EmptyState title="Sin créditos" description="No tiene ningún crédito activo" />}
         ListFooterComponent={
           <View style={styles.actionBtns}>
-            <Button title="🧮 Simuler un crédit" onPress={() => navigation.navigate('CreditSimulator')} variant="outline" style={styles.actionBtn} />
-            <Button title="📄 Demander un crédit" onPress={() => navigation.navigate('CreditRequest')} style={styles.actionBtn} />
+            <Button title="🧮 Simular crédito" onPress={() => navigation.navigate('CreditSimulator')} variant="outline" style={styles.actionBtn} />
+            <Button title="📄 Solicitar un crédito" onPress={() => navigation.navigate('CreditRequest')} style={styles.actionBtn} />
           </View>
         }
         contentContainerStyle={{ paddingBottom: 40 }}

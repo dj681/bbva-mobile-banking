@@ -35,9 +35,9 @@ type DashboardNavProp = NativeStackNavigationProp<HomeStackParamList, 'Dashboard
 
 function getGreeting(): string {
   const hour = new Date().getHours();
-  if (hour < 12) return 'Bonjour';
-  if (hour < 18) return 'Bon après-midi';
-  return 'Bonsoir';
+  if (hour < 12) return 'Buenos días';
+  if (hour < 18) return 'Buenas tardes';
+  return 'Buenas noches';
 }
 
 const MOCK_INVESTMENTS = [
@@ -106,31 +106,31 @@ export const DashboardScreen: React.FC = () => {
   const quickActions = [
     {
       id: 'transfer',
-      label: 'Virement',
+      label: 'Transferencia',
       icon: 'swap-horizontal-outline' as const,
       onPress: () => navigation.navigate('TransferFlow'),
     },
     {
       id: 'pay',
-      label: 'Payer',
+      label: 'Pagar',
       icon: 'receipt-outline' as const,
       onPress: () => navigation.navigate('PaymentFlow'),
     },
     {
       id: 'cards',
-      label: 'Cartes',
+      label: 'Tarjetas',
       icon: 'card-outline' as const,
       onPress: () => {},
     },
     {
       id: 'credits',
-      label: 'Crédits',
+      label: 'Créditos',
       icon: 'cash-outline' as const,
       onPress: () => {},
     },
     {
       id: 'invest',
-      label: 'Investissements',
+      label: 'Inversiones',
       icon: 'trending-up-outline' as const,
       onPress: () => {},
     },
@@ -197,7 +197,7 @@ export const DashboardScreen: React.FC = () => {
             />
             <View style={styles.greetingContainer}>
               <Text style={styles.greetingText}>{getGreeting()},</Text>
-              <Text style={styles.nameText}>{user?.firstName ?? 'Utilisateur'} !</Text>
+              <Text style={styles.nameText}>{user?.firstName ?? 'Usuario'} !</Text>
             </View>
           </View>
           <TouchableOpacity
@@ -227,7 +227,7 @@ export const DashboardScreen: React.FC = () => {
 
         {/* Accounts Horizontal Scroll */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Mes comptes</Text>
+          <Text style={styles.sectionTitle}>Mis cuentas</Text>
           {isLoading && accounts.length === 0 ? (
             <LoadingSpinner />
           ) : (
@@ -244,15 +244,15 @@ export const DashboardScreen: React.FC = () => {
 
         {/* Quick Actions */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Actions rapides</Text>
+          <Text style={styles.sectionTitle}>Acciones rápidas</Text>
           <QuickActions actions={quickActions} />
         </View>
 
         {/* Recent Transactions Header */}
         <View style={[styles.section, styles.sectionHeader]}>
-          <Text style={styles.sectionTitle}>Transactions récentes</Text>
+          <Text style={styles.sectionTitle}>Transacciones recientes</Text>
           <TouchableOpacity onPress={() => {}}>
-            <Text style={styles.seeAllText}>Voir tout</Text>
+            <Text style={styles.seeAllText}>Ver todo</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -275,7 +275,7 @@ export const DashboardScreen: React.FC = () => {
   const ListFooter = useMemo(
     () => (
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Marchés</Text>
+        <Text style={styles.sectionTitle}>Mercados</Text>
         <View style={styles.marketCard}>
           {MOCK_INVESTMENTS.map(renderInvestmentRow)}
         </View>
@@ -303,8 +303,8 @@ export const DashboardScreen: React.FC = () => {
         ListEmptyComponent={
           !isLoading ? (
             <EmptyState
-              title="Aucune transaction"
-              message="Vous n'avez pas encore de transactions."
+              title="Sin transacciones"
+              message="Todavía no tiene transacciones."
               icon="receipt-outline"
             />
           ) : null

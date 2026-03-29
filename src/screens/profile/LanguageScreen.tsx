@@ -97,14 +97,14 @@ const LanguageScreen: React.FC = () => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={colors.headerText} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Langue</Text>
+        <Text style={styles.headerTitle}>Idioma</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
       {saved && (
         <View style={styles.savedBanner}>
           <Ionicons name="checkmark-circle" size={18} color="#FFFFFF" />
-          <Text style={styles.savedText}>Langue mise à jour</Text>
+          <Text style={styles.savedText}>Idioma actualizado</Text>
         </View>
       )}
 
@@ -117,7 +117,7 @@ const LanguageScreen: React.FC = () => {
         ItemSeparatorComponent={null}
         ListHeaderComponent={
           <Text style={styles.hint}>
-            Choisissez la langue d'affichage de l'application.
+            Elija el idioma de visualización de la aplicación.
           </Text>
         }
         ListFooterComponent={

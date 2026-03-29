@@ -157,12 +157,12 @@ const CHART_CONFIG: Record<Period, { labels: string[]; data: number[] }> = {
 };
 
 const ASSET_TYPE_LABELS: Record<AssetType, string> = {
-  stock: 'Action',
+  stock: 'Acción',
   etf: 'ETF',
-  bond: 'Obligation',
-  fund: 'Fonds',
-  savings_plan: "Plan d'épargne",
-  crypto: 'Crypto',
+  bond: 'Bono',
+  fund: 'Fondo',
+  savings_plan: 'Plan de ahorro',
+  crypto: 'Cripto',
 };
 
 const ASSET_TYPE_VARIANT: Record<AssetType, 'info' | 'success' | 'default' | 'warning' | 'error'> = {
@@ -434,7 +434,7 @@ export const InvestmentDetailsScreen: React.FC = () => {
           </View>
         </View>
         <View style={styles.loadingContainer}>
-          <LoadingSpinner message="Chargement…" />
+          <LoadingSpinner message="Cargando…" />
         </View>
       </View>
     );
@@ -542,28 +542,28 @@ export const InvestmentDetailsScreen: React.FC = () => {
           <Text style={styles.sectionTitle}>Mes Positions</Text>
 
           <StatRow
-            label="Quantité détenue"
+            label="Cantidad poseída"
             value={`${investment.quantity} titres`}
             styles={styles}
           />
           <StatRow
-            label="Prix moyen d'achat"
+            label="Precio medio de compra"
             value={formatCurrency(investment.purchasePrice)}
             styles={styles}
           />
           <StatRow
-            label="Valeur actuelle"
+            label="Valor actual"
             value={formatCurrency(investment.currentValue)}
             styles={styles}
           />
           <StatRow
-            label="Plus/moins-value"
+            label="Plusvalía/Minusvalía"
             value={`${isPositive ? '+' : ''}${formatCurrency(investment.gainLoss)}`}
             valueColor={gainColor}
             styles={styles}
           />
           <StatRow
-            label="Performance totale"
+            label="Rentabilidad total"
             value={`${isPositive ? '+' : ''}${formatPercentage(investment.gainLossPercent)}`}
             valueColor={gainColor}
             styles={styles}
@@ -580,10 +580,10 @@ export const InvestmentDetailsScreen: React.FC = () => {
         {/* Action buttons */}
         <View style={styles.actionButtons}>
           <View style={styles.actionBtnFlex}>
-            <Button label="Acheter" variant="primary" fullWidth onPress={handleBuy} />
+            <Button label="Comprar" variant="primary" fullWidth onPress={handleBuy} />
           </View>
           <View style={styles.actionBtnFlex}>
-            <Button label="Vendre" variant="outline" fullWidth onPress={handleSell} />
+            <Button label="Vender" variant="outline" fullWidth onPress={handleSell} />
           </View>
         </View>
 
@@ -593,11 +593,11 @@ export const InvestmentDetailsScreen: React.FC = () => {
           {investment.isin && (
             <InfoRow label="ISIN" value={investment.isin} styles={styles} />
           )}
-          <InfoRow label="Marché" value={extraInfo.market} styles={styles} />
+          <InfoRow label="Mercado" value={extraInfo.market} styles={styles} />
           {investment.sector && (
-            <InfoRow label="Secteur" value={investment.sector} styles={styles} />
+            <InfoRow label="Sector" value={investment.sector} styles={styles} />
           )}
-          <InfoRow label="Dividende" value={extraInfo.dividend} styles={styles} />
+          <InfoRow label="Dividendo" value={extraInfo.dividend} styles={styles} />
           <View style={[styles.infoRow, { borderBottomWidth: 0 }]}>
             <Text style={styles.infoLabel}>Allocation portefeuille</Text>
             <Text style={styles.infoValue}>

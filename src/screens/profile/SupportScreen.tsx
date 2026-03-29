@@ -40,39 +40,39 @@ interface FaqItem {
 const FAQ_ITEMS: FaqItem[] = [
   {
     id: 'pin',
-    question: 'Comment réinitialiser mon PIN ?',
+    question: '¿Cómo puedo restablecer mi PIN?',
     answer:
-      'Rendez-vous dans Profil → Sécurité → Code PIN → Modifier le PIN. Vous aurez besoin de votre mot de passe actuel pour confirmer le changement.',
+      'Vaya a Perfil → Seguridad → Código PIN → Cambiar PIN. Necesitará su contraseña actual para confirmar el cambio.',
   },
   {
     id: 'block_card',
-    question: 'Comment bloquer ma carte ?',
+    question: '¿Cómo puedo bloquear mi tarjeta?',
     answer:
-      'Dans l\'onglet Cartes, sélectionnez votre carte puis appuyez sur "Bloquer la carte". Pour une urgence, appelez le 0800 000 001 (24h/24).',
+      'En la pestaña Tarjetas, seleccione su tarjeta y pulse "Bloquear tarjeta". En caso de urgencia, llame al 0800 000 001 (24 h/24 h).',
   },
   {
     id: 'fees',
-    question: 'Quels sont les frais de virement ?',
+    question: '¿Cuáles son los gastos de transferencia?',
     answer:
-      'Les virements SEPA en zone euro sont gratuits. Les virements internationaux hors zone SEPA sont facturés selon la grille tarifaire disponible dans Conditions d\'utilisation.',
+      'Las transferencias SEPA en la zona euro son gratuitas. Las transferencias internacionales fuera de la zona SEPA se cobran según la tarifa disponible en las Condiciones de uso.',
   },
   {
     id: 'biometric',
-    question: 'Comment activer la biométrie ?',
+    question: '¿Cómo puedo activar la biometría?',
     answer:
-      'Allez dans Profil → Sécurité → Biométrie et activez la fonction Face ID / Empreinte digitale. Assurez-vous que la biométrie est configurée sur votre appareil.',
+      'Vaya a Perfil → Seguridad → Biometría y active la función Face ID / Huella dactilar. Asegúrese de que la biometría esté configurada en su dispositivo.',
   },
   {
     id: 'sepa_delay',
-    question: 'Délais des virements SEPA ?',
+    question: '¿Cuáles son los plazos de las transferencias SEPA?',
     answer:
-      'Les virements SEPA instantanés sont traités en quelques secondes. Les virements SEPA standards sont exécutés le jour ouvré suivant avant 22h si initiés avant 17h.',
+      'Las transferencias SEPA instantáneas se procesan en pocos segundos. Las transferencias SEPA estándar se ejecutan el siguiente día hábil antes de las 22:00 h si se realizan antes de las 17:00 h.',
   },
   {
     id: 'statement',
-    question: 'Comment obtenir un relevé de compte ?',
+    question: '¿Cómo puedo obtener un extracto de cuenta?',
     answer:
-      'Vos relevés mensuels sont disponibles dans Comptes → sélectionnez votre compte → Relevés. Vous pouvez les télécharger au format PDF ou les recevoir par email.',
+      'Sus extractos mensuales están disponibles en Cuentas → seleccione su cuenta → Extractos. Puede descargarlos en PDF o recibirlos por correo electrónico.',
   },
 ];
 
@@ -86,24 +86,24 @@ function getBotResponse(userMessage: string): string {
     return 'Pour bloquer votre carte, rendez-vous dans l\'onglet Cartes et sélectionnez votre carte. Pour une urgence, appelez le 0800 000 001.';
   }
   if (msg.includes('virement') || msg.includes('transfer')) {
-    return 'Les virements SEPA sont généralement traités le jour ouvré suivant. Pour les virements instantanés, ils sont exécutés en quelques secondes.';
+    return 'Las transferencias SEPA generalmente se procesan el siguiente día hábil. Las transferencias instantáneas se ejecutan en pocos segundos.';
   }
   if (msg.includes('biométr') || msg.includes('faceid') || msg.includes('empreinte')) {
-    return 'Pour activer la biométrie : Profil → Sécurité → Biométrie → activez Face ID / Empreinte digitale.';
+    return 'Para activar la biometría: Perfil → Seguridad → Biometría → active Face ID / Huella dactilar.';
   }
   if (msg.includes('relevé') || msg.includes('statement')) {
-    return 'Vos relevés sont disponibles dans Comptes → sélectionnez votre compte → Relevés. Vous pouvez les télécharger en PDF.';
+    return 'Sus extractos están disponibles en Cuentas → seleccione su cuenta → Extractos. Puede descargarlos en PDF.';
   }
   if (msg.includes('solde') || msg.includes('balance')) {
     return 'Votre solde est affiché sur le tableau de bord. Pour les détails, consultez l\'onglet Comptes.';
   }
   if (msg.includes('bonjour') || msg.includes('salut') || msg.includes('hello')) {
-    return 'Bonjour ! Je suis votre assistant BBVA. Comment puis-je vous aider aujourd\'hui ?';
+    return '¡Hola! Soy su asistente de BBVA. ¿En qué puedo ayudarle hoy?';
   }
   if (msg.includes('merci') || msg.includes('thank')) {
     return 'Je vous en prie ! N\'hésitez pas si vous avez d\'autres questions. 😊';
   }
-  return 'Je comprends votre question. Pour une assistance personnalisée, vous pouvez également appeler notre service client au 0800 123 456 ou consulter notre FAQ ci-dessous.';
+  return 'Entiendo su consulta. Para una atención personalizada, también puede llamar a nuestro servicio de atención al cliente al 0800 123 456 o consultar nuestras Preguntas frecuentes a continuación.';
 }
 
 function formatTime(date: Date): string {
@@ -118,7 +118,7 @@ const SupportScreen: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'initial',
-      text: 'Bonjour ! Comment puis-je vous aider ?',
+      text: '¡Hola! ¿En qué puedo ayudarle?',
       sender: 'bot',
       timestamp: new Date(),
     },
@@ -192,7 +192,7 @@ const SupportScreen: React.FC = () => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={colors.headerText} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Support Client</Text>
+        <Text style={styles.headerTitle}>Soporte al cliente</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
@@ -208,7 +208,7 @@ const SupportScreen: React.FC = () => {
         >
           {/* Contact options */}
           <View style={styles.contactSection}>
-            <Text style={styles.contactTitle}>Contactez-nous</Text>
+            <Text style={styles.contactTitle}>Contáctenos</Text>
             <View style={styles.contactGrid}>
               <TouchableOpacity
                 style={styles.contactCard}
@@ -218,9 +218,9 @@ const SupportScreen: React.FC = () => {
                 <View style={[styles.contactIcon, { backgroundColor: '#E3F2FD' }]}>
                   <Ionicons name="call" size={22} color="#003366" />
                 </View>
-                <Text style={styles.contactLabel}>Appeler le support</Text>
+                <Text style={styles.contactLabel}>Llamar al soporte</Text>
                 <Text style={styles.contactValue}>0800 123 456</Text>
-                <Text style={styles.contactNote}>Gratuit · 24h/24</Text>
+                <Text style={styles.contactNote}>Gratuito · 24 h/24 h</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -231,9 +231,9 @@ const SupportScreen: React.FC = () => {
                 <View style={[styles.contactIcon, { backgroundColor: '#E8F5E9' }]}>
                   <Ionicons name="chatbubbles" size={22} color="#2E7D32" />
                 </View>
-                <Text style={styles.contactLabel}>Démarrer un chat</Text>
+                <Text style={styles.contactLabel}>Iniciar un chat</Text>
                 <Text style={styles.contactValue}>Chat en direct</Text>
-                <Text style={styles.contactNote}>Réponse immédiate</Text>
+                <Text style={styles.contactNote}>Respuesta inmediata</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -246,9 +246,9 @@ const SupportScreen: React.FC = () => {
                 <View style={[styles.contactIcon, { backgroundColor: '#FFF8E1' }]}>
                   <Ionicons name="mail" size={22} color="#F57F17" />
                 </View>
-                <Text style={styles.contactLabel}>Envoyer un email</Text>
+                <Text style={styles.contactLabel}>Enviar un correo electrónico</Text>
                 <Text style={styles.contactValue}>support@bbva.fr</Text>
-                <Text style={styles.contactNote}>Réponse sous 24h</Text>
+                <Text style={styles.contactNote}>Respuesta en 24 h</Text>
               </TouchableOpacity>
             </View>
 
@@ -256,7 +256,7 @@ const SupportScreen: React.FC = () => {
             <View style={styles.hoursBox}>
               <Ionicons name="time-outline" size={16} color={colors.textSecondary} />
               <Text style={styles.hoursText}>
-                Conseillers disponibles : Lun–Ven 8h–20h · Sam 9h–17h
+                Asesores disponibles: Lun–Vie 8:00–20:00 · Sáb 9:00–17:00
               </Text>
             </View>
           </View>
@@ -292,7 +292,7 @@ const SupportScreen: React.FC = () => {
                   style={[styles.chatInput, { color: colors.text, borderColor: colors.border }]}
                   value={inputText}
                   onChangeText={setInputText}
-                  placeholder="Écrivez votre message..."
+                  placeholder="Escriba su mensaje..."
                   placeholderTextColor={colors.placeholder}
                   onSubmitEditing={sendMessage}
                   returnKeyType="send"
@@ -316,7 +316,7 @@ const SupportScreen: React.FC = () => {
 
           {/* FAQ */}
           <View style={styles.faqSection}>
-            <Text style={styles.sectionTitle}>Questions fréquentes</Text>
+            <Text style={styles.sectionTitle}>Preguntas frecuentes</Text>
 
             <View style={styles.faqCard}>
               {FAQ_ITEMS.map((faq, index) => {

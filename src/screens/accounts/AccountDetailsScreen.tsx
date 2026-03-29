@@ -113,7 +113,7 @@ export const AccountDetailsScreen: React.FC = () => {
           onPress={() => setActiveTab(tab)}
         >
           <Text style={[styles.tabText, activeTab === tab && styles.tabTextActive]}>
-            {tab === 'transactions' ? 'Transactions' : 'Infos du compte'}
+            {tab === 'transactions' ? 'Transacciones' : 'Información de la cuenta'}
           </Text>
         </TouchableOpacity>
       ))}
@@ -123,25 +123,25 @@ export const AccountDetailsScreen: React.FC = () => {
   const AccountInfoContent = account ? (
     <View style={styles.infoContainer}>
       {[
-        { label: 'Titulaire', value: account.name },
-        { label: 'Numéro de compte', value: account.accountNumber },
+        { label: 'Titular', value: account.name },
+        { label: 'Número de cuenta', value: account.accountNumber },
         { label: 'IBAN', value: formatIBAN(account.iban) },
         { label: 'BIC / SWIFT', value: 'BBVAESMMXXX' },
         {
-          label: 'Type de compte',
+          label: 'Tipo de cuenta',
           value:
             account.type === 'checking'
-              ? 'Compte courant'
+              ? 'Cuenta corriente'
               : account.type === 'savings'
-              ? 'Compte épargne'
+              ? 'Cuenta de ahorro'
               : account.type === 'investment'
-              ? 'Compte investissement'
-              : 'Compte crédit',
+              ? 'Cuenta de inversión'
+              : 'Cuenta de crédito',
         },
-        { label: 'Devise', value: account.currency },
-        { label: "Date d'ouverture", value: formatDate(account.createdAt) },
+        { label: 'Divisa', value: account.currency },
+        { label: 'Fecha de apertura', value: formatDate(account.createdAt) },
         ...(account.interestRate !== undefined
-          ? [{ label: "Taux d'intérêt", value: `${account.interestRate}%` }]
+          ? [{ label: 'Tipo de interés', value: `${account.interestRate}%` }]
           : []),
       ].map(({ label, value }) => (
         <View key={label} style={styles.infoRow}>
@@ -164,7 +164,7 @@ export const AccountDetailsScreen: React.FC = () => {
       {/* Balance details */}
       <View style={styles.balanceDetails}>
         <View style={styles.balanceItem}>
-          <Text style={styles.balanceLabel}>Solde total</Text>
+          <Text style={styles.balanceLabel}>Saldo total</Text>
           <Text style={styles.balanceValue}>{formatCurrency(account.balance, account.currency)}</Text>
         </View>
         <Divider vertical style={styles.balanceDivider} />
@@ -176,7 +176,7 @@ export const AccountDetailsScreen: React.FC = () => {
         </View>
         <Divider vertical style={styles.balanceDivider} />
         <View style={styles.balanceItem}>
-          <Text style={styles.balanceLabel}>Réservé</Text>
+          <Text style={styles.balanceLabel}>Retenido</Text>
           <Text style={[styles.balanceValue, { color: colors.warning }]}>
             {formatCurrency(account.balance - account.availableBalance, account.currency)}
           </Text>
@@ -186,9 +186,9 @@ export const AccountDetailsScreen: React.FC = () => {
       {/* Quick Actions */}
       <View style={styles.quickActions}>
         {[
-          { icon: 'swap-horizontal-outline' as const, label: 'Virement', onPress: () => {} },
-          { icon: 'receipt-outline' as const, label: 'Payer', onPress: () => {} },
-          { icon: 'document-text-outline' as const, label: 'Relevé', onPress: () => {} },
+          { icon: 'swap-horizontal-outline' as const, label: 'Transferencia', onPress: () => {} },
+          { icon: 'receipt-outline' as const, label: 'Pagar', onPress: () => {} },
+          { icon: 'document-text-outline' as const, label: 'Extracto', onPress: () => {} },
         ].map((action) => (
           <TouchableOpacity
             key={action.label}
@@ -212,7 +212,7 @@ export const AccountDetailsScreen: React.FC = () => {
           <SearchBar
             value={searchQuery}
             onChangeText={handleSearch}
-            placeholder="Rechercher une transaction..."
+            placeholder="Buscar una transacción..."
           />
         </View>
       )}
@@ -223,8 +223,8 @@ export const AccountDetailsScreen: React.FC = () => {
     return (
       <View style={[styles.container, styles.centered]}>
         <EmptyState
-          title="Compte introuvable"
-          message="Ce compte n'existe pas ou a été supprimé."
+          title="Cuenta no encontrada"
+          message='Esta cuenta no existe o ha sido eliminada.'
           icon="alert-circle-outline"
         />
       </View>
@@ -256,8 +256,8 @@ export const AccountDetailsScreen: React.FC = () => {
             <LoadingSpinner />
           ) : (
             <EmptyState
-              title="Aucune transaction"
-              message="Aucune transaction trouvée pour ce compte."
+              title="Sin transacciones"
+              message="No se encontraron transacciones para esta cuenta."
               icon="receipt-outline"
             />
           )

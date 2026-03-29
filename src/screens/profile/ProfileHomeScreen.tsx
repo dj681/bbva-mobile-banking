@@ -55,7 +55,7 @@ const ProfileHomeScreen: React.FC = () => {
 
   const languageLabel =
     language === 'fr'
-      ? 'Français'
+      ? 'Español'
       : language === 'en'
       ? 'English'
       : language === 'es'
@@ -69,93 +69,93 @@ const ProfileHomeScreen: React.FC = () => {
       : language;
 
   const themeLabel =
-    theme === 'dark' ? 'Sombre' : theme === 'system' ? 'Système' : 'Clair';
+    theme === 'dark' ? 'Oscuro' : theme === 'system' ? 'Sistema' : 'Claro';
 
   const sections: MenuSection[] = [
     {
-      title: 'COMPTE',
+      title: 'CUENTA',
       items: [
         {
           id: 'edit-profile',
-          label: 'Modifier le profil',
+          label: 'Editar perfil',
           icon: 'person-outline',
           screen: 'EditProfile',
         },
         {
           id: 'change-password',
-          label: 'Changer le mot de passe',
+          label: 'Cambiar contraseña',
           icon: 'lock-closed-outline',
           screen: 'ChangePassword',
         },
       ],
     },
     {
-      title: 'SÉCURITÉ',
+      title: 'SEGURIDAD',
       items: [
         {
           id: 'security',
-          label: 'Sécurité',
+          label: 'Seguridad',
           icon: 'shield-checkmark-outline',
           screen: 'SecuritySettings',
         },
         {
           id: 'devices',
-          label: 'Gestion des appareils',
+          label: 'Gestión de dispositivos',
           icon: 'phone-portrait-outline',
-          badge: '2 appareils',
+          badge: '2 dispositivos',
           screen: 'DeviceManagement',
         },
       ],
     },
     {
-      title: 'PRÉFÉRENCES',
+      title: 'PREFERENCIAS',
       items: [
         {
           id: 'notifications',
-          label: 'Notifications',
+          label: 'Notificaciones',
           icon: 'notifications-outline',
           screen: 'NotificationSettings',
         },
         {
           id: 'language',
-          label: 'Langue',
+          label: 'Idioma',
           icon: 'globe-outline',
           value: languageLabel,
           screen: 'Language',
         },
         {
           id: 'appearance',
-          label: 'Apparence',
+          label: 'Apariencia',
           icon: 'moon-outline',
           value: themeLabel,
           screen: undefined,
         },
         {
           id: 'privacy',
-          label: 'Confidentialité',
+          label: 'Privacidad',
           icon: 'eye-outline',
           screen: undefined,
         },
       ],
     },
     {
-      title: 'INFORMATIONS',
+      title: 'INFORMACIÓN',
       items: [
         {
           id: 'about',
-          label: 'À propos',
+          label: 'Acerca de',
           icon: 'information-circle-outline',
           screen: 'About',
         },
         {
           id: 'terms',
-          label: "Conditions d'utilisation",
+          label: 'Condiciones de uso',
           icon: 'document-text-outline',
           screen: undefined,
         },
         {
           id: 'support',
-          label: 'Support client',
+          label: 'Soporte al cliente',
           icon: 'headset-outline',
           screen: 'Support',
         },
@@ -179,7 +179,7 @@ const ProfileHomeScreen: React.FC = () => {
     }
   };
 
-  const fullName = user ? `${user.firstName} ${user.lastName}` : 'Utilisateur';
+  const fullName = user ? `${user.firstName} ${user.lastName}` : 'Usuario';
 
   const styles = makeStyles(colors, spacing, borderRadius);
 
@@ -210,7 +210,7 @@ const ProfileHomeScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Mon Profil</Text>
+        <Text style={styles.headerTitle}>Mi Perfil</Text>
       </View>
 
       <ScrollView
@@ -231,7 +231,7 @@ const ProfileHomeScreen: React.FC = () => {
             onPress={() => navigation.navigate('EditProfile')}
             activeOpacity={0.8}
           >
-            <Text style={styles.editButtonText}>Modifier le profil</Text>
+            <Text style={styles.editButtonText}>Editar perfil</Text>
           </TouchableOpacity>
         </View>
 
@@ -264,7 +264,7 @@ const ProfileHomeScreen: React.FC = () => {
                 <View style={[styles.menuIconContainer, styles.dangerIconContainer]}>
                   <Ionicons name="log-out-outline" size={20} color={colors.error} />
                 </View>
-                <Text style={styles.dangerLabel}>Déconnexion</Text>
+                <Text style={styles.dangerLabel}>Cerrar sesión</Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color={colors.error} />
             </TouchableOpacity>
@@ -277,21 +277,21 @@ const ProfileHomeScreen: React.FC = () => {
       {/* Logout confirmation modal */}
       <Modal
         visible={logoutModalVisible}
-        title="Déconnexion"
+        title="Cerrar sesión"
         onClose={() => setLogoutModalVisible(false)}
       >
         <Text style={styles.modalBody}>
-          Êtes-vous sûr de vouloir vous déconnecter de votre compte BBVA ?
+          ¿Está seguro de que desea cerrar sesión en su cuenta BBVA?
         </Text>
         <View style={styles.modalActions}>
           <Button
-            label="Annuler"
+            label="Cancelar"
             variant="outline"
             onPress={() => setLogoutModalVisible(false)}
             style={styles.modalBtn}
           />
           <Button
-            label="Déconnexion"
+            label="Cerrar sesión"
             variant="danger"
             loading={loggingOut}
             onPress={handleLogout}

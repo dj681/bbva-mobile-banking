@@ -34,11 +34,11 @@ function evaluateStrength(password: string): PasswordStrength {
   if (/[^A-Za-z0-9]/.test(password)) score++;
   if (password.length >= 12) score++;
 
-  if (score <= 1) return { score, label: 'Très faible', color: '#F44336' };
-  if (score === 2) return { score, label: 'Faible', color: '#FF9800' };
-  if (score === 3) return { score, label: 'Moyen', color: '#FFC107' };
-  if (score === 4) return { score, label: 'Fort', color: '#4CAF50' };
-  return { score, label: 'Très fort', color: '#2E7D32' };
+  if (score <= 1) return { score, label: 'Muy débil', color: '#F44336' };
+  if (score === 2) return { score, label: 'Débil', color: '#FF9800' };
+  if (score === 3) return { score, label: 'Media', color: '#FFC107' };
+  if (score === 4) return { score, label: 'Fuerte', color: '#4CAF50' };
+  return { score, label: 'Muy fuerte', color: '#2E7D32' };
 }
 
 interface Requirement {
@@ -47,10 +47,10 @@ interface Requirement {
 }
 
 const REQUIREMENTS: Requirement[] = [
-  { label: 'Au moins 8 caractères', met: (pw) => pw.length >= 8 },
-  { label: 'Une lettre majuscule', met: (pw) => /[A-Z]/.test(pw) },
-  { label: 'Un chiffre', met: (pw) => /[0-9]/.test(pw) },
-  { label: 'Un caractère spécial (!@#$%...)', met: (pw) => /[^A-Za-z0-9]/.test(pw) },
+  { label: 'Al menos 8 caracteres', met: (pw) => pw.length >= 8 },
+  { label: 'Una letra mayúscula', met: (pw) => /[A-Z]/.test(pw) },
+  { label: 'Un número', met: (pw) => /[0-9]/.test(pw) },
+  { label: 'Un carácter especial (!@#$%...)', met: (pw) => /[^A-Za-z0-9]/.test(pw) },
 ];
 
 const ChangePasswordScreen: React.FC = () => {
@@ -68,16 +68,16 @@ const ChangePasswordScreen: React.FC = () => {
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
-    if (!currentPassword) newErrors.currentPassword = 'Mot de passe actuel requis';
+    if (!currentPassword) newErrors.currentPassword = 'La contraseña actual es obligatoria';
     if (!newPassword) {
-      newErrors.newPassword = 'Nouveau mot de passe requis';
+      newErrors.newPassword = 'La nueva contraseña es obligatoria';
     } else if (newPassword.length < 8) {
-      newErrors.newPassword = 'Le mot de passe doit contenir au moins 8 caractères';
+      newErrors.newPassword = 'La contraseña debe tener al menos 8 caracteres';
     }
     if (!confirmPassword) {
-      newErrors.confirmPassword = 'Veuillez confirmer le mot de passe';
+      newErrors.confirmPassword = 'Por favor, confirme la contraseña';
     } else if (confirmPassword !== newPassword) {
-      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+      newErrors.confirmPassword = 'Las contraseñas no coinciden';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -103,20 +103,20 @@ const ChangePasswordScreen: React.FC = () => {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
             <Ionicons name="arrow-back" size={24} color={colors.headerText} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Changer le mot de passe</Text>
+          <Text style={styles.headerTitle}>Cambiar contraseña</Text>
           <View style={styles.headerPlaceholder} />
         </View>
         <View style={styles.successContainer}>
           <View style={styles.successIcon}>
             <Ionicons name="checkmark-circle" size={72} color="#4CAF50" />
           </View>
-          <Text style={styles.successTitle}>Mot de passe modifié !</Text>
+          <Text style={styles.successTitle}>¡Contraseña cambiada!</Text>
           <Text style={styles.successSubtitle}>
-            Votre mot de passe a été mis à jour avec succès. Vous pouvez désormais vous
-            connecter avec votre nouveau mot de passe.
+            Su contraseña se ha actualizado correctamente. Ahora puede
+            iniciar sesión con su nueva contraseña.
           </Text>
           <Button
-            label="Retour au profil"
+            label="Volver al perfil"
             variant="primary"
             fullWidth
             onPress={() => navigation.goBack()}
@@ -133,7 +133,7 @@ const ChangePasswordScreen: React.FC = () => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={colors.headerText} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Changer le mot de passe</Text>
+        <Text style={styles.headerTitle}>Cambiar contraseña</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
@@ -150,13 +150,13 @@ const ChangePasswordScreen: React.FC = () => {
           <View style={styles.infoBox}>
             <Ionicons name="shield-checkmark-outline" size={20} color="#003366" />
             <Text style={styles.infoText}>
-              Choisissez un mot de passe fort que vous n'utilisez pas pour d'autres sites.
+              Elija una contraseña segura que no utilice en otros sitios.
             </Text>
           </View>
 
           <View style={styles.formCard}>
             <Input
-              label="Mot de passe actuel"
+              label="Contraseña actual"
               value={currentPassword}
               onChangeText={(v) => {
                 setCurrentPassword(v);
@@ -168,7 +168,7 @@ const ChangePasswordScreen: React.FC = () => {
             />
 
             <Input
-              label="Nouveau mot de passe"
+              label="Nueva contraseña"
               value={newPassword}
               onChangeText={(v) => {
                 setNewPassword(v);
@@ -203,7 +203,7 @@ const ChangePasswordScreen: React.FC = () => {
             )}
 
             <Input
-              label="Confirmer le nouveau mot de passe"
+              label="Confirmar la nueva contraseña"
               value={confirmPassword}
               onChangeText={(v) => {
                 setConfirmPassword(v);
@@ -217,7 +217,7 @@ const ChangePasswordScreen: React.FC = () => {
 
           {/* Requirements */}
           <View style={styles.requirementsCard}>
-            <Text style={styles.requirementsTitle}>Exigences du mot de passe</Text>
+            <Text style={styles.requirementsTitle}>Requisitos de la contraseña</Text>
             {REQUIREMENTS.map((req) => {
               const met = req.met(newPassword);
               return (
@@ -241,7 +241,7 @@ const ChangePasswordScreen: React.FC = () => {
           </View>
 
           <Button
-            label="Modifier le mot de passe"
+            label="Cambiar contraseña"
             variant="primary"
             fullWidth
             loading={loading}

@@ -30,10 +30,10 @@ type TransactionHistoryRouteProp = RouteProp<AccountsStackParamList, 'Transactio
 type FilterChip = 'all' | TransactionType;
 
 const FILTER_CHIPS: { key: FilterChip; label: string }[] = [
-  { key: 'all', label: 'Tous' },
-  { key: 'credit', label: 'Crédits' },
-  { key: 'debit', label: 'Débits' },
-  { key: 'transfer', label: 'Virements' },
+  { key: 'all', label: 'Todos' },
+  { key: 'credit', label: 'Créditos' },
+  { key: 'debit', label: 'Débitos' },
+  { key: 'transfer', label: 'Transferencias' },
 ];
 
 function groupByDate(transactions: Transaction[]): { date: string; data: Transaction[] }[] {
@@ -148,7 +148,7 @@ export const TransactionHistoryScreen: React.FC = () => {
         <SearchBar
           value={searchQuery}
           onChangeText={handleSearch}
-          placeholder="Rechercher..."
+          placeholder="Buscar..."
         />
       </View>
 
@@ -179,7 +179,7 @@ export const TransactionHistoryScreen: React.FC = () => {
           onPress={() => setExportModalVisible(true)}
         >
           <Ionicons name="download-outline" size={18} color={colors.primary} />
-          <Text style={styles.exportText}>Exporter</Text>
+          <Text style={styles.exportText}>Exportar</Text>
         </TouchableOpacity>
       </View>
 
@@ -193,8 +193,8 @@ export const TransactionHistoryScreen: React.FC = () => {
             <LoadingSpinner />
           ) : (
             <EmptyState
-              title="Aucune transaction"
-              message="Aucun résultat pour les critères sélectionnés."
+              title="Sin transacciones"
+              message="No hay resultados para los criterios seleccionados."
               icon="search-outline"
             />
           )
@@ -218,7 +218,7 @@ export const TransactionHistoryScreen: React.FC = () => {
       <Modal
         visible={exportModalVisible}
         onClose={() => setExportModalVisible(false)}
-        title="Exporter les transactions"
+        title="Exportar transacciones"
       >
         <View style={styles.exportModalContent}>
           {['PDF', 'CSV', 'Excel'].map((format) => (

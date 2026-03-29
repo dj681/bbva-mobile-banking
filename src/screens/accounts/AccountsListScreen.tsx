@@ -25,10 +25,10 @@ import { formatCurrency, formatIBAN } from '@/utils';
 type AccountsListNavProp = NativeStackNavigationProp<AccountsStackParamList, 'AccountsList'>;
 
 const ACCOUNT_TYPE_LABELS: Record<string, string> = {
-  checking: 'Courant',
-  savings: 'Épargne',
-  investment: 'Investissement',
-  credit: 'Crédit',
+  checking: 'Corriente',
+  savings: 'Ahorro',
+  investment: 'Inversión',
+  credit: 'Crédito',
 };
 
 export const AccountsListScreen: React.FC = () => {
@@ -100,7 +100,7 @@ export const AccountsListScreen: React.FC = () => {
             )}
           </View>
           <Text style={styles.ibanText}>
-            IBAN : {formatIBAN(item.iban).replace(/(.{4}\s){3}/, '•••• •••• •••• ')
+            IBAN: {formatIBAN(item.iban).replace(/(.{4}\s){3}/, '•••• •••• •••• ')
               .substring(0, 22)}…
           </Text>
         </View>
@@ -112,7 +112,7 @@ export const AccountsListScreen: React.FC = () => {
 
   const ListHeader = (
     <View style={styles.header}>
-      <Text style={styles.headerTitle}>Mes Comptes</Text>
+      <Text style={styles.headerTitle}>Mis Cuentas</Text>
       <View style={styles.summaryContainer}>
         <BalanceSummary
           totalBalance={totalBalance}
@@ -121,7 +121,7 @@ export const AccountsListScreen: React.FC = () => {
         />
       </View>
       <Text style={styles.accountCount}>
-        {accounts.length} compte{accounts.length !== 1 ? 's' : ''}
+        {accounts.length} cuenta{accounts.length !== 1 ? 's' : ''}
       </Text>
     </View>
   );
@@ -143,8 +143,8 @@ export const AccountsListScreen: React.FC = () => {
         ListHeaderComponent={ListHeader}
         ListEmptyComponent={
           <EmptyState
-            title="Aucun compte"
-            message="Vous n'avez pas encore de compte bancaire."
+            title="Sin cuentas"
+            message="Todavía no tiene ninguna cuenta bancaria."
             icon="wallet-outline"
           />
         }
