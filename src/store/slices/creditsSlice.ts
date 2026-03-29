@@ -1,5 +1,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { CreditsState, Credit, CreditSimulation } from '../../types';
+import {
+  fetchCreditsApi,
+  fetchCreditDetailsApi,
+  simulateCreditApi,
+  requestCreditApi,
+  makeEarlyPaymentApi,
+} from '../../services/api/creditsApi';
 
 const initialState: CreditsState = {
   credits: [],
@@ -29,110 +36,58 @@ interface EarlyPaymentPayload {
 
 export const fetchCredits = createAsyncThunk<Credit[], void>(
   'credits/fetchCredits',
-  async (_, { rejectWithValue, getState }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch('/api/credits', {
-        headers: { Authorization: `Bearer ${state.auth.token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to fetch credits');
-      }
-      return data.data as Credit[];
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      return await fetchCreditsApi();
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement des crédits.');
     }
   },
 );
 
 export const fetchCreditDetails = createAsyncThunk<Credit, string>(
   'credits/fetchCreditDetails',
-  async (creditId, { rejectWithValue, getState }) => {
+  async (creditId, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch(`/api/credits/${creditId}`, {
-        headers: { Authorization: `Bearer ${state.auth.token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to fetch credit details');
-      }
-      return data.data as Credit;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      const { credit } = await fetchCreditDetailsApi(creditId);
+      return credit;
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement du crédit.');
     }
   },
 );
 
 export const simulateCredit = createAsyncThunk<CreditSimulation, SimulateCreditParams>(
   'credits/simulateCredit',
-  async (params, { rejectWithValue, getState }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch('/api/credits/simulate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.auth.token}`,
-        },
-        body: JSON.stringify(params),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to simulate credit');
-      }
-      return data.data as CreditSimulation;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      return await simulateCreditApi(params);
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors de la simulation.');
     }
   },
 );
 
 export const requestCredit = createAsyncThunk<Credit, RequestCreditPayload>(
   'credits/requestCredit',
-  async (payload, { rejectWithValue, getState }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch('/api/credits/request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.auth.token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to submit credit request');
-      }
-      return data.data as Credit;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      return await requestCreditApi(payload);
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors de la demande de crédit.');
     }
   },
 );
 
 export const makeEarlyPayment = createAsyncThunk<Credit, EarlyPaymentPayload>(
   'credits/makeEarlyPayment',
-  async ({ creditId, amount }, { rejectWithValue, getState }) => {
+  async ({ creditId, amount }, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch(`/api/credits/${creditId}/early-payment`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.auth.token}`,
-        },
-        body: JSON.stringify({ amount }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to process early payment');
-      }
-      return data.data as Credit;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      await makeEarlyPaymentApi({ creditId, amount, date: new Date().toISOString() });
+      const { credit } = await fetchCreditDetailsApi(creditId);
+      return credit;
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du remboursement anticipé.');
     }
   },
 );

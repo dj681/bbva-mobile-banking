@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { AccountsState, Account, Transaction, TransactionFilters } from '../../types';
+import {
+  fetchAccountsApi,
+  fetchTransactionsApi,
+  fetchAccountDetailsApi,
+} from '../../services/api/accountsApi';
 
 const initialState: AccountsState = {
   accounts: [],
@@ -21,19 +26,11 @@ interface FetchTransactionsParams {
 
 export const fetchAccounts = createAsyncThunk<Account[], void>(
   'accounts/fetchAccounts',
-  async (_, { rejectWithValue, getState }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch('/api/accounts', {
-        headers: { Authorization: `Bearer ${state.auth.token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to fetch accounts');
-      }
-      return data.data as Account[];
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      return await fetchAccountsApi();
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement des comptes.');
     }
   },
 );
@@ -41,51 +38,23 @@ export const fetchAccounts = createAsyncThunk<Account[], void>(
 export const fetchTransactions = createAsyncThunk<
   { accountId: string; transactions: Transaction[] },
   FetchTransactionsParams
->('accounts/fetchTransactions', async (params, { rejectWithValue, getState }) => {
+>('accounts/fetchTransactions', async (params, { rejectWithValue }) => {
   try {
-    const state = getState() as { auth: { token: string | null } };
-    const { accountId, page = 1, pageSize = 20, filters } = params;
-
-    const query = new URLSearchParams({
-      page: String(page),
-      pageSize: String(pageSize),
-      ...(filters?.dateFrom && { dateFrom: filters.dateFrom }),
-      ...(filters?.dateTo && { dateTo: filters.dateTo }),
-      ...(filters?.type && { type: filters.type }),
-      ...(filters?.minAmount !== undefined && { minAmount: String(filters.minAmount) }),
-      ...(filters?.maxAmount !== undefined && { maxAmount: String(filters.maxAmount) }),
-      ...(filters?.category && { category: filters.category }),
-      ...(filters?.status && { status: filters.status }),
-    });
-
-    const response = await fetch(`/api/accounts/${accountId}/transactions?${query.toString()}`, {
-      headers: { Authorization: `Bearer ${state.auth.token}` },
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      return rejectWithValue(data.message ?? 'Failed to fetch transactions');
-    }
-    return { accountId, transactions: data.data as Transaction[] };
-  } catch {
-    return rejectWithValue('Network error. Please try again.');
+    const { accountId, page = 1, pageSize = 20 } = params;
+    const { transactions } = await fetchTransactionsApi(accountId, page, pageSize);
+    return { accountId, transactions };
+  } catch (err: unknown) {
+    return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement des transactions.');
   }
 });
 
 export const fetchAccountDetails = createAsyncThunk<Account, string>(
   'accounts/fetchAccountDetails',
-  async (accountId, { rejectWithValue, getState }) => {
+  async (accountId, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch(`/api/accounts/${accountId}`, {
-        headers: { Authorization: `Bearer ${state.auth.token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to fetch account details');
-      }
-      return data.data as Account;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      return await fetchAccountDetailsApi(accountId);
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement du compte.');
     }
   },
 );

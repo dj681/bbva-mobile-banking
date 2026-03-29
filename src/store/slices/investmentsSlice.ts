@@ -1,5 +1,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { InvestmentsState, Investment, PortfolioSummary, PricePoint, SavingsPlan } from '../../types';
+import {
+  fetchPortfolioApi,
+  fetchInvestmentDetailsApi,
+  fetchPriceHistoryApi,
+  buyInvestmentApi,
+  sellInvestmentApi,
+} from '../../services/api/investmentsApi';
 
 const initialState: InvestmentsState = {
   investments: [],
@@ -26,37 +33,21 @@ interface PriceHistoryParams {
 export const fetchPortfolio = createAsyncThunk<
   { investments: Investment[]; portfolio: PortfolioSummary; savingsPlans: SavingsPlan[] },
   void
->('investments/fetchPortfolio', async (_, { rejectWithValue, getState }) => {
+>('investments/fetchPortfolio', async (_, { rejectWithValue }) => {
   try {
-    const state = getState() as { auth: { token: string | null } };
-    const response = await fetch('/api/investments/portfolio', {
-      headers: { Authorization: `Bearer ${state.auth.token}` },
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      return rejectWithValue(data.message ?? 'Failed to fetch portfolio');
-    }
-    return data.data as { investments: Investment[]; portfolio: PortfolioSummary; savingsPlans: SavingsPlan[] };
-  } catch {
-    return rejectWithValue('Network error. Please try again.');
+    return await fetchPortfolioApi();
+  } catch (err: unknown) {
+    return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement du portefeuille.');
   }
 });
 
 export const fetchInvestmentDetails = createAsyncThunk<Investment, string>(
   'investments/fetchInvestmentDetails',
-  async (investmentId, { rejectWithValue, getState }) => {
+  async (investmentId, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch(`/api/investments/${investmentId}`, {
-        headers: { Authorization: `Bearer ${state.auth.token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to fetch investment details');
-      }
-      return data.data as Investment;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      return await fetchInvestmentDetailsApi(investmentId);
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement de l\'investissement.');
     }
   },
 );
@@ -64,43 +55,24 @@ export const fetchInvestmentDetails = createAsyncThunk<Investment, string>(
 export const fetchPriceHistory = createAsyncThunk<
   { symbol: string; history: PricePoint[] },
   PriceHistoryParams
->('investments/fetchPriceHistory', async ({ symbol, period }, { rejectWithValue, getState }) => {
+>('investments/fetchPriceHistory', async ({ symbol, period }, { rejectWithValue }) => {
+  const periodToDays: Record<string, number> = { '1D': 1, '1W': 7, '1M': 30, '3M': 90, '1Y': 365, '5Y': 1825 };
   try {
-    const state = getState() as { auth: { token: string | null } };
-    const response = await fetch(
-      `/api/investments/price-history/${symbol}?period=${period}`,
-      { headers: { Authorization: `Bearer ${state.auth.token}` } },
-    );
-    const data = await response.json();
-    if (!response.ok) {
-      return rejectWithValue(data.message ?? 'Failed to fetch price history');
-    }
-    return { symbol, history: data.data as PricePoint[] };
-  } catch {
-    return rejectWithValue('Network error. Please try again.');
+    const history = await fetchPriceHistoryApi(symbol, periodToDays[period] ?? 30);
+    return { symbol, history };
+  } catch (err: unknown) {
+    return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors du chargement de l\'historique.');
   }
 });
 
 export const buyInvestment = createAsyncThunk<Investment, BuySellPayload>(
   'investments/buyInvestment',
-  async (payload, { rejectWithValue, getState }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const state = getState() as { auth: { token: string | null } };
-      const response = await fetch('/api/investments/buy', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.auth.token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(data.message ?? 'Failed to execute buy order');
-      }
-      return data.data as Investment;
-    } catch {
-      return rejectWithValue('Network error. Please try again.');
+      const result = await buyInvestmentApi({ ...payload, action: 'buy' });
+      return result.investment;
+    } catch (err: unknown) {
+      return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors de l\'achat.');
     }
   },
 );
@@ -108,27 +80,15 @@ export const buyInvestment = createAsyncThunk<Investment, BuySellPayload>(
 export const sellInvestment = createAsyncThunk<
   { investmentId: string; updatedInvestment: Investment | null },
   BuySellPayload
->('investments/sellInvestment', async (payload, { rejectWithValue, getState }) => {
+>('investments/sellInvestment', async (payload, { rejectWithValue }) => {
   try {
-    const state = getState() as { auth: { token: string | null } };
-    const response = await fetch('/api/investments/sell', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${state.auth.token}`,
-      },
-      body: JSON.stringify(payload),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      return rejectWithValue(data.message ?? 'Failed to execute sell order');
-    }
+    const result = await sellInvestmentApi({ ...payload, action: 'sell' });
     return {
       investmentId: payload.investmentId ?? '',
-      updatedInvestment: data.data as Investment | null,
+      updatedInvestment: result.investment.quantity > 0 ? result.investment : null,
     };
-  } catch {
-    return rejectWithValue('Network error. Please try again.');
+  } catch (err: unknown) {
+    return rejectWithValue(err instanceof Error ? err.message : 'Erreur lors de la vente.');
   }
 });
 
