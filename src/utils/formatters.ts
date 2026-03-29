@@ -1,5 +1,5 @@
 import { format, formatDistanceToNow, parseISO, isValid } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { es } from 'date-fns/locale';
 
 /**
  * Format a number as a currency string.
@@ -8,7 +8,7 @@ import { fr } from 'date-fns/locale';
 export function formatCurrency(
   amount: number,
   currency = 'EUR',
-  locale = 'fr-FR',
+  locale = 'es-ES',
 ): string {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
@@ -30,7 +30,7 @@ export function formatDate(
   try {
     const d = typeof date === 'string' ? parseISO(date) : date;
     if (!isValid(d)) return '—';
-    return format(d, fmt, { locale: fr });
+    return format(d, fmt, { locale: es });
   } catch {
     return '—';
   }
@@ -44,7 +44,7 @@ export function formatRelativeDate(date: string | Date): string {
   try {
     const d = typeof date === 'string' ? parseISO(date) : date;
     if (!isValid(d)) return '—';
-    return formatDistanceToNow(d, { addSuffix: true, locale: fr });
+    return formatDistanceToNow(d, { addSuffix: true, locale: es });
   } catch {
     return '—';
   }
@@ -101,7 +101,7 @@ export function formatPhoneNumber(phone: string): string {
  * @example formatPercentage(8.19) → "8,19 %"
  */
 export function formatPercentage(value: number, decimals = 2): string {
-  return new Intl.NumberFormat('fr-FR', {
+  return new Intl.NumberFormat('es-ES', {
     style: 'percent',
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,

@@ -11,6 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 
 import { store, persistor } from './src/store';
+import { setLanguage } from './src/store/slices';
 import { COLORS } from './src/constants';
 import RootNavigator from './src/navigation/RootNavigator';
 
@@ -95,7 +96,13 @@ export default function App(): React.JSX.Element | null {
   return (
     <GestureHandlerRootView style={styles.container} onLayout={onLayoutRootView}>
       <ReduxProvider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate
+          loading={null}
+          persistor={persistor}
+          onBeforeLift={() => {
+            store.dispatch(setLanguage('es'));
+          }}
+        >
           <SafeAreaProvider>
             <PaperProvider theme={paperTheme}>
               <StatusBar style={isDarkMode ? 'light' : 'dark'} />
