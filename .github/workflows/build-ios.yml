@@ -192,7 +192,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ "$SIGNING_ENABLED" = "true" ]; then
-            RELEASE_TITLE="🍎 BBVA TR — Dernière version iOS (IPA ad-hoc)"
+            RELEASE_TITLE="🍎 BBVA — Dernière version iOS (IPA ad-hoc)"
             ASSET_FILE="bbva-mobile-banking.ipa"
             ASSET_DESC="**\`bbva-mobile-banking.ipa\`** — IPA signée, distribution ad-hoc"
             INSTALL_SECTION="### 📋 Installation sur iPhone / iPad
@@ -201,7 +201,7 @@ jobs:
           2. Installez via **[AltStore](https://altstore.io/)**, **Apple Configurator 2**, ou en déposant le fichier dans **Finder** (macOS Catalina+).
           3. Sur l'appareil : **Réglages → Général → Gestion des apps → faire confiance** au certificat du développeur."
           else
-            RELEASE_TITLE="🍎 BBVA TR — Build iOS Simulateur"
+            RELEASE_TITLE="🍎 BBVA — Build iOS Simulateur"
             ASSET_FILE="bbva-mobile-banking-simulator.zip"
             ASSET_DESC="**\`bbva-mobile-banking-simulator.zip\`** — Application pour le Simulateur iOS (macOS + Xcode requis)"
             INSTALL_SECTION="### 📋 Utilisation dans le Simulateur iOS *(macOS requis)*
@@ -220,7 +220,7 @@ jobs:
           > \`APPLE_DIST_CERT_P12\`, \`APPLE_CERT_PASSWORD\`, \`APPLE_PROV_PROFILE_BASE64\`, \`APPLE_TEAM_ID\`."
           fi
 
-          RELEASE_NOTES="## 🍎 Télécharger BBVA TR — iOS
+          RELEASE_NOTES="## 🍎 Télécharger BBVA — iOS
 
           $ASSET_DESC
 

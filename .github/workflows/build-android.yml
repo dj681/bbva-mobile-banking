@@ -118,8 +118,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           RELEASE_TAG="latest-apk"
-          RELEASE_TITLE="📱 BBVA TR — Dernière version APK Android"
-          RELEASE_NOTES="## 📱 Télécharger BBVA TR
+          RELEASE_TITLE="📱 BBVA — Dernière version APK Android"
+          RELEASE_NOTES="## 📱 Télécharger BBVA
 
           Appuyez sur **\`bbva-mobile-banking.apk\`** ci-dessous pour télécharger l'application sur votre Android.
 
@@ -133,7 +133,7 @@ jobs:
           2. Sur votre appareil Android, ouvrez **Paramètres → Sécurité** (ou **Applications → Accès spécial**).
           3. Activez **\"Installer des applications inconnues\"** pour votre navigateur ou gestionnaire de fichiers.
           4. Ouvrez le fichier APK téléchargé et appuyez sur **Installer**.
-          5. Lancez **BBVA TR** depuis votre écran d'accueil.
+          5. Lancez **BBVA** depuis votre écran d'accueil.
 
           > ⚠️ Si vous aviez une version précédente installée, **désinstallez-la d'abord** avant d'installer ce nouvel APK.
 
