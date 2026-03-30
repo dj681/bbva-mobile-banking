@@ -17,7 +17,7 @@ const initialState: AuthState = {
 };
 
 interface LoginCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -52,7 +52,7 @@ export const loginUser = createAsyncThunk<LoginResponse, LoginCredentials>(
   'auth/loginUser',
   async (credentials, { rejectWithValue }) => {
     try {
-      const result = await loginApi(credentials.email, credentials.password);
+      const result = await loginApi(credentials.username, credentials.password);
       const sessionExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
       return {
         user: result.user,

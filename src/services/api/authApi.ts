@@ -92,10 +92,11 @@ export const MOCK_USER_FRANCESCO: User = {
   lastLogin: new Date().toISOString(),
 };
 
-/** Map of lowercase email → mock user, for multi-profile support. */
+/** Map of lowercase username → mock user. */
 export const MOCK_USERS: Record<string, User> = {
-  [MOCK_USER.email.toLowerCase()]: MOCK_USER,
-  [MOCK_USER_FRANCESCO.email.toLowerCase()]: MOCK_USER_FRANCESCO,
+  'josé': MOCK_USER,
+  'jose': MOCK_USER,
+  'francesco': MOCK_USER_FRANCESCO,
 };
 
 export interface LoginResult {
@@ -110,17 +111,17 @@ export interface RefreshResult {
 }
 
 /**
- * Mock login — accepts jdiazrodriguez266@gmail.com or bellostudio10@hotmail.com;
+ * Mock login — accepts username "josé" (or "jose") or "francesco";
  * any non-empty password is valid.
  */
 export const loginApi = async (
-  email: string,
+  username: string,
   _password: string,
 ): Promise<LoginResult> => {
   await delay(MOCK_DELAY);
-  const user = MOCK_USERS[email.trim().toLowerCase()];
+  const user = MOCK_USERS[username.trim().toLowerCase()];
   if (!user) {
-    throw new Error('Adresse e-mail non autorisée.');
+    throw new Error('Username not recognized.');
   }
   return {
     token: buildToken(user.id, 30),

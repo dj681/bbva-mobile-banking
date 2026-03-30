@@ -19,7 +19,7 @@ interface UseAuthReturn {
   isPinEnabled: boolean;
   twoFactorPending: boolean;
   error: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   biometricLogin: () => Promise<void>;
   checkBiometricAvailability: () => Promise<boolean>;
@@ -39,8 +39,8 @@ export const useAuth = (): UseAuthReturn => {
   const storedPin = useAppSelector((state) => state.auth.pin);
 
   const login = useCallback(
-    async (email: string, password: string): Promise<void> => {
-      await dispatch(loginUser({ email, password }));
+    async (username: string, password: string): Promise<void> => {
+      await dispatch(loginUser({ username, password }));
     },
     [dispatch],
   );

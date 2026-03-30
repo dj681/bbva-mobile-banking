@@ -58,7 +58,7 @@ const LoginScreen: React.FC = () => {
     isBiometricEnabled,
   } = useAuth();
 
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -102,19 +102,19 @@ const LoginScreen: React.FC = () => {
 
   const handleLogin = useCallback(async () => {
     dispatch(setAuthError(null));
-    if (!email.trim() || !password.trim()) {
+    if (!username.trim() || !password.trim()) {
       dispatch(setAuthError(t('errorEmptyFields')));
       return;
     }
-    await login(email.trim(), password);
-  }, [email, password, login, dispatch, t]);
+    await login(username.trim(), password);
+  }, [username, password, login, dispatch, t]);
 
   const handleBiometric = useCallback(async () => {
     dispatch(setAuthError(null));
     await biometricLogin();
   }, [biometricLogin, dispatch]);
 
-  const [emailFocused, setEmailFocused] = useState(false);
+  const [usernameFocused, setUsernameFocused] = useState(false);
   const [passFocused, setPassFocused] = useState(false);
 
   return (
@@ -205,30 +205,30 @@ const LoginScreen: React.FC = () => {
             ) : null}
           </Animated.View>
 
-          {/* Email */}
+          {/* Username */}
           <View style={styles.fieldGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>{t('email')}</Text>
+            <Text style={[styles.label, { color: colors.text }]}>{t('username')}</Text>
             <View
               style={[
                 styles.inputRow,
-                { backgroundColor: colors.inputBackground, borderColor: emailFocused ? colors.borderFocus : colors.inputBorder },
+                { backgroundColor: colors.inputBackground, borderColor: usernameFocused ? colors.borderFocus : colors.inputBorder },
               ]}
             >
-              <Ionicons name="mail-outline" size={20} color={emailFocused ? colors.secondary : colors.icon} />
+              <Ionicons name="person-outline" size={20} color={usernameFocused ? colors.secondary : colors.icon} />
               <TextInput
                 style={[styles.textInput, { color: colors.text }]}
-                value={email}
-                onChangeText={setEmail}
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
-                placeholder={t('emailPlaceholder')}
+                value={username}
+                onChangeText={setUsername}
+                onFocus={() => setUsernameFocused(true)}
+                onBlur={() => setUsernameFocused(false)}
+                placeholder={t('usernamePlaceholder')}
                 placeholderTextColor={colors.placeholder}
-                keyboardType="email-address"
+                keyboardType="default"
                 autoCapitalize="none"
                 autoCorrect={false}
                 returnKeyType="next"
-                textContentType="emailAddress"
-                autoComplete="email"
+                textContentType="username"
+                autoComplete="username"
               />
             </View>
           </View>

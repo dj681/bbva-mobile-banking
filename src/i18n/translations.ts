@@ -2,9 +2,9 @@ export type Translations = {
   // Auth
   welcome: string;
   welcomeSubtitle: string;
-  email: string;
+  username: string;
   password: string;
-  emailPlaceholder: string;
+  usernamePlaceholder: string;
   passwordPlaceholder: string;
   rememberMe: string;
   forgotPassword: string;
@@ -73,16 +73,16 @@ export type Translations = {
 const en: Translations = {
   welcome: 'Welcome',
   welcomeSubtitle: 'Access your personal banking area',
-  email: 'Email address',
+  username: 'Username',
   password: 'Password',
-  emailPlaceholder: 'example@bbva.com',
+  usernamePlaceholder: 'e.g. josé or francesco',
   passwordPlaceholder: 'Your password',
   rememberMe: 'Remember me',
   forgotPassword: 'Forgot your password?',
   signIn: 'Sign in',
   biometricAccess: 'Biometric access',
   selectLanguage: 'Select Language',
-  errorEmptyFields: 'Please enter your email and password.',
+  errorEmptyFields: 'Please enter your username and password.',
 
   goodMorning: 'Good morning',
   goodAfternoon: 'Good afternoon',
@@ -139,16 +139,16 @@ const en: Translations = {
 const es: Translations = {
   welcome: 'Bienvenido',
   welcomeSubtitle: 'Acceda a su área bancaria personal',
-  email: 'Correo electrónico',
+  username: 'Nombre de usuario',
   password: 'Contraseña',
-  emailPlaceholder: 'ejemplo@bbva.es',
+  usernamePlaceholder: 'p. ej. josé o francesco',
   passwordPlaceholder: 'Su contraseña',
   rememberMe: 'Recordarme',
   forgotPassword: '¿Olvidó su contraseña?',
   signIn: 'Iniciar sesión',
   biometricAccess: 'Acceso biométrico',
   selectLanguage: 'Seleccionar idioma',
-  errorEmptyFields: 'Por favor, introduzca su correo electrónico y contraseña.',
+  errorEmptyFields: 'Por favor, introduzca su nombre de usuario y contraseña.',
 
   goodMorning: 'Buenos días',
   goodAfternoon: 'Buenas tardes',
@@ -205,16 +205,16 @@ const es: Translations = {
 const fi: Translations = {
   welcome: 'Tervetuloa',
   welcomeSubtitle: 'Kirjaudu henkilökohtaiseen pankkipalveluusi',
-  email: 'Sähköpostiosoite',
+  username: 'Käyttäjänimi',
   password: 'Salasana',
-  emailPlaceholder: 'esimerkki@bbva.fi',
+  usernamePlaceholder: 'esim. josé tai francesco',
   passwordPlaceholder: 'Salasanasi',
   rememberMe: 'Muista minut',
   forgotPassword: 'Unohditko salasanasi?',
   signIn: 'Kirjaudu sisään',
   biometricAccess: 'Biometrinen kirjautuminen',
   selectLanguage: 'Valitse kieli',
-  errorEmptyFields: 'Syötä sähköpostiosoitteesi ja salasanasi.',
+  errorEmptyFields: 'Syötä käyttäjänimesi ja salasanasi.',
 
   goodMorning: 'Hyvää huomenta',
   goodAfternoon: 'Hyvää iltapäivää',
@@ -271,16 +271,16 @@ const fi: Translations = {
 const de: Translations = {
   welcome: 'Willkommen',
   welcomeSubtitle: 'Zugang zu Ihrem persönlichen Bankbereich',
-  email: 'E-Mail-Adresse',
+  username: 'Benutzername',
   password: 'Passwort',
-  emailPlaceholder: 'beispiel@bbva.de',
+  usernamePlaceholder: 'z. B. josé oder francesco',
   passwordPlaceholder: 'Ihr Passwort',
   rememberMe: 'Angemeldet bleiben',
   forgotPassword: 'Passwort vergessen?',
   signIn: 'Anmelden',
   biometricAccess: 'Biometrischer Zugang',
   selectLanguage: 'Sprache auswählen',
-  errorEmptyFields: 'Bitte geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein.',
+  errorEmptyFields: 'Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein.',
 
   goodMorning: 'Guten Morgen',
   goodAfternoon: 'Guten Tag',
@@ -337,16 +337,16 @@ const de: Translations = {
 const no: Translations = {
   welcome: 'Velkommen',
   welcomeSubtitle: 'Få tilgang til ditt personlige bankområde',
-  email: 'E-postadresse',
+  username: 'Brukernavn',
   password: 'Passord',
-  emailPlaceholder: 'eksempel@bbva.no',
+  usernamePlaceholder: 'f.eks. josé eller francesco',
   passwordPlaceholder: 'Ditt passord',
   rememberMe: 'Husk meg',
   forgotPassword: 'Glemt passordet?',
   signIn: 'Logg inn',
   biometricAccess: 'Biometrisk tilgang',
   selectLanguage: 'Velg språk',
-  errorEmptyFields: 'Vennligst skriv inn e-postadressen og passordet ditt.',
+  errorEmptyFields: 'Vennligst skriv inn brukernavnet og passordet ditt.',
 
   goodMorning: 'God morgen',
   goodAfternoon: 'God ettermiddag',
@@ -403,16 +403,16 @@ const no: Translations = {
 const it: Translations = {
   welcome: 'Benvenuto',
   welcomeSubtitle: 'Accedi alla tua area bancaria personale',
-  email: 'Indirizzo e-mail',
+  username: 'Nome utente',
   password: 'Password',
-  emailPlaceholder: 'esempio@bbva.it',
+  usernamePlaceholder: 'es. josé o francesco',
   passwordPlaceholder: 'La tua password',
   rememberMe: 'Ricordami',
   forgotPassword: 'Hai dimenticato la password?',
   signIn: 'Accedi',
   biometricAccess: 'Accesso biometrico',
   selectLanguage: 'Seleziona lingua',
-  errorEmptyFields: 'Inserisci la tua email e password.',
+  errorEmptyFields: 'Inserisci il tuo nome utente e la password.',
 
   goodMorning: 'Buongiorno',
   goodAfternoon: 'Buon pomeriggio',
@@ -469,16 +469,16 @@ const it: Translations = {
 const pt: Translations = {
   welcome: 'Bem-vindo',
   welcomeSubtitle: 'Acesse sua área bancária pessoal',
-  email: 'Endereço de e-mail',
+  username: 'Nome de utilizador',
   password: 'Senha',
-  emailPlaceholder: 'exemplo@bbva.pt',
+  usernamePlaceholder: 'ex. josé ou francesco',
   passwordPlaceholder: 'Sua senha',
   rememberMe: 'Lembrar de mim',
   forgotPassword: 'Esqueceu sua senha?',
   signIn: 'Entrar',
   biometricAccess: 'Acesso biométrico',
   selectLanguage: 'Selecionar idioma',
-  errorEmptyFields: 'Por favor, insira seu e-mail e senha.',
+  errorEmptyFields: 'Por favor, insira seu nome de utilizador e senha.',
 
   goodMorning: 'Bom dia',
   goodAfternoon: 'Boa tarde',
@@ -535,16 +535,16 @@ const pt: Translations = {
 const el: Translations = {
   welcome: 'Καλωσορίσατε',
   welcomeSubtitle: 'Αποκτήστε πρόσβαση στον τραπεζικό σας χώρο',
-  email: 'Διεύθυνση email',
+  username: 'Όνομα χρήστη',
   password: 'Κωδικός πρόσβασης',
-  emailPlaceholder: 'παράδειγμα@bbva.gr',
+  usernamePlaceholder: 'π.χ. josé ή francesco',
   passwordPlaceholder: 'Ο κωδικός σας',
   rememberMe: 'Θυμήσου με',
   forgotPassword: 'Ξεχάσατε τον κωδικό σας;',
   signIn: 'Σύνδεση',
   biometricAccess: 'Βιομετρική πρόσβαση',
   selectLanguage: 'Επιλογή γλώσσας',
-  errorEmptyFields: 'Παρακαλώ εισάγετε το email και τον κωδικό σας.',
+  errorEmptyFields: 'Παρακαλώ εισάγετε το όνομα χρήστη και τον κωδικό σας.',
 
   goodMorning: 'Καλημέρα',
   goodAfternoon: 'Καλό απόγευμα',
@@ -601,16 +601,16 @@ const el: Translations = {
 const sk: Translations = {
   welcome: 'Vitajte',
   welcomeSubtitle: 'Prístup do vašej osobnej bankovej oblasti',
-  email: 'E-mailová adresa',
+  username: 'Používateľské meno',
   password: 'Heslo',
-  emailPlaceholder: 'priklad@bbva.sk',
+  usernamePlaceholder: 'napr. josé alebo francesco',
   passwordPlaceholder: 'Vaše heslo',
   rememberMe: 'Zapamätaj si ma',
   forgotPassword: 'Zabudli ste heslo?',
   signIn: 'Prihlásiť sa',
   biometricAccess: 'Biometrický prístup',
   selectLanguage: 'Vybrať jazyk',
-  errorEmptyFields: 'Zadajte prosím svoju e-mailovú adresu a heslo.',
+  errorEmptyFields: 'Zadajte prosím svoje používateľské meno a heslo.',
 
   goodMorning: 'Dobré ráno',
   goodAfternoon: 'Dobrý deň',
