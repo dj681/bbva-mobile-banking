@@ -14,8 +14,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '@/store';
 import type { RootStackParamList } from '@/types';
 
-SplashScreenExpo.preventAutoHideAsync();
-
 type SplashNavProp = NativeStackNavigationProp<RootStackParamList, 'Splash'>;
 
 const { width } = Dimensions.get('window');
