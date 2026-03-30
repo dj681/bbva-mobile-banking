@@ -9,6 +9,9 @@ Application bancaire mobile complète développée avec React Native et Expo, re
   <a href="exp://exp.host/@dj681/bbva-mobile-banking">
     <img src="https://img.shields.io/badge/📱_Expo_Go-Ouvrir_sur_mobile-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo Go" />
   </a>
+  <a href="https://github.com/dj681/bbva-mobile-banking/releases/tag/latest-apk">
+    <img src="https://img.shields.io/badge/⬇️_Télécharger_APK-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Télécharger APK Android" />
+  </a>
 </p>
 
 ---
@@ -23,6 +26,25 @@ Cette URL est déployée automatiquement via GitHub Actions à chaque push sur `
 
 > **Activation de GitHub Pages** : Pour que le lien soit actif, activez GitHub Pages dans les paramètres du dépôt :  
 > `Settings → Pages → Source → GitHub Actions`
+
+---
+
+## ⬇️ Télécharger l'application Android (APK)
+
+> **Installez l'application directement sur votre appareil Android — aucun Play Store requis.**
+
+🔗 **[Télécharger bbva-mobile-banking.apk](https://github.com/dj681/bbva-mobile-banking/releases/tag/latest-apk)**
+
+### 📋 Instructions d'installation
+
+1. **Téléchargez** le fichier `bbva-mobile-banking.apk` depuis la [page des releases](https://github.com/dj681/bbva-mobile-banking/releases/tag/latest-apk).
+2. Sur votre Android, ouvrez **Paramètres → Sécurité** (ou **Applications → Accès spécial**).
+3. Activez **"Installer des applications inconnues"** pour votre navigateur ou gestionnaire de fichiers.
+4. Ouvrez le fichier APK téléchargé et appuyez sur **Installer**.
+5. Lancez **BBVA Mobile Banking** depuis votre écran d'accueil.
+
+> **Construction automatique** : L'APK est compilé et publié automatiquement via GitHub Actions (EAS Build) à chaque push sur `main`.  
+> **Prérequis** : ajouter le secret `EXPO_TOKEN` dans les paramètres du dépôt (`Settings → Secrets and variables → Actions`).
 
 ---
 
@@ -322,7 +344,9 @@ Les contributions sont les bienvenues ! Suivez ces étapes :
 
 ### CI / CD
 
-Le workflow GitHub Actions (`.github/workflows/deploy.yml`) s'exécute automatiquement à chaque push :
+Deux workflows GitHub Actions s'exécutent automatiquement :
+
+**`.github/workflows/deploy.yml`** — CI & déploiement web
 
 | Étape | Déclencheur | Résultat |
 |---|---|---|
@@ -331,6 +355,16 @@ Le workflow GitHub Actions (`.github/workflows/deploy.yml`) s'exécute automatiq
 
 > **URL de production** : `https://dj681.github.io/bbva-mobile-banking/`  
 > **Prérequis** : activer *Settings → Pages → Source → GitHub Actions* dans le dépôt.
+
+**`.github/workflows/build-android.yml`** — Build APK Android
+
+| Étape | Déclencheur | Résultat |
+|---|---|---|
+| **Build APK** | Push sur `main` / déclenchement manuel | Compile l'APK Android via EAS Build (`preview`) |
+| **Release GitHub** | Automatique après le build | Publie l'APK sur la [page releases](https://github.com/dj681/bbva-mobile-banking/releases/tag/latest-apk) (`latest-apk`) |
+
+> **Prérequis** : ajouter le secret `EXPO_TOKEN` dans *Settings → Secrets and variables → Actions*  
+> (obtenir le token sur [expo.dev/accounts/settings/access-tokens](https://expo.dev/accounts/settings/access-tokens)).
 
 ### Convention de commits
 Ce projet suit la convention **Conventional Commits** :
