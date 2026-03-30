@@ -246,13 +246,6 @@ const LoginScreen: React.FC = () => {
             </TouchableOpacity>
           )}
 
-          {/* Demo hint */}
-          <View style={[styles.demoHint, { backgroundColor: `${colors.info}12`, borderColor: `${colors.info}30` }]}>
-            <Ionicons name="information-circle-outline" size={16} color={colors.info} />
-            <Text style={[styles.demoText, { color: colors.textSecondary }]}>
-              Acceso: jdiazrodriguez266@gmail.com — cualquier contraseña
-            </Text>
-          </View>
         </Animated.View>
 
         {/* Footer */}
@@ -414,19 +407,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     fontFamily: 'Roboto-Medium',
-  },
-  demoHint: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  demoText: {
-    flex: 1,
-    fontSize: 12,
-    fontFamily: 'Roboto-Regular',
   },
   footer: {
     padding: 24,
