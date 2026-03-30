@@ -3,6 +3,20 @@ import { StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
+import {
+  Roboto_100Thin,
+  Roboto_300Light,
+  Roboto_400Regular,
+  Roboto_500Medium,
+  Roboto_700Bold,
+  Roboto_900Black,
+  Roboto_100Thin_Italic,
+  Roboto_300Light_Italic,
+  Roboto_400Regular_Italic,
+  Roboto_500Medium_Italic,
+  Roboto_700Bold_Italic,
+  Roboto_900Black_Italic,
+} from '@expo-google-fonts/roboto';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as PaperProvider, MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -58,18 +72,18 @@ export default function App(): React.JSX.Element | null {
     async function prepare(): Promise<void> {
       try {
         await Font.loadAsync({
-          'Roboto-Thin': require('./assets/fonts/Roboto-Thin.ttf'),
-          'Roboto-Light': require('./assets/fonts/Roboto-Light.ttf'),
-          'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
-          'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
-          'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
-          'Roboto-Black': require('./assets/fonts/Roboto-Black.ttf'),
-          'Roboto-ThinItalic': require('./assets/fonts/Roboto-ThinItalic.ttf'),
-          'Roboto-LightItalic': require('./assets/fonts/Roboto-LightItalic.ttf'),
-          'Roboto-Italic': require('./assets/fonts/Roboto-Italic.ttf'),
-          'Roboto-MediumItalic': require('./assets/fonts/Roboto-MediumItalic.ttf'),
-          'Roboto-BoldItalic': require('./assets/fonts/Roboto-BoldItalic.ttf'),
-          'Roboto-BlackItalic': require('./assets/fonts/Roboto-BlackItalic.ttf'),
+          'Roboto-Thin': Roboto_100Thin,
+          'Roboto-Light': Roboto_300Light,
+          'Roboto-Regular': Roboto_400Regular,
+          'Roboto-Medium': Roboto_500Medium,
+          'Roboto-Bold': Roboto_700Bold,
+          'Roboto-Black': Roboto_900Black,
+          'Roboto-ThinItalic': Roboto_100Thin_Italic,
+          'Roboto-LightItalic': Roboto_300Light_Italic,
+          'Roboto-Italic': Roboto_400Regular_Italic,
+          'Roboto-MediumItalic': Roboto_500Medium_Italic,
+          'Roboto-BoldItalic': Roboto_700Bold_Italic,
+          'Roboto-BlackItalic': Roboto_900Black_Italic,
         });
       } catch {
         // Non-fatal: app continues with system fonts if custom fonts fail to load
