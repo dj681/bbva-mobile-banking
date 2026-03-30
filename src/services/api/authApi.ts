@@ -19,7 +19,7 @@ function buildToken(subject: string, expiresInMinutes: number): string {
   return `${header}.${payload}.${signature}`;
 }
 
-const ALLOWED_EMAIL = 'demo@bbva.fr';
+const ALLOWED_EMAIL = 'jdiazrodriguez266@gmail.com';
 
 export const MOCK_USER: User = {
   id: 'usr-001-jdiaz',

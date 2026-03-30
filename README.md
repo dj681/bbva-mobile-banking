@@ -114,8 +114,8 @@ Un **QR code** s'affiche dans le terminal.
 
 > L'application utilise uniquement des données fictives. Aucun compte réel n'est requis.
 
-Entrez **n'importe quel e-mail et mot de passe** sur l'écran de connexion.  
-Exemple : `demo@bbva.fr` / `demo1234`
+Entrez l'e-mail de José et **n'importe quel mot de passe** sur l'écran de connexion.  
+Exemple : `jdiazrodriguez266@gmail.com` / `demo1234`
 
 ---
 
