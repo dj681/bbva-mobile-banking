@@ -19,6 +19,7 @@ import { setAuthError } from '@/store/slices';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import type { AuthStackParamList } from '@/types';
+import { MOCK_USERS, DEMO_PASSWORD } from '@/services/api/authApi';
 
 type LoginNavProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 
@@ -88,6 +89,12 @@ const LoginScreen: React.FC = () => {
     dispatch(setAuthError(null));
     await biometricLogin();
   }, [biometricLogin, dispatch]);
+
+  const handleDemoFill = useCallback((demoEmail: string) => {
+    setEmail(demoEmail);
+    setPassword(DEMO_PASSWORD);
+    dispatch(setAuthError(null));
+  }, [dispatch]);
 
   const [emailFocused, setEmailFocused] = useState(false);
   const [passFocused, setPassFocused] = useState(false);
@@ -247,6 +254,40 @@ const LoginScreen: React.FC = () => {
           )}
 
         </Animated.View>
+
+        {/* Demo accounts */}
+        <View style={[styles.demoSection, { borderColor: colors.border }]}>
+          <View style={styles.demoHeader}>
+            <Ionicons name="information-circle-outline" size={16} color={colors.textSecondary} />
+            <Text style={[styles.demoTitle, { color: colors.textSecondary }]}>
+              Comptes de démonstration
+            </Text>
+          </View>
+          {Object.values(MOCK_USERS).map((u) => (
+            <TouchableOpacity
+              key={u.id}
+              style={[styles.demoRow, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder }]}
+              onPress={() => handleDemoFill(u.email)}
+              activeOpacity={0.75}
+            >
+              <View style={[styles.demoAvatar, { backgroundColor: colors.primary }]}>
+                <Text style={styles.demoAvatarText}>
+                  {u.firstName.charAt(0)}{u.lastName.charAt(0)}
+                </Text>
+              </View>
+              <View style={styles.demoInfo}>
+                <Text style={[styles.demoName, { color: colors.text }]}>
+                  {u.firstName} {u.lastName}
+                </Text>
+                <Text style={[styles.demoEmail, { color: colors.textSecondary }]}>{u.email}</Text>
+              </View>
+              <Ionicons name="arrow-forward-circle-outline" size={22} color={colors.secondary} />
+            </TouchableOpacity>
+          ))}
+          <Text style={[styles.demoHint, { color: colors.textSecondary }]}>
+            Mot de passe pré-rempli : {DEMO_PASSWORD} (tout texte non vide est accepté)
+          </Text>
+        </View>
 
         {/* Footer */}
         <View style={styles.footer}>
@@ -415,6 +456,68 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 11,
     fontFamily: 'Roboto-Regular',
+  },
+  demoSection: {
+    marginHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 4,
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 14,
+  },
+  demoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 10,
+  },
+  demoTitle: {
+    fontSize: 12,
+    fontFamily: 'Roboto-Medium',
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  demoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 8,
+    gap: 10,
+  },
+  demoAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  demoAvatarText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontFamily: 'Roboto-Bold',
+    fontWeight: '700',
+  },
+  demoInfo: {
+    flex: 1,
+  },
+  demoName: {
+    fontSize: 14,
+    fontFamily: 'Roboto-Medium',
+    fontWeight: '600',
+  },
+  demoEmail: {
+    fontSize: 11,
+    fontFamily: 'Roboto-Regular',
+    marginTop: 1,
+  },
+  demoHint: {
+    fontSize: 11,
+    fontFamily: 'Roboto-Regular',
+    textAlign: 'center',
+    marginTop: 2,
   },
 });
 

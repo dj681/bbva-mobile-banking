@@ -12,6 +12,9 @@ Application bancaire mobile complète développée avec React Native et Expo, re
   <a href="https://github.com/dj681/bbva-mobile-banking/releases/tag/latest-apk">
     <img src="https://img.shields.io/badge/⬇️_Télécharger_APK-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Télécharger APK Android" />
   </a>
+  <a href="https://github.com/dj681/bbva-mobile-banking/releases/tag/latest-ios">
+    <img src="https://img.shields.io/badge/⬇️_Télécharger-iOS-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Télécharger iOS" />
+  </a>
 </p>
 
 ---
@@ -45,6 +48,40 @@ Cette URL est déployée automatiquement via GitHub Actions à chaque push sur `
 
 > **Construction automatique** : L'APK est compilé et publié automatiquement via GitHub Actions (EAS Build) à chaque push sur `main`.  
 > **Prérequis** : ajouter le secret `EXPO_TOKEN` dans les paramètres du dépôt (`Settings → Secrets and variables → Actions`).
+
+---
+
+## ⬇️ Télécharger l'application iOS
+
+> **Installez l'application sur votre iPhone/iPad ou lancez-la dans le Simulateur iOS.**
+
+🔗 **[Télécharger depuis la page releases iOS](https://github.com/dj681/bbva-mobile-banking/releases/tag/latest-ios)**
+
+Deux modes de build sont disponibles selon les secrets configurés dans le dépôt :
+
+| Mode | Prérequis | Résultat |
+|------|-----------|---------|
+| **IPA ad-hoc signée** | Secrets Apple configurés | Installable sur iPhone/iPad enregistrés |
+| **Build Simulateur** | Aucun (fallback automatique) | Utilisable dans le Simulateur iOS (macOS + Xcode) |
+
+### 📋 Installation — IPA ad-hoc (iPhone/iPad)
+
+1. **Téléchargez** le fichier `bbva-mobile-banking.ipa` depuis la [page des releases](https://github.com/dj681/bbva-mobile-banking/releases/tag/latest-ios).
+2. Installez via **[AltStore](https://altstore.io/)**, **Apple Configurator 2**, ou en déposant le fichier dans **Finder** (macOS Catalina+).
+3. Sur l'appareil : **Réglages → Général → Gestion des apps → faire confiance** au certificat du développeur.
+
+### 📋 Utilisation — Build Simulateur (macOS + Xcode)
+
+1. **Téléchargez** `bbva-mobile-banking-simulator.zip` et décompressez-le.
+2. Ouvrez **Xcode → Open Developer Tool → Simulator** et démarrez un simulateur iPhone.
+3. Glissez le fichier `.app` dans la fenêtre du simulateur, ou exécutez :
+   ```bash
+   xcrun simctl install booted BBVATr.app
+   xcrun simctl launch booted com.bbvatr.mobilebanking
+   ```
+
+> **Construction automatique** : Le build iOS est compilé et publié via GitHub Actions à chaque push sur `main`.  
+> **Secrets Apple optionnels** : Pour activer l'IPA installable sur appareil réel, ajoutez `APPLE_DIST_CERT_P12`, `APPLE_CERT_PASSWORD`, `APPLE_PROV_PROFILE_BASE64` et `APPLE_TEAM_ID` dans *Settings → Secrets and variables → Actions*.
 
 ---
 
@@ -348,7 +385,7 @@ Les contributions sont les bienvenues ! Suivez ces étapes :
 
 ### CI / CD
 
-Deux workflows GitHub Actions s'exécutent automatiquement :
+Trois workflows GitHub Actions s'exécutent automatiquement :
 
 **`.github/workflows/deploy.yml`** — CI & déploiement web
 
@@ -369,6 +406,17 @@ Deux workflows GitHub Actions s'exécutent automatiquement :
 
 > **Prérequis** : ajouter le secret `EXPO_TOKEN` dans *Settings → Secrets and variables → Actions*  
 > (obtenir le token sur [expo.dev/accounts/settings/access-tokens](https://expo.dev/accounts/settings/access-tokens)).
+
+**`.github/workflows/build-ios.yml`** — Build iOS
+
+| Étape | Déclencheur | Résultat |
+|---|---|---|
+| **Build iOS** | Push sur `main` / déclenchement manuel | Compile l'app iOS sur `macos-latest` via `expo prebuild` + `xcodebuild` |
+| **Release GitHub** | Automatique après le build | Publie le build sur la [page releases](https://github.com/dj681/bbva-mobile-banking/releases/tag/latest-ios) (`latest-ios`) |
+
+> **Sans secrets** : génère un build Simulateur iOS (`.zip`) — fonctionne sans configuration supplémentaire.  
+> **Avec secrets Apple** : génère une IPA ad-hoc installable sur appareils réels. Secrets requis :  
+> `APPLE_DIST_CERT_P12`, `APPLE_CERT_PASSWORD`, `APPLE_PROV_PROFILE_BASE64`, `APPLE_TEAM_ID`.
 
 ### Convention de commits
 Ce projet suit la convention **Conventional Commits** :

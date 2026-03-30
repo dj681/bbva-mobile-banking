@@ -19,6 +19,9 @@ function buildToken(subject: string, expiresInMinutes: number): string {
   return `${header}.${payload}.${signature}`;
 }
 
+/** Default password used to pre-fill demo login forms. Any non-empty value is accepted. */
+export const DEMO_PASSWORD = 'demo1234';
+
 export const MOCK_USER: User = {
   id: 'usr-001-jdiaz',
   firstName: 'José Antonio',

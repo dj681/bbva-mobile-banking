@@ -1,0 +1,240 @@
+name: Build & Release iOS
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+# Allow creating/updating GitHub Releases and uploading assets
+permissions:
+  contents: write
+
+jobs:
+  build-ios:
+    name: Build iOS App (Local)
+    runs-on: macos-latest
+    # Skip on pull requests — only build on direct pushes / manual triggers
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      # Generate the native ios/ directory from the Expo config and run pod install.
+      # CocoaPods is pre-installed on the macos-latest runner.
+      - name: Generate native iOS project (expo prebuild)
+        run: npx expo prebuild --platform ios --clean
+
+      # Detect the workspace and scheme names dynamically so they don't need to
+      # be hardcoded.  expo prebuild creates exactly one .xcworkspace in ios/.
+      - name: Detect Xcode workspace and scheme
+        run: |
+          WORKSPACE=$(find ios -name "*.xcworkspace" -maxdepth 1 | head -1)
+          SCHEME=$(basename "$WORKSPACE" .xcworkspace)
+          echo "XCODE_WORKSPACE=$WORKSPACE" >> "$GITHUB_ENV"
+          echo "XCODE_SCHEME=$SCHEME"       >> "$GITHUB_ENV"
+          echo "Detected workspace: $WORKSPACE — scheme: $SCHEME"
+
+      # ── Signing setup ──────────────────────────────────────────────────────
+      #
+      # Preferred (real-device installable IPA):
+      #   Add these four secrets in Settings → Secrets and variables → Actions:
+      #
+      #   APPLE_DIST_CERT_P12          – base64-encoded Apple Distribution certificate (.p12)
+      #                                  base64 -i Certificates.p12 | pbcopy
+      #   APPLE_CERT_PASSWORD          – password used when exporting the .p12
+      #   APPLE_PROV_PROFILE_BASE64    – base64-encoded ad-hoc provisioning profile (.mobileprovision)
+      #                                  base64 -i profile.mobileprovision | pbcopy
+      #   APPLE_TEAM_ID                – 10-character Apple Developer Team ID (e.g. "ABCDE12345")
+      #
+      # Fallback (no secrets): builds for the iOS Simulator only.
+      #   The resulting .zip can be loaded into Xcode Simulator but NOT installed
+      #   on a real iPhone/iPad without signing.
+      - name: Set up Apple signing
+        env:
+          APPLE_DIST_CERT_P12: ${{ secrets.APPLE_DIST_CERT_P12 }}
+          APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+          APPLE_PROV_PROFILE_BASE64: ${{ secrets.APPLE_PROV_PROFILE_BASE64 }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [ -n "$APPLE_DIST_CERT_P12" ]; then
+            echo "✅ Apple signing secrets found — building a signed ad-hoc IPA."
+
+            # Create a short-lived keychain for this runner session
+            KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+            KEYCHAIN_PASS=$(openssl rand -hex 12)
+            security create-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+            security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+            security unlock-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+
+            # Import distribution certificate
+            echo "$APPLE_DIST_CERT_P12" | base64 --decode > "$RUNNER_TEMP/dist_cert.p12"
+            security import "$RUNNER_TEMP/dist_cert.p12" \
+              -P "$APPLE_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+            security set-key-partition-list -S apple-tool:,apple: -s \
+              -k "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+            security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+            # Install provisioning profile
+            PP_PATH="$RUNNER_TEMP/profile.mobileprovision"
+            echo "$APPLE_PROV_PROFILE_BASE64" | base64 --decode > "$PP_PATH"
+            UUID=$(security cms -D -i "$PP_PATH" \
+              | grep -A1 "<key>UUID</key>" | tail -1 \
+              | sed 's/.*<string>\(.*\)<\/string>.*/\1/')
+            mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+            cp "$PP_PATH" ~/Library/MobileDevice/Provisioning\ Profiles/"$UUID.mobileprovision"
+
+            echo "SIGNING_ENABLED=true"          >> "$GITHUB_ENV"
+            echo "APPLE_TEAM_ID_VAL=$APPLE_TEAM_ID" >> "$GITHUB_ENV"
+          else
+            echo "⚠️  Apple signing secrets not configured — building for the iOS Simulator."
+            echo "   To enable real-device IPA, add APPLE_DIST_CERT_P12, APPLE_CERT_PASSWORD,"
+            echo "   APPLE_PROV_PROFILE_BASE64 and APPLE_TEAM_ID to repository secrets."
+            echo "SIGNING_ENABLED=false" >> "$GITHUB_ENV"
+          fi
+
+      # ── Signed IPA (real device) ───────────────────────────────────────────
+      - name: Archive and export signed IPA
+        if: env.SIGNING_ENABLED == 'true'
+        run: |
+          xcodebuild archive \
+            -workspace "$XCODE_WORKSPACE" \
+            -scheme     "$XCODE_SCHEME" \
+            -configuration Release \
+            -archivePath "$RUNNER_TEMP/BBVATr.xcarchive" \
+            -destination "generic/platform=iOS" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID_VAL" \
+            CODE_SIGN_STYLE=Manual
+
+          # Build an ExportOptions.plist for ad-hoc distribution
+          cat > "$RUNNER_TEMP/ExportOptions.plist" << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+            "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>          <string>ad-hoc</string>
+            <key>teamID</key>          <string>${APPLE_TEAM_ID_VAL}</string>
+            <key>compileBitcode</key>  <false/>
+          </dict>
+          </plist>
+          EOF
+
+          xcodebuild -exportArchive \
+            -archivePath        "$RUNNER_TEMP/BBVATr.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath         "$RUNNER_TEMP/export"
+
+          cp "$RUNNER_TEMP/export/"*.ipa bbva-mobile-banking.ipa
+          echo "IPA_ARTIFACT=bbva-mobile-banking.ipa" >> "$GITHUB_ENV"
+
+      # ── Simulator build (no Apple credentials) ────────────────────────────
+      - name: Build iOS Simulator app
+        if: env.SIGNING_ENABLED == 'false'
+        run: |
+          xcodebuild build \
+            -workspace "$XCODE_WORKSPACE" \
+            -scheme     "$XCODE_SCHEME" \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            CODE_SIGN_IDENTITY=""     \
+            CODE_SIGNING_REQUIRED=NO  \
+            CODE_SIGNING_ALLOWED=NO
+
+          APP=$(find "$RUNNER_TEMP/DerivedData/Build/Products" \
+                     -name "*.app" -maxdepth 3 | head -1)
+          (cd "$(dirname "$APP")" && \
+            zip -r "$GITHUB_WORKSPACE/bbva-mobile-banking-simulator.zip" \
+                   "$(basename "$APP")")
+          echo "IPA_ARTIFACT=bbva-mobile-banking-simulator.zip" >> "$GITHUB_ENV"
+
+      # Always upload as a workflow artifact (available 30 days)
+      - name: Upload iOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bbva-mobile-banking-ios
+          path: ${{ env.IPA_ARTIFACT }}
+          retention-days: 30
+
+      # Publish/update a persistent "latest-ios" GitHub Release so the build
+      # is always reachable at a stable URL.
+      - name: Publish GitHub Release (latest-ios)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "$SIGNING_ENABLED" = "true" ]; then
+            RELEASE_TITLE="🍎 BBVA TR — Dernière version iOS (IPA ad-hoc)"
+            ASSET_FILE="bbva-mobile-banking.ipa"
+            ASSET_DESC="**\`bbva-mobile-banking.ipa\`** — IPA signée, distribution ad-hoc"
+            INSTALL_SECTION="### 📋 Installation sur iPhone / iPad
+
+          1. Téléchargez \`bbva-mobile-banking.ipa\` ci-dessous.
+          2. Installez via **[AltStore](https://altstore.io/)**, **Apple Configurator 2**, ou en déposant le fichier dans **Finder** (macOS Catalina+).
+          3. Sur l'appareil : **Réglages → Général → Gestion des apps → faire confiance** au certificat du développeur."
+          else
+            RELEASE_TITLE="🍎 BBVA TR — Build iOS Simulateur"
+            ASSET_FILE="bbva-mobile-banking-simulator.zip"
+            ASSET_DESC="**\`bbva-mobile-banking-simulator.zip\`** — Application pour le Simulateur iOS (macOS + Xcode requis)"
+            INSTALL_SECTION="### 📋 Utilisation dans le Simulateur iOS *(macOS requis)*
+
+          1. Téléchargez \`bbva-mobile-banking-simulator.zip\` ci-dessous et décompressez-le.
+          2. Ouvrez **Xcode → Open Developer Tool → Simulator** et démarrez un simulateur iPhone.
+          3. Glissez le fichier \`.app\` dans la fenêtre du simulateur, ou exécutez :
+             \`\`\`bash
+             xcrun simctl install booted BBVATr.app
+             xcrun simctl launch booted com.bbvatr.mobilebanking
+             \`\`\`
+
+          > ⚠️ Ce build **ne peut pas** être installé sur un iPhone/iPad réel.
+          > Pour un IPA installable sur appareil, ajoutez les secrets Apple dans
+          > *Settings → Secrets and variables → Actions* :
+          > \`APPLE_DIST_CERT_P12\`, \`APPLE_CERT_PASSWORD\`, \`APPLE_PROV_PROFILE_BASE64\`, \`APPLE_TEAM_ID\`."
+          fi
+
+          RELEASE_NOTES="## 🍎 Télécharger BBVA TR — iOS
+
+          $ASSET_DESC
+
+          > **Build**: \`${{ github.sha }}\` — \`$(date -u '+%Y-%m-%d %H:%M UTC')\`
+
+          ---
+
+          $INSTALL_SECTION
+
+          ---
+
+          ### 🔑 Identifiants de démonstration
+
+          | Champ | Valeur |
+          |-------|--------|
+          | Email | \`jdiazrodriguez266@gmail.com\` ou \`bellostudio10@hotmail.com\` |
+          | Mot de passe | \`demo1234\` (ou tout texte non vide) |
+
+          > ⚠️ Cette application utilise uniquement des **données fictives** à des fins de démonstration."
+
+          RELEASE_TAG="latest-ios"
+
+          gh release delete "$RELEASE_TAG" \
+            --yes \
+            --repo "$GITHUB_REPOSITORY" \
+            2>/dev/null || true
+
+          gh api \
+            "repos/$GITHUB_REPOSITORY/git/refs/tags/$RELEASE_TAG" \
+            -X DELETE \
+            2>/dev/null || true
+
+          gh release create "$RELEASE_TAG" \
+            "$ASSET_FILE" \
+            --repo  "$GITHUB_REPOSITORY" \
+            --title "$RELEASE_TITLE" \
+            --notes "$RELEASE_NOTES" \
+            --latest
