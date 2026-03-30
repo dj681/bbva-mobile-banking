@@ -26,19 +26,13 @@ import { useAuth } from '@/hooks/useAuth';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchAccounts, fetchTransactions } from '@/store/slices';
 import type { Account, Transaction, HomeStackParamList, AccountsStackParamList } from '@/types';
 import { formatCurrency } from '@/utils';
 
 type DashboardNavProp = NativeStackNavigationProp<HomeStackParamList, 'Dashboard'>;
-
-function getGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour < 12) return 'Buenos días';
-  if (hour < 18) return 'Buenas tardes';
-  return 'Buenas noches';
-}
 
 const MOCK_INVESTMENTS = [
   { id: '1', name: 'CAC 40', ticker: 'CAC', price: 7842.5, change: 1.23, changePercent: 1.23 },
@@ -50,9 +44,17 @@ export const DashboardScreen: React.FC = () => {
   const navigation = useNavigation<DashboardNavProp>();
   const dispatch = useAppDispatch();
   const { colors, spacing, borderRadius } = useTheme();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { accounts, transactions, isLoading, fetchTransactionsList, selectAccount } = useAccounts();
   const { unreadCount } = useNotifications();
+
+  const getGreeting = useCallback((): string => {
+    const hour = new Date().getHours();
+    if (hour < 12) return t('goodMorning');
+    if (hour < 18) return t('goodAfternoon');
+    return t('goodEvening');
+  }, [t]);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -106,31 +108,31 @@ export const DashboardScreen: React.FC = () => {
   const quickActions = [
     {
       id: 'transfer',
-      label: 'Transferencia',
+      label: t('transfer'),
       icon: 'swap-horizontal-outline' as const,
       onPress: () => navigation.navigate('TransferFlow'),
     },
     {
       id: 'pay',
-      label: 'Pagar',
+      label: t('pay'),
       icon: 'receipt-outline' as const,
       onPress: () => navigation.navigate('PaymentFlow'),
     },
     {
       id: 'cards',
-      label: 'Tarjetas',
+      label: t('cards'),
       icon: 'card-outline' as const,
       onPress: () => {},
     },
     {
       id: 'credits',
-      label: 'Créditos',
+      label: t('credits'),
       icon: 'cash-outline' as const,
       onPress: () => {},
     },
     {
       id: 'invest',
-      label: 'Inversiones',
+      label: t('investments'),
       icon: 'trending-up-outline' as const,
       onPress: () => {},
     },
@@ -227,7 +229,7 @@ export const DashboardScreen: React.FC = () => {
 
         {/* Accounts Horizontal Scroll */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Mis cuentas</Text>
+          <Text style={styles.sectionTitle}>{t('myAccounts')}</Text>
           {isLoading && accounts.length === 0 ? (
             <LoadingSpinner />
           ) : (
@@ -244,15 +246,15 @@ export const DashboardScreen: React.FC = () => {
 
         {/* Quick Actions */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Acciones rápidas</Text>
+          <Text style={styles.sectionTitle}>{t('quickActions')}</Text>
           <QuickActions actions={quickActions} />
         </View>
 
         {/* Recent Transactions Header */}
         <View style={[styles.section, styles.sectionHeader]}>
-          <Text style={styles.sectionTitle}>Transacciones recientes</Text>
+          <Text style={styles.sectionTitle}>{t('recentTransactions')}</Text>
           <TouchableOpacity onPress={() => {}}>
-            <Text style={styles.seeAllText}>Ver todo</Text>
+            <Text style={styles.seeAllText}>{t('seeAll')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -269,19 +271,21 @@ export const DashboardScreen: React.FC = () => {
       renderAccountCard,
       quickActions,
       navigation,
+      getGreeting,
+      t,
     ],
   );
 
   const ListFooter = useMemo(
     () => (
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Mercados</Text>
+        <Text style={styles.sectionTitle}>{t('markets')}</Text>
         <View style={styles.marketCard}>
           {MOCK_INVESTMENTS.map(renderInvestmentRow)}
         </View>
       </View>
     ),
-    [styles, renderInvestmentRow],
+    [styles, renderInvestmentRow, t],
   );
 
   if (isLoading && accounts.length === 0) {
@@ -303,8 +307,8 @@ export const DashboardScreen: React.FC = () => {
         ListEmptyComponent={
           !isLoading ? (
             <EmptyState
-              title="Sin transacciones"
-              message="Todavía no tiene transacciones."
+              title={t('noTransactions')}
+              message={t('noTransactionsMsg')}
               icon="receipt-outline"
             />
           ) : null

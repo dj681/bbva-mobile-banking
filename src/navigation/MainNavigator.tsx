@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useAppSelector } from '@/store';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { MainTabParamList } from '@/types';
 import { COLORS, LIGHT_THEME_COLORS, DARK_THEME_COLORS } from '@/constants/colors';
 import { BOTTOM_TAB, SPACING } from '@/constants/sizes';
@@ -36,6 +37,7 @@ const MainNavigator: React.FC = () => {
   const theme = useAppSelector((state) => state.ui.theme);
   const unreadCount = useAppSelector((state) => state.ui.unreadNotificationsCount);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const { t } = useTranslation();
 
   if (!isAuthenticated) {
     return null;
@@ -68,7 +70,7 @@ const MainNavigator: React.FC = () => {
         name="HomeTab"
         component={HomeStackNavigator}
         options={{
-          tabBarLabel: 'Inicio',
+          tabBarLabel: t('home'),
           tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
           tabBarBadgeStyle: { backgroundColor: COLORS.error },
           tabBarIcon: ({ focused, color, size }) => (
@@ -86,7 +88,7 @@ const MainNavigator: React.FC = () => {
         name="AccountsTab"
         component={AccountsStackNavigator}
         options={{
-          tabBarLabel: 'Cuentas',
+          tabBarLabel: t('accounts'),
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}
@@ -102,7 +104,7 @@ const MainNavigator: React.FC = () => {
         name="CardsTab"
         component={CardsStackNavigator}
         options={{
-          tabBarLabel: 'Tarjetas',
+          tabBarLabel: t('cards'),
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}
@@ -118,7 +120,7 @@ const MainNavigator: React.FC = () => {
         name="CreditsTab"
         component={CreditsStackNavigator}
         options={{
-          tabBarLabel: 'Créditos',
+          tabBarLabel: t('credits'),
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}
@@ -134,7 +136,7 @@ const MainNavigator: React.FC = () => {
         name="InvestmentsTab"
         component={InvestmentsStackNavigator}
         options={{
-          tabBarLabel: 'Invertir',
+          tabBarLabel: t('invest'),
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}
@@ -150,7 +152,7 @@ const MainNavigator: React.FC = () => {
         name="ProfileTab"
         component={ProfileStackNavigator}
         options={{
-          tabBarLabel: 'Perfil',
+          tabBarLabel: t('profile'),
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
               focused={focused}
