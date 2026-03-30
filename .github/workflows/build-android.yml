@@ -1,0 +1,134 @@
+name: Build & Release Android APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+# Allow creating releases and uploading assets
+permissions:
+  contents: write
+
+jobs:
+  build-android:
+    name: Build Android APK (EAS)
+    runs-on: ubuntu-latest
+    # Skip on pull requests — only build on direct pushes / manual triggers
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Authenticate with Expo and install the EAS CLI
+      # Requires the EXPO_TOKEN secret to be set in repository settings:
+      #   Settings → Secrets and variables → Actions → New repository secret
+      #   Name: EXPO_TOKEN   Value: <your EAS access token from expo.dev/accounts/settings/access-tokens>
+      - name: Setup Expo & EAS CLI
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      # Build the APK using the "preview" profile defined in eas.json
+      # (distribution: internal, buildType: apk)
+      - name: Build Android APK with EAS
+        id: eas_build
+        run: |
+          OUTPUT=$(eas build \
+            --platform android \
+            --profile preview \
+            --non-interactive \
+            --json \
+            2>/dev/null)
+
+          BUILD_URL=$(echo "$OUTPUT" | jq -r '.[0].artifacts.buildUrl')
+
+          if [ -z "$BUILD_URL" ] || [ "$BUILD_URL" = "null" ]; then
+            echo "❌ Impossible de récupérer l'URL de l'APK depuis EAS (artifacts.buildUrl absent)."
+            echo "--- Sortie EAS ---"
+            echo "$OUTPUT"
+            exit 1
+          fi
+
+          echo "build_url=$BUILD_URL" >> "$GITHUB_OUTPUT"
+          echo "✅ APK disponible : $BUILD_URL"
+
+      - name: Download APK
+        run: |
+          curl -L \
+            --retry 3 \
+            --retry-delay 5 \
+            -o bbva-mobile-banking.apk \
+            "${{ steps.eas_build.outputs.build_url }}"
+
+      # Always upload as a workflow artifact (available 30 days)
+      - name: Upload APK as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bbva-mobile-banking-apk
+          path: bbva-mobile-banking.apk
+          retention-days: 30
+
+      # Publish/update a persistent "latest-apk" GitHub Release so the APK
+      # is always reachable at a stable URL for mobile download.
+      - name: Publish GitHub Release (latest-apk)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE_TAG="latest-apk"
+          RELEASE_TITLE="📱 BBVA Mobile Banking — Dernière version APK Android"
+          RELEASE_NOTES="## 📱 Télécharger BBVA Mobile Banking
+
+          Appuyez sur **\`bbva-mobile-banking.apk\`** ci-dessous pour télécharger l'application sur votre Android.
+
+          > **Build** : \`${{ github.sha }}\` — \`$(date -u '+%Y-%m-%d %H:%M UTC')\`
+
+          ---
+
+          ### 📋 Instructions d'installation
+
+          1. **Téléchargez** le fichier \`bbva-mobile-banking.apk\` ci-dessous.
+          2. Sur votre appareil Android, ouvrez **Paramètres → Sécurité** (ou **Applications → Accès spécial**).
+          3. Activez **\"Installer des applications inconnues\"** pour votre navigateur ou gestionnaire de fichiers.
+          4. Ouvrez le fichier APK téléchargé et appuyez sur **Installer**.
+          5. Lancez **BBVA Mobile Banking** depuis votre écran d'accueil.
+
+          ---
+
+          ### 🔑 Identifiants de démonstration
+
+          | Champ | Valeur |
+          |-------|--------|
+          | Email | \`demo@bbva.fr\` |
+          | Mot de passe | \`demo1234\` |
+
+          > ⚠️ Cette application utilise uniquement des **données fictives** à des fins de démonstration."
+
+          # Replace any existing "latest-apk" release with the freshly built APK.
+          # Note: there is a brief window between deletion and creation where no
+          # release exists — this is acceptable for an internal distribution APK.
+          gh release delete "$RELEASE_TAG" \
+            --yes \
+            --repo "$GITHUB_REPOSITORY" \
+            2>/dev/null || true
+
+          gh api \
+            "repos/$GITHUB_REPOSITORY/git/refs/tags/$RELEASE_TAG" \
+            -X DELETE \
+            2>/dev/null || true
+
+          # Create the new release and attach the APK
+          gh release create "$RELEASE_TAG" \
+            bbva-mobile-banking.apk \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$RELEASE_TITLE" \
+            --notes "$RELEASE_NOTES" \
+            --latest
