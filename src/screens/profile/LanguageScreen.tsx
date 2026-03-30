@@ -28,12 +28,15 @@ interface LanguageOption {
 }
 
 const LANGUAGES: LanguageOption[] = [
-  { code: 'fr', nativeName: 'Français', localName: 'French', flag: '🇫🇷' },
   { code: 'en', nativeName: 'English', localName: 'English', flag: '🇬🇧' },
   { code: 'es', nativeName: 'Español', localName: 'Spanish', flag: '🇪🇸' },
+  { code: 'fi', nativeName: 'Suomi', localName: 'Finnish', flag: '🇫🇮' },
   { code: 'de', nativeName: 'Deutsch', localName: 'German', flag: '🇩🇪' },
+  { code: 'no', nativeName: 'Norsk', localName: 'Norwegian', flag: '🇳🇴' },
+  { code: 'it', nativeName: 'Italiano', localName: 'Italian', flag: '🇮🇹' },
   { code: 'pt', nativeName: 'Português', localName: 'Portuguese', flag: '🇵🇹' },
-  { code: 'ar', nativeName: 'العربية', localName: 'Arabic', flag: '🇸🇦' },
+  { code: 'el', nativeName: 'Ελληνικά', localName: 'Greek', flag: '🇬🇷' },
+  { code: 'sk', nativeName: 'Slovenčina', localName: 'Slovak', flag: '🇸🇰' },
 ];
 
 const LanguageScreen: React.FC = () => {
