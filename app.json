@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "BBVA Mobile Banking",
+    "name": "BBVA TR",
     "slug": "bbva-mobile-banking",
     "owner": "dj681",
     "version": "1.0.0",
@@ -17,7 +17,7 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.bbva.mobilbanking",
+      "bundleIdentifier": "com.bbvatr.mobilebanking",
       "buildNumber": "1",
       "infoPlist": {
         "NSFaceIDUsageDescription": "Use Face ID to securely authenticate to your BBVA account.",
@@ -30,8 +30,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#003366"
       },
-      "package": "com.bbva.mobilebanking",
-      "versionCode": 1,
+      "package": "com.bbvatr.mobilebanking",
+      "versionCode": 2,
       "permissions": [
         "USE_BIOMETRIC",
         "USE_FINGERPRINT",

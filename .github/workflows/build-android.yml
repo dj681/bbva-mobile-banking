@@ -42,14 +42,61 @@ jobs:
       - name: Generate native Android project (expo prebuild)
         run: npx expo prebuild --platform android --clean --no-install
 
-      # Build a release APK locally — the generated project uses the debug
-      # keystore for release builds by default, which is fine for internal
-      # distribution / demo purposes.
+      # Set up the release keystore used to sign the APK.
+      #
+      # Preferred (consistent signing — supports OTA updates):
+      #   Store a base64-encoded keystore as RELEASE_KEYSTORE_BASE64, together
+      #   with KEYSTORE_PASSWORD, KEY_ALIAS, and KEY_PASSWORD secrets.
+      #   Generate once with:
+      #     keytool -genkeypair -v -keystore release.keystore -alias bbvatr \
+      #       -keyalg RSA -keysize 2048 -validity 10000 \
+      #       -dname "CN=BBVA TR, OU=Mobile, O=BBVA TR, L=Istanbul, ST=Istanbul, C=TR"
+      #     base64 -w 0 release.keystore   # paste output into RELEASE_KEYSTORE_BASE64 secret
+      #
+      # Fallback (if secrets not configured): a temporary keystore is generated
+      # per-run.  Each APK will be signed with a different key — users must
+      # uninstall the previous version before installing the new one.
+      - name: Set up release keystore
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          mkdir -p android/app
+          if [ -n "$RELEASE_KEYSTORE_BASE64" ]; then
+            echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > android/app/release.keystore
+            echo "KEYSTORE_FILE=$(pwd)/android/app/release.keystore" >> "$GITHUB_ENV"
+            echo "KEYSTORE_PASS=$KEYSTORE_PASSWORD"                  >> "$GITHUB_ENV"
+            echo "KEY_ALIAS_VAL=$KEY_ALIAS"                          >> "$GITHUB_ENV"
+            echo "KEY_PASS=$KEY_PASSWORD"                            >> "$GITHUB_ENV"
+            echo "✅ Using stored release keystore (consistent signing)."
+          else
+            echo "⚠️  RELEASE_KEYSTORE_BASE64 secret not set — generating a temporary keystore."
+            echo "   Each build will have a different signing key."
+            echo "   Users must uninstall the previous version before installing this APK."
+            keytool -genkeypair -v \
+              -keystore android/app/release.keystore \
+              -alias bbvatr -keyalg RSA -keysize 2048 -validity 10000 \
+              -storepass bbvatr_demo -keypass bbvatr_demo \
+              -dname "CN=BBVA TR, OU=Mobile, O=BBVA TR, L=Istanbul, ST=Istanbul, C=TR"
+            echo "KEYSTORE_FILE=$(pwd)/android/app/release.keystore" >> "$GITHUB_ENV"
+            echo "KEYSTORE_PASS=bbvatr_demo"                         >> "$GITHUB_ENV"
+            echo "KEY_ALIAS_VAL=bbvatr"                              >> "$GITHUB_ENV"
+            echo "KEY_PASS=bbvatr_demo"                              >> "$GITHUB_ENV"
+          fi
+
+      # Wire the release keystore into Gradle via project properties so the
+      # release build type is signed and Android can install the APK.
       - name: Build release APK with Gradle
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew assembleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file="$KEYSTORE_FILE" \
+            -Pandroid.injected.signing.store.password="$KEYSTORE_PASS" \
+            -Pandroid.injected.signing.key.alias="$KEY_ALIAS_VAL" \
+            -Pandroid.injected.signing.key.password="$KEY_PASS"
 
       - name: Rename APK
         run: |
@@ -71,8 +118,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           RELEASE_TAG="latest-apk"
-          RELEASE_TITLE="📱 BBVA Mobile Banking — Dernière version APK Android"
-          RELEASE_NOTES="## 📱 Télécharger BBVA Mobile Banking
+          RELEASE_TITLE="📱 BBVA TR — Dernière version APK Android"
+          RELEASE_NOTES="## 📱 Télécharger BBVA TR
 
           Appuyez sur **\`bbva-mobile-banking.apk\`** ci-dessous pour télécharger l'application sur votre Android.
 
@@ -86,7 +133,9 @@ jobs:
           2. Sur votre appareil Android, ouvrez **Paramètres → Sécurité** (ou **Applications → Accès spécial**).
           3. Activez **\"Installer des applications inconnues\"** pour votre navigateur ou gestionnaire de fichiers.
           4. Ouvrez le fichier APK téléchargé et appuyez sur **Installer**.
-          5. Lancez **BBVA Mobile Banking** depuis votre écran d'accueil.
+          5. Lancez **BBVA TR** depuis votre écran d'accueil.
+
+          > ⚠️ Si vous aviez une version précédente installée, **désinstallez-la d'abord** avant d'installer ce nouvel APK.
 
           ---
 
