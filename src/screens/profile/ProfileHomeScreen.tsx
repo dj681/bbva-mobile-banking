@@ -54,18 +54,24 @@ const ProfileHomeScreen: React.FC = () => {
   const [loggingOut, setLoggingOut] = useState(false);
 
   const languageLabel =
-    language === 'fr'
-      ? 'Español'
-      : language === 'en'
+    language === 'en'
       ? 'English'
       : language === 'es'
       ? 'Español'
+      : language === 'fi'
+      ? 'Suomi'
       : language === 'de'
       ? 'Deutsch'
+      : language === 'no'
+      ? 'Norsk'
+      : language === 'it'
+      ? 'Italiano'
       : language === 'pt'
       ? 'Português'
-      : language === 'ar'
-      ? 'العربية'
+      : language === 'el'
+      ? 'Ελληνικά'
+      : language === 'sk'
+      ? 'Slovenčina'
       : language;
 
   const themeLabel =

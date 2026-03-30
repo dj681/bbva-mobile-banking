@@ -9,17 +9,35 @@ import {
   Platform,
   Animated,
   Switch,
+  Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useAppDispatch } from '@/store';
-import { setAuthError } from '@/store/slices';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { setAuthError, setLanguage } from '@/store/slices';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import type { AuthStackParamList } from '@/types';
-import { MOCK_USERS, DEMO_PASSWORD } from '@/services/api/authApi';
+
+interface LangOption {
+  code: string;
+  nativeName: string;
+  flag: string;
+}
+
+const LOGIN_LANGUAGES: LangOption[] = [
+  { code: 'en', nativeName: 'English', flag: '🇬🇧' },
+  { code: 'es', nativeName: 'Español', flag: '🇪🇸' },
+  { code: 'fi', nativeName: 'Suomi', flag: '🇫🇮' },
+  { code: 'de', nativeName: 'Deutsch', flag: '🇩🇪' },
+  { code: 'no', nativeName: 'Norsk', flag: '🇳🇴' },
+  { code: 'it', nativeName: 'Italiano', flag: '🇮🇹' },
+  { code: 'pt', nativeName: 'Português', flag: '🇵🇹' },
+  { code: 'el', nativeName: 'Ελληνικά', flag: '🇬🇷' },
+  { code: 'sk', nativeName: 'Slovenčina', flag: '🇸🇰' },
+];
 
 type LoginNavProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 
@@ -27,6 +45,7 @@ const LoginScreen: React.FC = () => {
   const navigation = useNavigation<LoginNavProp>();
   const dispatch = useAppDispatch();
   const { colors } = useTheme();
+  const currentLanguage = useAppSelector((s) => s.ui.language);
   const {
     login,
     biometricLogin,
@@ -42,6 +61,9 @@ const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [biometricAvailable, setBiometricAvailable] = useState(false);
+  const [langPickerVisible, setLangPickerVisible] = useState(false);
+
+  const currentLangOption = LOGIN_LANGUAGES.find((l) => l.code === currentLanguage);
 
   const errorOpacity = useRef(new Animated.Value(0)).current;
   const shakeAnim = useRef(new Animated.Value(0)).current;
@@ -90,12 +112,6 @@ const LoginScreen: React.FC = () => {
     await biometricLogin();
   }, [biometricLogin, dispatch]);
 
-  const handleDemoFill = useCallback((demoEmail: string) => {
-    setEmail(demoEmail);
-    setPassword(DEMO_PASSWORD);
-    dispatch(setAuthError(null));
-  }, [dispatch]);
-
   const [emailFocused, setEmailFocused] = useState(false);
   const [passFocused, setPassFocused] = useState(false);
 
@@ -104,6 +120,46 @@ const LoginScreen: React.FC = () => {
       style={[styles.flex, { backgroundColor: colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      {/* Language Picker Modal */}
+      <Modal
+        visible={langPickerVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setLangPickerVisible(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setLangPickerVisible(false)}
+        >
+          <View style={[styles.langPickerContainer, { backgroundColor: colors.surface }]}>
+            <Text style={[styles.langPickerTitle, { color: colors.text }]}>
+              Select Language
+            </Text>
+            {LOGIN_LANGUAGES.map((lang) => (
+              <TouchableOpacity
+                key={lang.code}
+                style={[
+                  styles.langPickerRow,
+                  currentLanguage === lang.code && { backgroundColor: colors.inputBackground },
+                ]}
+                onPress={() => {
+                  dispatch(setLanguage(lang.code));
+                  setLangPickerVisible(false);
+                }}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.langPickerFlag}>{lang.flag}</Text>
+                <Text style={[styles.langPickerName, { color: colors.text }]}>{lang.nativeName}</Text>
+                {currentLanguage === lang.code && (
+                  <Ionicons name="checkmark" size={18} color={colors.primary} />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
       <ScrollView
         contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
@@ -111,6 +167,16 @@ const LoginScreen: React.FC = () => {
       >
         {/* Header */}
         <View style={[styles.header, { backgroundColor: colors.primary }]}>
+          {/* Language picker button – top right */}
+          <TouchableOpacity
+            style={styles.langButton}
+            onPress={() => setLangPickerVisible(true)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.langButtonFlag}>{currentLangOption?.flag ?? '🌐'}</Text>
+            <Text style={styles.langButtonCode}>{currentLanguage.toUpperCase()}</Text>
+          </TouchableOpacity>
+
           <View style={styles.logoWrapper}>
             <Text style={styles.logoText}>BBVA</Text>
           </View>
@@ -254,40 +320,6 @@ const LoginScreen: React.FC = () => {
           )}
 
         </Animated.View>
-
-        {/* Demo accounts */}
-        <View style={[styles.demoSection, { borderColor: colors.border }]}>
-          <View style={styles.demoHeader}>
-            <Ionicons name="information-circle-outline" size={16} color={colors.textSecondary} />
-            <Text style={[styles.demoTitle, { color: colors.textSecondary }]}>
-              Comptes de démonstration
-            </Text>
-          </View>
-          {Object.values(MOCK_USERS).map((u) => (
-            <TouchableOpacity
-              key={u.id}
-              style={[styles.demoRow, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder }]}
-              onPress={() => handleDemoFill(u.email)}
-              activeOpacity={0.75}
-            >
-              <View style={[styles.demoAvatar, { backgroundColor: colors.primary }]}>
-                <Text style={styles.demoAvatarText}>
-                  {u.firstName.charAt(0)}{u.lastName.charAt(0)}
-                </Text>
-              </View>
-              <View style={styles.demoInfo}>
-                <Text style={[styles.demoName, { color: colors.text }]}>
-                  {u.firstName} {u.lastName}
-                </Text>
-                <Text style={[styles.demoEmail, { color: colors.textSecondary }]}>{u.email}</Text>
-              </View>
-              <Ionicons name="arrow-forward-circle-outline" size={22} color={colors.secondary} />
-            </TouchableOpacity>
-          ))}
-          <Text style={[styles.demoHint, { color: colors.textSecondary }]}>
-            Mot de passe pré-rempli : {DEMO_PASSWORD} (tout texte non vide est accepté)
-          </Text>
-        </View>
 
         {/* Footer */}
         <View style={styles.footer}>
@@ -457,67 +489,70 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Roboto-Regular',
   },
-  demoSection: {
-    marginHorizontal: 16,
-    marginTop: 16,
-    marginBottom: 4,
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: 14,
-  },
-  demoHeader: {
+  langButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    marginBottom: 10,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 20,
+    gap: 4,
+    zIndex: 10,
   },
-  demoTitle: {
+  langButtonFlag: {
+    fontSize: 16,
+  },
+  langButtonCode: {
+    color: '#FFFFFF',
     fontSize: 12,
+    fontWeight: '700',
+    fontFamily: 'Roboto-Bold',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+    paddingTop: 80,
+    paddingRight: 16,
+  },
+  langPickerContainer: {
+    borderRadius: 14,
+    paddingVertical: 8,
+    minWidth: 200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  langPickerTitle: {
+    fontSize: 11,
     fontFamily: 'Roboto-Medium',
     fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    opacity: 0.6,
   },
-  demoRow: {
+  langPickerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     gap: 10,
   },
-  demoAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
+  langPickerFlag: {
+    fontSize: 22,
   },
-  demoAvatarText: {
-    color: '#FFFFFF',
-    fontSize: 13,
-    fontFamily: 'Roboto-Bold',
-    fontWeight: '700',
-  },
-  demoInfo: {
+  langPickerName: {
     flex: 1,
-  },
-  demoName: {
-    fontSize: 14,
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '600',
-  },
-  demoEmail: {
-    fontSize: 11,
+    fontSize: 15,
     fontFamily: 'Roboto-Regular',
-    marginTop: 1,
-  },
-  demoHint: {
-    fontSize: 11,
-    fontFamily: 'Roboto-Regular',
-    textAlign: 'center',
-    marginTop: 2,
   },
 });
 
