@@ -17,6 +17,7 @@ import { Divider } from '@/components/common/Divider';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useAppSelector } from '@/store';
 import type { ProfileStackParamList } from '@/types';
 
@@ -48,6 +49,7 @@ const ProfileHomeScreen: React.FC = () => {
   const navigation = useNavigation<ProfileNavProp>();
   const { colors, spacing, borderRadius } = useTheme();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const language = useAppSelector((s) => s.ui.language);
   const theme = useAppSelector((s) => s.ui.theme);
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
@@ -75,93 +77,93 @@ const ProfileHomeScreen: React.FC = () => {
       : language;
 
   const themeLabel =
-    theme === 'dark' ? 'Oscuro' : theme === 'system' ? 'Sistema' : 'Claro';
+    theme === 'dark' ? t('dark') : theme === 'system' ? t('system') : t('light');
 
   const sections: MenuSection[] = [
     {
-      title: 'CUENTA',
+      title: t('accountSection'),
       items: [
         {
           id: 'edit-profile',
-          label: 'Editar perfil',
+          label: t('editProfile'),
           icon: 'person-outline',
           screen: 'EditProfile',
         },
         {
           id: 'change-password',
-          label: 'Cambiar contraseña',
+          label: t('changePassword'),
           icon: 'lock-closed-outline',
           screen: 'ChangePassword',
         },
       ],
     },
     {
-      title: 'SEGURIDAD',
+      title: t('securitySection'),
       items: [
         {
           id: 'security',
-          label: 'Seguridad',
+          label: t('security'),
           icon: 'shield-checkmark-outline',
           screen: 'SecuritySettings',
         },
         {
           id: 'devices',
-          label: 'Gestión de dispositivos',
+          label: t('deviceManagement'),
           icon: 'phone-portrait-outline',
-          badge: '2 dispositivos',
+          badge: t('devicesCount'),
           screen: 'DeviceManagement',
         },
       ],
     },
     {
-      title: 'PREFERENCIAS',
+      title: t('preferencesSection'),
       items: [
         {
           id: 'notifications',
-          label: 'Notificaciones',
+          label: t('notifications'),
           icon: 'notifications-outline',
           screen: 'NotificationSettings',
         },
         {
           id: 'language',
-          label: 'Idioma',
+          label: t('language'),
           icon: 'globe-outline',
           value: languageLabel,
           screen: 'Language',
         },
         {
           id: 'appearance',
-          label: 'Apariencia',
+          label: t('appearance'),
           icon: 'moon-outline',
           value: themeLabel,
           screen: undefined,
         },
         {
           id: 'privacy',
-          label: 'Privacidad',
+          label: t('privacy'),
           icon: 'eye-outline',
           screen: undefined,
         },
       ],
     },
     {
-      title: 'INFORMACIÓN',
+      title: t('informationSection'),
       items: [
         {
           id: 'about',
-          label: 'Acerca de',
+          label: t('about'),
           icon: 'information-circle-outline',
           screen: 'About',
         },
         {
           id: 'terms',
-          label: 'Condiciones de uso',
+          label: t('termsOfUse'),
           icon: 'document-text-outline',
           screen: undefined,
         },
         {
           id: 'support',
-          label: 'Soporte al cliente',
+          label: t('customerSupport'),
           icon: 'headset-outline',
           screen: 'Support',
         },
@@ -216,7 +218,7 @@ const ProfileHomeScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Mi Perfil</Text>
+        <Text style={styles.headerTitle}>{t('myProfile')}</Text>
       </View>
 
       <ScrollView
@@ -237,7 +239,7 @@ const ProfileHomeScreen: React.FC = () => {
             onPress={() => navigation.navigate('EditProfile')}
             activeOpacity={0.8}
           >
-            <Text style={styles.editButtonText}>Editar perfil</Text>
+            <Text style={styles.editButtonText}>{t('editProfile')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -270,7 +272,7 @@ const ProfileHomeScreen: React.FC = () => {
                 <View style={[styles.menuIconContainer, styles.dangerIconContainer]}>
                   <Ionicons name="log-out-outline" size={20} color={colors.error} />
                 </View>
-                <Text style={styles.dangerLabel}>Cerrar sesión</Text>
+                <Text style={styles.dangerLabel}>{t('signOut')}</Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color={colors.error} />
             </TouchableOpacity>
@@ -283,21 +285,21 @@ const ProfileHomeScreen: React.FC = () => {
       {/* Logout confirmation modal */}
       <Modal
         visible={logoutModalVisible}
-        title="Cerrar sesión"
+        title={t('signOut')}
         onClose={() => setLogoutModalVisible(false)}
       >
         <Text style={styles.modalBody}>
-          ¿Está seguro de que desea cerrar sesión en su cuenta BBVA?
+          {t('logoutConfirm')}
         </Text>
         <View style={styles.modalActions}>
           <Button
-            label="Cancelar"
+            label={t('cancel')}
             variant="outline"
             onPress={() => setLogoutModalVisible(false)}
             style={styles.modalBtn}
           />
           <Button
-            label="Cerrar sesión"
+            label={t('signOut')}
             variant="danger"
             loading={loggingOut}
             onPress={handleLogout}

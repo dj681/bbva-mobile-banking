@@ -4,3 +4,4 @@ export { default as useCards } from './useCards';
 export { default as useTheme } from './useTheme';
 export { default as useTransfer } from './useTransfer';
 export { default as useNotifications } from './useNotifications';
+export { useTranslation } from './useTranslation';

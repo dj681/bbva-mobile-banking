@@ -14,6 +14,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button } from '@/components/common/Button';
 import { Divider } from '@/components/common/Divider';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { setLanguage } from '@/store/slices';
 import type { ProfileStackParamList } from '@/types';
@@ -42,6 +43,7 @@ const LANGUAGES: LanguageOption[] = [
 const LanguageScreen: React.FC = () => {
   const navigation = useNavigation<LanguageNavProp>();
   const { colors, spacing, borderRadius } = useTheme();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const currentLanguage = useAppSelector((s) => s.ui.language);
 
@@ -100,14 +102,14 @@ const LanguageScreen: React.FC = () => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={colors.headerText} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Idioma</Text>
+        <Text style={styles.headerTitle}>{t('language')}</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
       {saved && (
         <View style={styles.savedBanner}>
           <Ionicons name="checkmark-circle" size={18} color="#FFFFFF" />
-          <Text style={styles.savedText}>Idioma actualizado</Text>
+          <Text style={styles.savedText}>{t('languageUpdated')}</Text>
         </View>
       )}
 
@@ -120,12 +122,12 @@ const LanguageScreen: React.FC = () => {
         ItemSeparatorComponent={null}
         ListHeaderComponent={
           <Text style={styles.hint}>
-            Elija el idioma de visualización de la aplicación.
+            {t('languageHint')}
           </Text>
         }
         ListFooterComponent={
           <Button
-            label="Sauvegarder"
+            label={t('save')}
             variant="primary"
             fullWidth
             loading={saving}

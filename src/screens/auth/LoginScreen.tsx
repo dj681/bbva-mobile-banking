@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { setAuthError, setLanguage } from '@/store/slices';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { AuthStackParamList } from '@/types';
 
 interface LangOption {
@@ -45,6 +46,7 @@ const LoginScreen: React.FC = () => {
   const navigation = useNavigation<LoginNavProp>();
   const dispatch = useAppDispatch();
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const currentLanguage = useAppSelector((s) => s.ui.language);
   const {
     login,
@@ -101,11 +103,11 @@ const LoginScreen: React.FC = () => {
   const handleLogin = useCallback(async () => {
     dispatch(setAuthError(null));
     if (!email.trim() || !password.trim()) {
-      dispatch(setAuthError('Por favor, introduzca su correo electrónico y contraseña.'));
+      dispatch(setAuthError(t('errorEmptyFields')));
       return;
     }
     await login(email.trim(), password);
-  }, [email, password, login, dispatch]);
+  }, [email, password, login, dispatch, t]);
 
   const handleBiometric = useCallback(async () => {
     dispatch(setAuthError(null));
@@ -134,7 +136,7 @@ const LoginScreen: React.FC = () => {
         >
           <View style={[styles.langPickerContainer, { backgroundColor: colors.surface }]}>
             <Text style={[styles.langPickerTitle, { color: colors.text }]}>
-              Select Language
+              {t('selectLanguage')}
             </Text>
             {LOGIN_LANGUAGES.map((lang) => (
               <TouchableOpacity
@@ -180,8 +182,8 @@ const LoginScreen: React.FC = () => {
           <View style={styles.logoWrapper}>
             <Text style={styles.logoText}>BBVA</Text>
           </View>
-          <Text style={styles.headerTitle}>Bienvenido</Text>
-          <Text style={styles.headerSubtitle}>Acceda a su área bancaria personal</Text>
+          <Text style={styles.headerTitle}>{t('welcome')}</Text>
+          <Text style={styles.headerSubtitle}>{t('welcomeSubtitle')}</Text>
         </View>
 
         {/* Form */}
@@ -205,7 +207,7 @@ const LoginScreen: React.FC = () => {
 
           {/* Email */}
           <View style={styles.fieldGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Correo electrónico</Text>
+            <Text style={[styles.label, { color: colors.text }]}>{t('email')}</Text>
             <View
               style={[
                 styles.inputRow,
@@ -219,7 +221,7 @@ const LoginScreen: React.FC = () => {
                 onChangeText={setEmail}
                 onFocus={() => setEmailFocused(true)}
                 onBlur={() => setEmailFocused(false)}
-                placeholder="ejemplo@bbva.es"
+                placeholder={t('emailPlaceholder')}
                 placeholderTextColor={colors.placeholder}
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -233,7 +235,7 @@ const LoginScreen: React.FC = () => {
 
           {/* Password */}
           <View style={styles.fieldGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Contraseña</Text>
+            <Text style={[styles.label, { color: colors.text }]}>{t('password')}</Text>
             <View
               style={[
                 styles.inputRow,
@@ -247,7 +249,7 @@ const LoginScreen: React.FC = () => {
                 onChangeText={setPassword}
                 onFocus={() => setPassFocused(true)}
                 onBlur={() => setPassFocused(false)}
-                placeholder="Su contraseña"
+                placeholder={t('passwordPlaceholder')}
                 placeholderTextColor={colors.placeholder}
                 secureTextEntry={!showPassword}
                 returnKeyType="done"
@@ -275,12 +277,12 @@ const LoginScreen: React.FC = () => {
                 thumbColor={rememberMe ? colors.primary : colors.surface}
               />
               <Text style={[styles.rememberText, { color: colors.textSecondary }]}>
-                Recordarme
+                {t('rememberMe')}
               </Text>
             </View>
             <TouchableOpacity onPress={() => {}}>
               <Text style={[styles.forgotText, { color: colors.secondary }]}>
-                ¿Olvidó su contraseña?
+                {t('forgotPassword')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -299,7 +301,7 @@ const LoginScreen: React.FC = () => {
               <ActivityIndicator color="#FFFFFF" />
             ) : (
               <>
-                <Text style={styles.loginButtonText}>Iniciar sesión</Text>
+                <Text style={styles.loginButtonText}>{t('signIn')}</Text>
                 <Ionicons name="arrow-forward" size={20} color="#FFFFFF" />
               </>
             )}
@@ -314,13 +316,12 @@ const LoginScreen: React.FC = () => {
             >
               <Ionicons name="finger-print-outline" size={24} color={colors.primary} />
               <Text style={[styles.biometricText, { color: colors.primary }]}>
-                Acceso biométrico
+                {t('biometricAccess')}
               </Text>
             </TouchableOpacity>
           )}
 
         </Animated.View>
-
 
       </ScrollView>
     </KeyboardAvoidingView>

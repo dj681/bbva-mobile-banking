@@ -139,7 +139,7 @@ export const verifyTwoFactorApi = async (
 ): Promise<{ token: string; user: User }> => {
   await delay(MOCK_DELAY);
   if (!/^\d{6}$/.test(otp)) {
-    throw new Error('Code OTP invalide. Veuillez saisir 6 chiffres.');
+    throw new Error('Invalid OTP code. Please enter 6 digits.');
   }
   let user: User = MOCK_USER;
   if (pendingToken) {
@@ -148,7 +148,7 @@ export const verifyTwoFactorApi = async (
       const payload = JSON.parse(base64Decode(parts[1])) as { sub: string };
       const found = Object.values(MOCK_USERS).find((u) => u.id === payload.sub);
       if (!found) {
-        throw new Error('Session expirée. Veuillez vous reconnecter.');
+        throw new Error('Session expired. Please sign in again.');
       }
       user = found;
     }
