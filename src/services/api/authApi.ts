@@ -4,10 +4,54 @@ const MOCK_DELAY = 800;
 
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
+// Pure-JS Base64 helpers — btoa/atob are browser globals unavailable in
+// React Native's Hermes engine, which causes "property 'btoa' doesn't exist".
+const BASE64_CHARS =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+function base64Encode(input: string): string {
+  let output = '';
+  let i = 0;
+  while (i < input.length) {
+    const chr1 = input.charCodeAt(i++);
+    const chr2 = input.charCodeAt(i++);
+    const chr3 = input.charCodeAt(i++);
+    const enc1 = chr1 >> 2;
+    const enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+    const enc3 = isNaN(chr2) ? 64 : ((chr2 & 15) << 2) | (chr3 >> 6);
+    const enc4 = isNaN(chr3) ? 64 : chr3 & 63;
+    output +=
+      BASE64_CHARS.charAt(enc1) +
+      BASE64_CHARS.charAt(enc2) +
+      BASE64_CHARS.charAt(enc3) +
+      BASE64_CHARS.charAt(enc4);
+  }
+  return output;
+}
+
+function base64Decode(input: string): string {
+  let output = '';
+  let i = 0;
+  const sanitized = input.replace(/[^A-Za-z0-9+/=]/g, '');
+  while (i < sanitized.length) {
+    const enc1 = BASE64_CHARS.indexOf(sanitized.charAt(i++));
+    const enc2 = BASE64_CHARS.indexOf(sanitized.charAt(i++));
+    const enc3 = BASE64_CHARS.indexOf(sanitized.charAt(i++));
+    const enc4 = BASE64_CHARS.indexOf(sanitized.charAt(i++));
+    const chr1 = (enc1 << 2) | (enc2 >> 4);
+    const chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+    const chr3 = ((enc3 & 3) << 6) | enc4;
+    output += String.fromCharCode(chr1);
+    if (enc3 !== 64) output += String.fromCharCode(chr2);
+    if (enc4 !== 64) output += String.fromCharCode(chr3);
+  }
+  return output;
+}
+
 // Deterministic JWT-like token builder (not real JWT, for mock purposes only)
 function buildToken(subject: string, expiresInMinutes: number): string {
-  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-  const payload = btoa(
+  const header = base64Encode(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+  const payload = base64Encode(
     JSON.stringify({
       sub: subject,
       iat: Math.floor(Date.now() / 1000),
@@ -15,7 +59,7 @@ function buildToken(subject: string, expiresInMinutes: number): string {
       iss: 'bbva-mobile-mock',
     }),
   );
-  const signature = btoa(`mock-sig-${subject}-${Date.now()}`);
+  const signature = base64Encode(`mock-sig-${subject}-${Date.now()}`);
   return `${header}.${payload}.${signature}`;
 }
 
@@ -101,7 +145,7 @@ export const verifyTwoFactorApi = async (
   if (pendingToken) {
     const parts = pendingToken.split('.');
     if (parts.length === 3) {
-      const payload = JSON.parse(atob(parts[1])) as { sub: string };
+      const payload = JSON.parse(base64Decode(parts[1])) as { sub: string };
       const found = Object.values(MOCK_USERS).find((u) => u.id === payload.sub);
       if (!found) {
         throw new Error('Session expirée. Veuillez vous reconnecter.');
