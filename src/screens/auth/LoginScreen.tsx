@@ -321,12 +321,7 @@ const LoginScreen: React.FC = () => {
 
         </Animated.View>
 
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: colors.textSecondary }]}>
-            © 2024 BBVA — Todos los derechos reservados
-          </Text>
-        </View>
+
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -480,14 +475,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     fontFamily: 'Roboto-Medium',
-  },
-  footer: {
-    padding: 24,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 11,
-    fontFamily: 'Roboto-Regular',
   },
   langButton: {
     position: 'absolute',
