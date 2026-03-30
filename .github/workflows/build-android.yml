@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build-android:
-    name: Build Android APK (EAS)
+    name: Build Android APK (Local)
     runs-on: ubuntu-latest
     # Skip on pull requests — only build on direct pushes / manual triggers
     if: github.event_name != 'pull_request'
@@ -27,47 +27,34 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Authenticate with Expo and install the EAS CLI
-      # Requires the EXPO_TOKEN secret to be set in repository settings:
-      #   Settings → Secrets and variables → Actions → New repository secret
-      #   Name: EXPO_TOKEN   Value: <your EAS access token from expo.dev/accounts/settings/access-tokens>
-      - name: Setup Expo & EAS CLI
-        uses: expo/expo-github-action@v8
+      # JDK 17 is required by the Android Gradle plugin
+      - uses: actions/setup-java@v4
         with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
+          distribution: temurin
+          java-version: 17
 
-      # Build the APK using the "preview" profile defined in eas.json
-      # (distribution: internal, buildType: apk)
-      - name: Build Android APK with EAS
-        id: eas_build
+      # Accept Android SDK licences so Gradle does not prompt during the build
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      # Generate the native android/ directory from the Expo config
+      # --no-install: skip a redundant npm install (we already ran npm ci)
+      - name: Generate native Android project (expo prebuild)
+        run: npx expo prebuild --platform android --clean --no-install
+
+      # Build a release APK locally — the generated project uses the debug
+      # keystore for release builds by default, which is fine for internal
+      # distribution / demo purposes.
+      - name: Build release APK with Gradle
         run: |
-          OUTPUT=$(eas build \
-            --platform android \
-            --profile preview \
-            --non-interactive \
-            --json \
-            2>/dev/null)
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
 
-          BUILD_URL=$(echo "$OUTPUT" | jq -r '.[0].artifacts.buildUrl')
-
-          if [ -z "$BUILD_URL" ] || [ "$BUILD_URL" = "null" ]; then
-            echo "❌ Impossible de récupérer l'URL de l'APK depuis EAS (artifacts.buildUrl absent)."
-            echo "--- Sortie EAS ---"
-            echo "$OUTPUT"
-            exit 1
-          fi
-
-          echo "build_url=$BUILD_URL" >> "$GITHUB_OUTPUT"
-          echo "✅ APK disponible : $BUILD_URL"
-
-      - name: Download APK
+      - name: Rename APK
         run: |
-          curl -L \
-            --retry 3 \
-            --retry-delay 5 \
-            -o bbva-mobile-banking.apk \
-            "${{ steps.eas_build.outputs.build_url }}"
+          APK=$(find android/app/build/outputs/apk/release -name "*.apk" | head -1)
+          cp "$APK" bbva-mobile-banking.apk
 
       # Always upload as a workflow artifact (available 30 days)
       - name: Upload APK as workflow artifact
