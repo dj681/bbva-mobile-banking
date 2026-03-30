@@ -19,13 +19,11 @@ function buildToken(subject: string, expiresInMinutes: number): string {
   return `${header}.${payload}.${signature}`;
 }
 
-const ALLOWED_EMAIL = 'jdiazrodriguez266@gmail.com';
-
 export const MOCK_USER: User = {
   id: 'usr-001-jdiaz',
   firstName: 'José Antonio',
   lastName: 'Díaz Rodríguez',
-  email: ALLOWED_EMAIL,
+  email: 'jdiazrodriguez266@gmail.com',
   phone: '642663110',
   avatar: `https://ui-avatars.com/api/?name=JA+Diaz&background=004481&color=fff`,
   createdAt: '2019-03-15T09:00:00.000Z',
@@ -34,6 +32,23 @@ export const MOCK_USER: User = {
   address: 'Calle Piedras 3, Matagorda, El Ejido',
   postalCode: '04715',
   city: 'Almería',
+};
+
+export const MOCK_USER_FRANCESCO: User = {
+  id: 'usr-002-fjoy',
+  firstName: 'Francesco',
+  lastName: 'Joy',
+  email: 'bellostudio10@hotmail.com',
+  phone: '600000000',
+  avatar: `https://ui-avatars.com/api/?name=FJ&background=004481&color=fff`,
+  createdAt: '2021-06-01T09:00:00.000Z',
+  lastLogin: new Date().toISOString(),
+};
+
+/** Map of lowercase email → mock user, for multi-profile support. */
+export const MOCK_USERS: Record<string, User> = {
+  [MOCK_USER.email.toLowerCase()]: MOCK_USER,
+  [MOCK_USER_FRANCESCO.email.toLowerCase()]: MOCK_USER_FRANCESCO,
 };
 
 export interface LoginResult {
@@ -48,34 +63,50 @@ export interface RefreshResult {
 }
 
 /**
- * Mock login — only accepts jdiazrodriguez266@gmail.com; any non-empty password is valid.
+ * Mock login — accepts jdiazrodriguez266@gmail.com or bellostudio10@hotmail.com;
+ * any non-empty password is valid.
  */
 export const loginApi = async (
   email: string,
   _password: string,
 ): Promise<LoginResult> => {
   await delay(MOCK_DELAY);
-  if (email.trim().toLowerCase() !== ALLOWED_EMAIL) {
+  const user = MOCK_USERS[email.trim().toLowerCase()];
+  if (!user) {
     throw new Error('Adresse e-mail non autorisée.');
   }
   return {
-    token: buildToken(MOCK_USER.id, 30),
-    refreshToken: buildToken(`${MOCK_USER.id}-refresh`, 43200), // 30 days
-    user: MOCK_USER,
+    token: buildToken(user.id, 30),
+    refreshToken: buildToken(`${user.id}-refresh`, 43200), // 30 days
+    user,
   };
 };
 
 /**
  * Mock 2FA OTP verification — any 6-digit code is accepted.
+ * Decodes the token subject to return the matching mock user.
  */
 export const verifyTwoFactorApi = async (
   otp: string,
-): Promise<{ token: string }> => {
+  pendingToken?: string,
+): Promise<{ token: string; user: User }> => {
   await delay(MOCK_DELAY);
   if (!/^\d{6}$/.test(otp)) {
     throw new Error('Code OTP invalide. Veuillez saisir 6 chiffres.');
   }
-  return { token: buildToken(MOCK_USER.id, 30) };
+  let user: User = MOCK_USER;
+  if (pendingToken) {
+    const parts = pendingToken.split('.');
+    if (parts.length === 3) {
+      const payload = JSON.parse(atob(parts[1])) as { sub: string };
+      const found = Object.values(MOCK_USERS).find((u) => u.id === payload.sub);
+      if (!found) {
+        throw new Error('Session expirée. Veuillez vous reconnecter.');
+      }
+      user = found;
+    }
+  }
+  return { token: buildToken(user.id, 30), user };
 };
 
 /**

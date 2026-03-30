@@ -114,8 +114,12 @@ Un **QR code** s'affiche dans le terminal.
 
 > L'application utilise uniquement des données fictives. Aucun compte réel n'est requis.
 
-Entrez l'e-mail de José et **n'importe quel mot de passe** sur l'écran de connexion.  
-Exemple : `jdiazrodriguez266@gmail.com` / `demo1234`
+Deux profils de démonstration sont disponibles (n'importe quel mot de passe est accepté) :
+
+| Titulaire | E-mail | Mot de passe |
+|---|---|---|
+| José Antonio Díaz Rodríguez | `jdiazrodriguez266@gmail.com` | (quelconque) |
+| Francesco Joy | `bellostudio10@hotmail.com` | (quelconque) |
 
 ---
 
