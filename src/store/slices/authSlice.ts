@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { AuthState, User } from '../../types';
-import { loginApi, verifyTwoFactorApi, logoutApi, MOCK_USER } from '../../services/api/authApi';
+import { loginApi, verifyTwoFactorApi, logoutApi } from '../../services/api/authApi';
 
 const initialState: AuthState = {
   user: null,
@@ -71,10 +71,10 @@ export const verifyTwoFactor = createAsyncThunk<TwoFactorResponse, TwoFactorPayl
   'auth/verifyTwoFactor',
   async (payload, { rejectWithValue }) => {
     try {
-      const result = await verifyTwoFactorApi(payload.code);
+      const result = await verifyTwoFactorApi(payload.code, payload.token);
       const sessionExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
       return {
-        user: MOCK_USER,
+        user: result.user,
         token: result.token,
         refreshToken: '',
         sessionExpiry,

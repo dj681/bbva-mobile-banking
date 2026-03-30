@@ -28,7 +28,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#003366"
+        "backgroundColor": "#004481"
       },
       "package": "com.bbvatr.mobilebanking",
       "versionCode": 2,
