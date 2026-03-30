@@ -27,16 +27,37 @@ jobs:
       - name: Install JS dependencies
         run: npm ci
 
-      # Generate the native ios/ directory from the Expo config and run pod install.
-      # CocoaPods is pre-installed on the macos-latest runner.
+      # Generate the native ios/ directory from the Expo config.
+      # --no-install skips pod install so we can run it as a separate step for
+      # better error visibility.
+      # We clear the npm and Expo caches first to prevent TAR_BAD_ARCHIVE errors
+      # that occur when the cached expo-template-bare-minimum tarball is
+      # in an unrecognised format.
       - name: Generate native iOS project (expo prebuild)
-        run: npx expo prebuild --platform ios --clean
+        run: |
+          npm cache clean --force
+          rm -rf ~/.expo
+          npx expo prebuild --platform ios --clean --no-install
+          if [ ! -d ios ] || [ -z "$(ls -A ios)" ]; then
+            echo "::error::expo prebuild failed to create the ios directory"
+            exit 1
+          fi
+
+      # Run pod install as a dedicated step so CocoaPods failures are clearly
+      # reported separately from the prebuild step above.
+      - name: Install CocoaPods dependencies
+        working-directory: ios
+        run: pod install
 
       # Detect the workspace and scheme names dynamically so they don't need to
       # be hardcoded.  expo prebuild creates exactly one .xcworkspace in ios/.
       - name: Detect Xcode workspace and scheme
         run: |
           WORKSPACE=$(find ios -name "*.xcworkspace" -maxdepth 1 | head -1)
+          if [ -z "$WORKSPACE" ]; then
+            echo "::error::No .xcworkspace found in ios/ — expo prebuild may have failed"
+            exit 1
+          fi
           SCHEME=$(basename "$WORKSPACE" .xcworkspace)
           echo "XCODE_WORKSPACE=$WORKSPACE" >> "$GITHUB_ENV"
           echo "XCODE_SCHEME=$SCHEME"       >> "$GITHUB_ENV"
