@@ -24,6 +24,7 @@ import { EmptyState } from '@/components/common/EmptyState';
 import { Divider } from '@/components/common/Divider';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useAppDispatch } from '@/store';
 import { fetchTransactions } from '@/store/slices';
 import type { Account, Transaction, AccountsStackParamList } from '@/types';
@@ -54,6 +55,8 @@ export const AccountDetailsScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+
+  const { t } = useTranslation();
 
   const account = useMemo(
     () => accounts.find((a) => a.id === accountId) ?? null,
@@ -113,7 +116,7 @@ export const AccountDetailsScreen: React.FC = () => {
           onPress={() => setActiveTab(tab)}
         >
           <Text style={[styles.tabText, activeTab === tab && styles.tabTextActive]}>
-            {tab === 'transactions' ? 'Transacciones' : 'Información de la cuenta'}
+            {tab === 'transactions' ? t('tabTransactions') : t('tabAccountInfo')}
           </Text>
         </TouchableOpacity>
       ))}
@@ -123,25 +126,25 @@ export const AccountDetailsScreen: React.FC = () => {
   const AccountInfoContent = account ? (
     <View style={styles.infoContainer}>
       {[
-        { label: 'Titular', value: account.name },
-        { label: 'Número de cuenta', value: account.accountNumber },
+        { label: t('accountHolder'), value: account.name },
+        { label: t('accountNumber'), value: account.accountNumber },
         { label: 'IBAN', value: formatIBAN(account.iban) },
         { label: 'BIC / SWIFT', value: 'BBVAESMMXXX' },
         {
-          label: 'Tipo de cuenta',
+          label: t('accountType'),
           value:
             account.type === 'checking'
-              ? 'Cuenta corriente'
+              ? t('accountTypeCheckingFull')
               : account.type === 'savings'
-              ? 'Cuenta de ahorro'
+              ? t('accountTypeSavingsFull')
               : account.type === 'investment'
-              ? 'Cuenta de inversión'
-              : 'Cuenta de crédito',
+              ? t('accountTypeInvestmentFull')
+              : t('accountTypeCreditFull'),
         },
-        { label: 'Divisa', value: account.currency },
-        { label: 'Fecha de apertura', value: formatDate(account.createdAt) },
+        { label: t('currency'), value: account.currency },
+        { label: t('openingDate'), value: formatDate(account.createdAt) },
         ...(account.interestRate !== undefined
-          ? [{ label: 'Tipo de interés', value: `${account.interestRate}%` }]
+          ? [{ label: t('interestRate'), value: `${account.interestRate}%` }]
           : []),
       ].map(({ label, value }) => (
         <View key={label} style={styles.infoRow}>
@@ -164,19 +167,19 @@ export const AccountDetailsScreen: React.FC = () => {
       {/* Balance details */}
       <View style={styles.balanceDetails}>
         <View style={styles.balanceItem}>
-          <Text style={styles.balanceLabel}>Saldo total</Text>
+          <Text style={styles.balanceLabel}>{t('totalBalance')}</Text>
           <Text style={styles.balanceValue}>{formatCurrency(account.balance, account.currency)}</Text>
         </View>
         <Divider vertical style={styles.balanceDivider} />
         <View style={styles.balanceItem}>
-          <Text style={styles.balanceLabel}>Disponible</Text>
+          <Text style={styles.balanceLabel}>{t('availableBalance')}</Text>
           <Text style={[styles.balanceValue, { color: colors.success }]}>
             {formatCurrency(account.availableBalance, account.currency)}
           </Text>
         </View>
         <Divider vertical style={styles.balanceDivider} />
         <View style={styles.balanceItem}>
-          <Text style={styles.balanceLabel}>Retenido</Text>
+          <Text style={styles.balanceLabel}>{t('heldBalance')}</Text>
           <Text style={[styles.balanceValue, { color: colors.warning }]}>
             {formatCurrency(account.balance - account.availableBalance, account.currency)}
           </Text>
@@ -186,9 +189,9 @@ export const AccountDetailsScreen: React.FC = () => {
       {/* Quick Actions */}
       <View style={styles.quickActions}>
         {[
-          { icon: 'swap-horizontal-outline' as const, label: 'Transferencia', onPress: () => {} },
-          { icon: 'receipt-outline' as const, label: 'Pagar', onPress: () => {} },
-          { icon: 'document-text-outline' as const, label: 'Extracto', onPress: () => {} },
+          { icon: 'swap-horizontal-outline' as const, label: t('transfer'), onPress: () => {} },
+          { icon: 'receipt-outline' as const, label: t('pay'), onPress: () => {} },
+          { icon: 'document-text-outline' as const, label: t('statement'), onPress: () => {} },
         ].map((action) => (
           <TouchableOpacity
             key={action.label}
@@ -212,7 +215,7 @@ export const AccountDetailsScreen: React.FC = () => {
           <SearchBar
             value={searchQuery}
             onChangeText={handleSearch}
-            placeholder="Buscar una transacción..."
+            placeholder={t('searchTransaction')}
           />
         </View>
       )}
@@ -223,8 +226,8 @@ export const AccountDetailsScreen: React.FC = () => {
     return (
       <View style={[styles.container, styles.centered]}>
         <EmptyState
-          title="Cuenta no encontrada"
-          message='Esta cuenta no existe o ha sido eliminada.'
+          title={t('accountNotFound')}
+          message={t('accountNotFoundMsg')}
           icon="alert-circle-outline"
         />
       </View>
@@ -256,8 +259,8 @@ export const AccountDetailsScreen: React.FC = () => {
             <LoadingSpinner />
           ) : (
             <EmptyState
-              title="Sin transacciones"
-              message="No se encontraron transacciones para esta cuenta."
+              title={t('noTransactions')}
+              message={t('noTransactionsForAccount')}
               icon="receipt-outline"
             />
           )

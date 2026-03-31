@@ -17,6 +17,7 @@ import { EmptyState } from '@/components/common/EmptyState';
 import { Divider } from '@/components/common/Divider';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useAppDispatch } from '@/store';
 import { fetchAccounts } from '@/store/slices';
 import type { Account, AccountsStackParamList } from '@/types';
@@ -24,18 +25,19 @@ import { formatCurrency, formatIBAN } from '@/utils';
 
 type AccountsListNavProp = NativeStackNavigationProp<AccountsStackParamList, 'AccountsList'>;
 
-const ACCOUNT_TYPE_LABELS: Record<string, string> = {
-  checking: 'Corriente',
-  savings: 'Ahorro',
-  investment: 'Inversión',
-  credit: 'Crédito',
-};
-
 export const AccountsListScreen: React.FC = () => {
   const navigation = useNavigation<AccountsListNavProp>();
   const dispatch = useAppDispatch();
   const { colors, spacing, borderRadius } = useTheme();
+  const { t } = useTranslation();
   const { accounts, isLoading, selectAccount } = useAccounts();
+
+  const accountTypeLabels: Record<string, string> = {
+    checking: t('accountTypeChecking'),
+    savings: t('accountTypeSavings'),
+    investment: t('accountTypeInvestment'),
+    credit: t('accountTypeCredit'),
+  };
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -84,7 +86,7 @@ export const AccountsListScreen: React.FC = () => {
         <View style={styles.accountMeta}>
           <View style={styles.metaRow}>
             <Badge
-              label={ACCOUNT_TYPE_LABELS[item.type] ?? item.type}
+              label={accountTypeLabels[item.type] ?? item.type}
               variant={
                 item.type === 'checking'
                   ? 'info'
@@ -96,7 +98,7 @@ export const AccountsListScreen: React.FC = () => {
               }
             />
             {item.isDefault && (
-              <Badge label="Principal" variant="warning" style={styles.defaultBadge} />
+              <Badge label={t('defaultAccount')} variant="warning" style={styles.defaultBadge} />
             )}
           </View>
           <Text style={styles.ibanText}>
@@ -112,7 +114,7 @@ export const AccountsListScreen: React.FC = () => {
 
   const ListHeader = (
     <View style={styles.header}>
-      <Text style={styles.headerTitle}>Mis Cuentas</Text>
+      <Text style={styles.headerTitle}>{t('myAccounts2')}</Text>
       <View style={styles.summaryContainer}>
         <BalanceSummary
           totalBalance={totalBalance}
@@ -121,7 +123,7 @@ export const AccountsListScreen: React.FC = () => {
         />
       </View>
       <Text style={styles.accountCount}>
-        {accounts.length} cuenta{accounts.length !== 1 ? 's' : ''}
+        {accounts.length} {accounts.length !== 1 ? t('accounts') : t('accountTypeChecking').toLowerCase()}
       </Text>
     </View>
   );
@@ -143,8 +145,8 @@ export const AccountsListScreen: React.FC = () => {
         ListHeaderComponent={ListHeader}
         ListEmptyComponent={
           <EmptyState
-            title="Sin cuentas"
-            message="Todavía no tiene ninguna cuenta bancaria."
+            title={t('noAccounts')}
+            message={t('noAccountsMsg')}
             icon="wallet-outline"
           />
         }

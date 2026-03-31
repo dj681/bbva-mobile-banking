@@ -17,17 +17,11 @@ import { Card } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { AccountsStackParamList, Transaction, TransactionStatus } from '@/types';
 import { formatCurrency, formatDate } from '@/utils';
 
 type TransactionDetailsRouteProp = RouteProp<AccountsStackParamList, 'TransactionDetails'>;
-
-const STATUS_LABELS: Record<TransactionStatus, string> = {
-  completed: 'Completada',
-  pending: 'Pendiente',
-  failed: 'Fallida',
-  cancelled: 'Cancelada',
-};
 
 const STATUS_VARIANT: Record<TransactionStatus, 'success' | 'warning' | 'error' | 'default'> = {
   completed: 'success',
@@ -54,6 +48,7 @@ export const TransactionDetailsScreen: React.FC = () => {
   const route = useRoute<TransactionDetailsRouteProp>();
   const { transactionId, accountId } = route.params;
   const { colors, spacing, borderRadius } = useTheme();
+  const { t } = useTranslation();
   const { transactions } = useAccounts();
 
   const transaction = transactions.find((t) => t.id === transactionId) ?? null;
@@ -76,7 +71,7 @@ export const TransactionDetailsScreen: React.FC = () => {
     return (
       <View style={[styles.container, styles.centered]}>
         <Ionicons name="alert-circle-outline" size={48} color={colors.error} />
-        <Text style={styles.errorText}>Transacción no encontrada</Text>
+        <Text style={styles.errorText}>{t('transactionNotFound')}</Text>
       </View>
     );
   }
@@ -86,33 +81,39 @@ export const TransactionDetailsScreen: React.FC = () => {
   const amountColor = isCredit ? colors.success : colors.error;
   const amountPrefix = isCredit ? '+' : '-';
 
+  const statusLabels: Record<TransactionStatus, string> = {
+    completed: t('txStatusCompleted'),
+    pending: t('txStatusPending'),
+    failed: t('txStatusFailed'),
+    cancelled: t('txStatusCancelled'),
+  };
+
   const fields: { label: string; value: string; mono?: boolean }[] = [
-    { label: 'Fecha y hora', value: formatDate(transaction.date, "dd/MM/yyyy 'a las' HH:mm") },
+    { label: t('txDateTime'), value: formatDate(transaction.date, "dd/MM/yyyy 'a las' HH:mm") },
     {
-      label: 'Tipo',
+      label: t('txTypeLabel'),
       value:
         transaction.type === 'credit'
-          ? 'Crédito'
+          ? t('txTypeCredit')
           : transaction.type === 'debit'
-          ? 'Débito'
+          ? t('txTypeDebit')
           : transaction.type === 'transfer'
-          ? 'Transferencia'
-          : 'Pago',
+          ? t('txTypeTransfer')
+          : t('txTypePayment'),
     },
-    { label: 'Categoría', value: transaction.category },
-    { label: 'Referencia', value: transaction.reference, mono: true },
-    { label: 'Descripción', value: transaction.description },
+    { label: t('category'), value: transaction.category },
+    { label: t('reference'), value: transaction.reference, mono: true },
+    { label: t('txDescription'), value: transaction.description },
     ...(transaction.counterpartName
       ? [
           {
-            label:
-              transaction.type === 'credit' ? 'Remitente' : 'Destinatario',
+            label: transaction.type === 'credit' ? t('sender') : t('recipient'),
             value: transaction.counterpartName,
           },
         ]
       : []),
     ...(transaction.counterpartIban
-      ? [{ label: 'IBAN de la contraparte', value: transaction.counterpartIban, mono: true }]
+      ? [{ label: t('counterpartIban'), value: transaction.counterpartIban, mono: true }]
       : []),
   ];
 
@@ -133,7 +134,7 @@ export const TransactionDetailsScreen: React.FC = () => {
         </Text>
         <Text style={styles.description}>{transaction.description}</Text>
         <Badge
-          label={STATUS_LABELS[transaction.status]}
+          label={statusLabels[transaction.status]}
           variant={STATUS_VARIANT[transaction.status]}
           style={styles.statusBadge}
         />
@@ -154,7 +155,7 @@ export const TransactionDetailsScreen: React.FC = () => {
       {/* Notes */}
       <View style={styles.notesCard}>
         <View style={styles.notesHeader}>
-          <Text style={styles.notesTitle}>Notas</Text>
+          <Text style={styles.notesTitle}>{t('notes')}</Text>
           <TouchableOpacity onPress={() => setEditingNotes((e) => !e)}>
             <Ionicons
               name={editingNotes ? 'checkmark-outline' : 'pencil-outline'}
@@ -168,21 +169,21 @@ export const TransactionDetailsScreen: React.FC = () => {
             style={styles.notesInput}
             value={notes}
             onChangeText={setNotes}
-            placeholder="Añadir una nota..."
+            placeholder={t('addNote')}
             placeholderTextColor={colors.placeholder}
             multiline
             autoFocus
           />
         ) : (
           <Text style={styles.notesText}>
-            {notes || 'Sin notas. Pulse el lápiz para añadir una.'}
+            {notes || t('noNotes')}
           </Text>
         )}
       </View>
 
       {/* Share Button */}
       <Button
-        title="Compartir / Exportar"
+        title={t('shareExport')}
         onPress={handleShare}
         variant="outline"
         icon="share-outline"

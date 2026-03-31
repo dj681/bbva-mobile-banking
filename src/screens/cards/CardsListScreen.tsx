@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCards } from '@/hooks/useCards';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import { CreditCard } from '@/components/banking/CreditCard';
 import { TransactionItem } from '@/components/banking/TransactionItem';
 import { Badge } from '@/components/common/Badge';
@@ -42,6 +43,7 @@ const MOCK_TRANSACTIONS: Array<{
 export const CardsListScreen: React.FC = () => {
   const navigation = useNavigation<Nav>();
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const { cards, selectedCard, selectCard, isLoading, error } = useCards();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -67,7 +69,11 @@ export const CardsListScreen: React.FC = () => {
 
   const styles = makeStyles(colors);
 
-  const statusLabel = (s: string) => s === 'active' ? 'Activa' : s === 'blocked' ? 'Bloqueada' : s === 'expired' ? 'Vencida' : 'Pendiente';
+  const statusLabel = (s: string) =>
+    s === 'active' ? t('cardStatusActive') :
+    s === 'blocked' ? t('cardStatusBlocked') :
+    s === 'expired' ? t('cardStatusExpired') :
+    t('cardStatusPending');
   const statusVariant = (s: string): 'success' | 'error' | 'warning' | 'info' => s === 'active' ? 'success' : s === 'blocked' ? 'error' : s === 'expired' ? 'warning' : 'info';
 
   if (isLoading) return <LoadingSpinner />;
@@ -80,23 +86,23 @@ export const CardsListScreen: React.FC = () => {
   const card = selectedCard || cards[0];
 
   const quickActions = [
-    { label: card?.status === 'active' ? 'Bloquear' : 'Desbloquear', icon: card?.status === 'active' ? '🔒' : '🔓', screen: 'CardDetails' },
-    { label: 'Límites', icon: '⚙️', screen: 'CardDetails' },
-    { label: 'Ajustes', icon: '🛠️', screen: 'CardSettings' },
-    { label: 'Movimientos', icon: '📋', screen: 'CardTransactions' },
+    { label: card?.status === 'active' ? t('cardBlock') : t('cardUnblock'), icon: card?.status === 'active' ? '🔒' : '🔓', screen: 'CardDetails' },
+    { label: t('cardLimits'), icon: '⚙️', screen: 'CardDetails' },
+    { label: t('security'), icon: '🛠️', screen: 'CardSettings' },
+    { label: t('cardMoves'), icon: '📋', screen: 'CardTransactions' },
   ];
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Mis Tarjetas</Text>
+        <Text style={styles.headerTitle}>{t('myCards')}</Text>
         <TouchableOpacity onPress={() => {}}>
           <Text style={styles.addBtn}>＋</Text>
         </TouchableOpacity>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         {cards.length === 0 ? (
-          <EmptyState title="Sin tarjetas" description="Todavía no tiene ninguna tarjeta bancaria" />
+          <EmptyState title={t('noCards')} description={t('noCardsMsg')} />
         ) : (
           <>
             <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}
@@ -119,14 +125,14 @@ export const CardsListScreen: React.FC = () => {
 
             {card && (
               <View style={styles.cardDetails}>
-                <View style={styles.detailRow}><Text style={styles.detailKey}>Número</Text><Text style={styles.detailVal}>{card.cardNumber}</Text></View>
-                <View style={styles.detailRow}><Text style={styles.detailKey}>Vencimiento</Text><Text style={styles.detailVal}>{card.expiryDate}</Text></View>
-                <View style={styles.detailRow}><Text style={styles.detailKey}>Tipo</Text><Text style={styles.detailVal}>{card.isVirtual ? 'Tarjeta virtual' : 'Tarjeta física'}</Text></View>
-                <View style={styles.detailRow}><Text style={styles.detailKey}>Estado</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>{t('cardNumber')}</Text><Text style={styles.detailVal}>{card.cardNumber}</Text></View>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>{t('cardExpiry')}</Text><Text style={styles.detailVal}>{card.expiryDate}</Text></View>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>{t('cardType')}</Text><Text style={styles.detailVal}>{card.isVirtual ? t('cardVirtual') : t('cardPhysical')}</Text></View>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>{t('cardStatus')}</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
                 {card.creditLimit && (
-                  <View style={styles.detailRow}><Text style={styles.detailKey}>Límite de crédito</Text><Text style={styles.detailVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>
+                  <View style={styles.detailRow}><Text style={styles.detailKey}>{t('creditLimit')}</Text><Text style={styles.detailVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>
                 )}
-                <View style={styles.detailRow}><Text style={styles.detailKey}>Límite diario</Text><Text style={styles.detailVal}>{formatCurrency(card.dailyLimit, 'EUR')}</Text></View>
+                <View style={styles.detailRow}><Text style={styles.detailKey}>{t('dailyLimit')}</Text><Text style={styles.detailVal}>{formatCurrency(card.dailyLimit, 'EUR')}</Text></View>
               </View>
             )}
 
@@ -141,7 +147,7 @@ export const CardsListScreen: React.FC = () => {
 
             <View style={styles.transactionsSection}>
               <View style={styles.txHeader}>
-                <Text style={styles.txTitle}>Últimas operaciones</Text>
+                <Text style={styles.txTitle}>{t('latestOperations')}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('CardTransactions', { cardId: card?.id })}>
                   <Text style={styles.txSeeAll}>Ver todo</Text>
                 </TouchableOpacity>
@@ -154,11 +160,11 @@ export const CardsListScreen: React.FC = () => {
                   </View>
                   <View style={{ alignItems: 'flex-end' }}>
                     <Text style={[styles.txAmount, { color: tx.amount < 0 ? colors.error : colors.success }]}>{tx.amount > 0 ? '+' : ''}{formatCurrency(tx.amount, tx.currency)}</Text>
-                    {tx.isPending && <Text style={styles.txPending}>Pendiente</Text>}
+                    {tx.isPending && <Text style={styles.txPending}>{t('pendingStatus')}</Text>}
                   </View>
                 </View>
               ))}
-              <Button title="Ver todos los movimientos" onPress={() => navigation.navigate('CardTransactions', { cardId: card?.id })} variant="outline" style={{ marginTop: 8 }} />
+              <Button title={t('seeAllMovements')} onPress={() => navigation.navigate('CardTransactions', { cardId: card?.id })} variant="outline" style={{ marginTop: 8 }} />
             </View>
           </>
         )}

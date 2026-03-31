@@ -19,6 +19,7 @@ import { Input } from '@/components/common/Input';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { ProfileStackParamList } from '@/types';
 
 type EditProfileNavProp = NativeStackNavigationProp<ProfileStackParamList, 'EditProfile'>;
@@ -46,6 +47,7 @@ interface FormErrors {
 const EditProfileScreen: React.FC = () => {
   const navigation = useNavigation<EditProfileNavProp>();
   const { colors, spacing, borderRadius } = useTheme();
+  const { t } = useTranslation();
   const { user } = useAuth();
 
   const [form, setForm] = useState<FormData>({
@@ -74,7 +76,7 @@ const EditProfileScreen: React.FC = () => {
     if (!form.firstName.trim()) newErrors.firstName = 'El nombre es obligatorio';
     if (!form.lastName.trim()) newErrors.lastName = 'Los apellidos son obligatorios';
     if (form.phone && !/^[\d\s+()-]{8,}$/.test(form.phone)) {
-      newErrors.phone = 'Número de teléfono no válido';
+      newErrors.phone = t('invalidPhoneNumber');
     }
     if (form.postalCode && !/^\d{5}$/.test(form.postalCode)) {
       newErrors.postalCode = 'Código postal no válido (5 dígitos)';
@@ -235,7 +237,7 @@ const EditProfileScreen: React.FC = () => {
           </View>
 
           <Button
-            label="Sauvegarder"
+            label={t('save')}
             variant="primary"
             fullWidth
             loading={saving}
