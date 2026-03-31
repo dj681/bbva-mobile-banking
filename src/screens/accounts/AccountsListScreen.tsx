@@ -123,7 +123,7 @@ export const AccountsListScreen: React.FC = () => {
         />
       </View>
       <Text style={styles.accountCount}>
-        {accounts.length} {accounts.length !== 1 ? t('accounts') : t('accountTypeChecking').toLowerCase()}
+        {accounts.length} {t('accounts').toLowerCase()}
       </Text>
     </View>
   );

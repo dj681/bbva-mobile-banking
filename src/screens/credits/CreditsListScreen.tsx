@@ -85,7 +85,7 @@ export const CreditsListScreen: React.FC = () => {
           <Text style={styles.progressText}>{Math.round(progress)}%</Text>
         </View>
         <View style={styles.creditMetrics}>
-          <View style={styles.metric}><Text style={styles.metricLabel}>{t('totalPendingBalance').split(' ')[0]}</Text><Text style={styles.metricVal}>{formatCurrency(item.remainingAmount, item.currency)}</Text></View>
+          <View style={styles.metric}><Text style={styles.metricLabel}>{t('txStatusPending')}</Text><Text style={styles.metricVal}>{formatCurrency(item.remainingAmount, item.currency)}</Text></View>
           <View style={styles.metric}><Text style={styles.metricLabel}>{t('installment')}</Text><Text style={styles.metricVal}>{formatCurrency(item.monthlyPayment, item.currency)}</Text></View>
           <View style={styles.metric}><Text style={styles.metricLabel}>{t('nextPayment')}</Text><Text style={styles.metricVal}>{formatDate(item.nextPaymentDate)}</Text></View>
         </View>
