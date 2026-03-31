@@ -164,7 +164,7 @@ export const CardsListScreen: React.FC = () => {
                   </View>
                 </View>
               ))}
-              <Button title={t('seeAllMovements')} onPress={() => navigation.navigate('CardTransactions', { cardId: card?.id })} variant="outline" style={{ marginTop: 8 }} />
+              <Button label={t('seeAllMovements')} onPress={() => navigation.navigate('CardTransactions', { cardId: card?.id })} variant="outline" style={{ marginTop: 8 }} />
             </View>
           </>
         )}

@@ -121,8 +121,8 @@ export const CreditsListScreen: React.FC = () => {
         ListEmptyComponent={<EmptyState title={t('noCredits')} description={t('noCreditsMsg')} />}
         ListFooterComponent={
           <View style={styles.actionBtns}>
-            <Button title={t('simulateCredit')} onPress={() => navigation.navigate('CreditSimulator')} variant="outline" style={styles.actionBtn} />
-            <Button title={t('requestCredit')} onPress={() => navigation.navigate('CreditRequest')} style={styles.actionBtn} />
+            <Button label={t('simulateCredit')} onPress={() => navigation.navigate('CreditSimulator')} variant="outline" style={styles.actionBtn} />
+            <Button label={t('requestCredit')} onPress={() => navigation.navigate('CreditRequest')} style={styles.actionBtn} />
           </View>
         }
         contentContainerStyle={{ paddingBottom: 40 }}

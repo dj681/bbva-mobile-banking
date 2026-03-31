@@ -73,16 +73,16 @@ const EditProfileScreen: React.FC = () => {
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!form.firstName.trim()) newErrors.firstName = 'El nombre es obligatorio';
-    if (!form.lastName.trim()) newErrors.lastName = 'Los apellidos son obligatorios';
+    if (!form.firstName.trim()) newErrors.firstName = t('firstNameRequired');
+    if (!form.lastName.trim()) newErrors.lastName = t('lastNameRequired');
     if (form.phone && !/^[\d\s+()-]{8,}$/.test(form.phone)) {
       newErrors.phone = t('invalidPhoneNumber');
     }
     if (form.postalCode && !/^\d{5}$/.test(form.postalCode)) {
-      newErrors.postalCode = 'Código postal no válido (5 dígitos)';
+      newErrors.postalCode = t('postalCodeInvalid');
     }
     if (form.city && form.city.trim().length < 2) {
-      newErrors.city = 'Ciudad no válida';
+      newErrors.city = t('cityInvalid');
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -143,21 +143,21 @@ const EditProfileScreen: React.FC = () => {
               <Avatar name={fullName} size="xlarge" />
               <TouchableOpacity
                 style={styles.avatarEditBtn}
-                onPress={() => Alert.alert('Foto de perfil', 'Función próximamente disponible')}
+                onPress={() => Alert.alert(t('profilePhotoTitle'), t('profilePhotoMsg'))}
                 activeOpacity={0.8}
               >
                 <Ionicons name="camera" size={16} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
-            <Text style={styles.avatarHint}>Pulse para cambiar la foto</Text>
+            <Text style={styles.avatarHint}>{t('labelFirstName')}</Text>
           </View>
 
           {/* Form */}
           <View style={styles.formSection}>
-            <Text style={styles.sectionLabel}>INFORMACIÓN PERSONAL</Text>
+            <Text style={styles.sectionLabel}>{t('informationSection')}</Text>
 
             <Input
-              label="Nombre"
+              label={t('labelFirstName')}
               value={form.firstName}
               onChangeText={updateField('firstName')}
               error={errors.firstName}
@@ -165,7 +165,7 @@ const EditProfileScreen: React.FC = () => {
               returnKeyType="next"
             />
             <Input
-              label="Apellidos"
+              label={t('labelLastName')}
               value={form.lastName}
               onChangeText={updateField('lastName')}
               error={errors.lastName}
@@ -174,7 +174,7 @@ const EditProfileScreen: React.FC = () => {
             />
             <View style={styles.readOnlyContainer}>
               <Input
-                label="Correo electrónico"
+                label={t('labelEmail')}
                 value={form.email}
                 onChangeText={() => {}}
                 editable={false}
@@ -183,13 +183,13 @@ const EditProfileScreen: React.FC = () => {
               <View style={styles.readOnlyBadge}>
                 <Ionicons name="lock-closed" size={12} color={colors.textSecondary} />
                 <Text style={styles.readOnlyText}>
-                  La dirección de correo electrónico no se puede modificar aquí. Contacte con el soporte.
+                  {t('emailReadonly')}
                 </Text>
               </View>
             </View>
 
             <Input
-              label="Número de teléfono"
+              label={t('labelPhone')}
               value={form.phone}
               onChangeText={updateField('phone')}
               error={errors.phone}
@@ -197,20 +197,20 @@ const EditProfileScreen: React.FC = () => {
               returnKeyType="next"
             />
             <Input
-              label="Fecha de nacimiento"
+              label={t('labelBirthDate')}
               value={form.birthDate}
               onChangeText={updateField('birthDate')}
               error={errors.birthDate}
-              placeholder="DD/MM/AAAA"
+              placeholder={t('birthDatePlaceholder')}
               returnKeyType="next"
             />
           </View>
 
           <View style={styles.formSection}>
-            <Text style={styles.sectionLabel}>DIRECCIÓN</Text>
+            <Text style={styles.sectionLabel}>{t('labelAddressSection')}</Text>
 
             <Input
-              label="Dirección"
+              label={t('labelAddress')}
               value={form.address}
               onChangeText={updateField('address')}
               multiline
@@ -218,7 +218,7 @@ const EditProfileScreen: React.FC = () => {
               returnKeyType="next"
             />
             <Input
-              label="Código postal"
+              label={t('labelPostalCode')}
               value={form.postalCode}
               onChangeText={updateField('postalCode')}
               error={errors.postalCode}
@@ -227,7 +227,7 @@ const EditProfileScreen: React.FC = () => {
               returnKeyType="next"
             />
             <Input
-              label="Ciudad"
+              label={t('labelCity')}
               value={form.city}
               onChangeText={updateField('city')}
               error={errors.city}

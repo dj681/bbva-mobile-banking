@@ -101,7 +101,7 @@ export const CardDetailsScreen: React.FC = () => {
               <Divider />
               <View style={styles.infoRow}><Text style={styles.infoKey}>{t('creditLimit')}</Text><Text style={styles.infoVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>
               <Divider />
-              <View style={styles.infoRow}><Text style={styles.infoKey}>Crédito disponible</Text><Text style={[styles.infoVal, { color: colors.success }]}>{formatCurrency(card.availableCredit ?? 0, 'EUR')}</Text></View>
+              <View style={styles.infoRow}><Text style={styles.infoKey}>{t('availableCredit')}</Text><Text style={[styles.infoVal, { color: colors.success }]}>{formatCurrency(card.availableCredit ?? 0, 'EUR')}</Text></View>
             </>
           )}
         </View>

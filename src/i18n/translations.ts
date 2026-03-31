@@ -187,6 +187,25 @@ export type Translations = {
 
   // Profile / misc
   invalidPhoneNumber: string;
+  availableCredit: string;
+  firstNameRequired: string;
+  lastNameRequired: string;
+  postalCodeInvalid: string;
+  cityInvalid: string;
+  emailReadonly: string;
+  labelFirstName: string;
+  labelLastName: string;
+  labelEmail: string;
+  labelPhone: string;
+  labelBirthDate: string;
+  labelAddress: string;
+  labelPostalCode: string;
+  labelCity: string;
+  labelAddressSection: string;
+  birthDatePlaceholder: string;
+  profilePhotoTitle: string;
+  profilePhotoMsg: string;
+  accountsCountUnit: string;
 };
 
 const en: Translations = {
@@ -365,6 +384,25 @@ const en: Translations = {
   cardType: 'Type',
 
   invalidPhoneNumber: 'Invalid phone number',
+  availableCredit: 'Available credit',
+  firstNameRequired: 'First name is required',
+  lastNameRequired: 'Last name is required',
+  postalCodeInvalid: 'Invalid postal code (5 digits)',
+  cityInvalid: 'Invalid city',
+  emailReadonly: 'The email address cannot be changed here. Contact support.',
+  labelFirstName: 'First name',
+  labelLastName: 'Last name',
+  labelEmail: 'Email address',
+  labelPhone: 'Phone number',
+  labelBirthDate: 'Date of birth',
+  labelAddress: 'Address',
+  labelPostalCode: 'Postal code',
+  labelCity: 'City',
+  labelAddressSection: 'ADDRESS',
+  birthDatePlaceholder: 'DD/MM/YYYY',
+  profilePhotoTitle: 'Profile photo',
+  profilePhotoMsg: 'Feature coming soon',
+  accountsCountUnit: 'accounts',
 };
 
 const es: Translations = {
@@ -543,6 +581,25 @@ const es: Translations = {
   cardType: 'Tipo',
 
   invalidPhoneNumber: 'Número de teléfono no válido',
+  availableCredit: 'Crédito disponible',
+  firstNameRequired: 'El nombre es obligatorio',
+  lastNameRequired: 'Los apellidos son obligatorios',
+  postalCodeInvalid: 'Código postal no válido (5 dígitos)',
+  cityInvalid: 'Ciudad no válida',
+  emailReadonly: 'La dirección de correo electrónico no se puede modificar aquí. Contacte con el soporte.',
+  labelFirstName: 'Nombre',
+  labelLastName: 'Apellidos',
+  labelEmail: 'Correo electrónico',
+  labelPhone: 'Número de teléfono',
+  labelBirthDate: 'Fecha de nacimiento',
+  labelAddress: 'Dirección',
+  labelPostalCode: 'Código postal',
+  labelCity: 'Ciudad',
+  labelAddressSection: 'DIRECCIÓN',
+  birthDatePlaceholder: 'DD/MM/AAAA',
+  profilePhotoTitle: 'Foto de perfil',
+  profilePhotoMsg: 'Función próximamente disponible',
+  accountsCountUnit: 'cuentas',
 };
 
 const fr: Translations = {
@@ -721,6 +778,25 @@ const fr: Translations = {
   cardType: 'Type',
 
   invalidPhoneNumber: 'Numéro de téléphone invalide',
+  availableCredit: 'Crédit disponible',
+  firstNameRequired: 'Le prénom est obligatoire',
+  lastNameRequired: 'Le nom de famille est obligatoire',
+  postalCodeInvalid: 'Code postal invalide (5 chiffres)',
+  cityInvalid: 'Ville invalide',
+  emailReadonly: 'L\'adresse e-mail ne peut pas être modifiée ici. Contactez le support.',
+  labelFirstName: 'Prénom',
+  labelLastName: 'Nom de famille',
+  labelEmail: 'Adresse e-mail',
+  labelPhone: 'Numéro de téléphone',
+  labelBirthDate: 'Date de naissance',
+  labelAddress: 'Adresse',
+  labelPostalCode: 'Code postal',
+  labelCity: 'Ville',
+  labelAddressSection: 'ADRESSE',
+  birthDatePlaceholder: 'JJ/MM/AAAA',
+  profilePhotoTitle: 'Photo de profil',
+  profilePhotoMsg: 'Fonctionnalité bientôt disponible',
+  accountsCountUnit: 'comptes',
 };
 
 const fi: Translations = {
@@ -899,6 +975,25 @@ const fi: Translations = {
   cardType: 'Tyyppi',
 
   invalidPhoneNumber: 'Virheellinen puhelinnumero',
+  availableCredit: 'Käytettävissä oleva luotto',
+  firstNameRequired: 'Etunimi on pakollinen',
+  lastNameRequired: 'Sukunimi on pakollinen',
+  postalCodeInvalid: 'Virheellinen postinumero (5 numeroa)',
+  cityInvalid: 'Virheellinen kaupunki',
+  emailReadonly: 'Sähköpostiosoitetta ei voi muuttaa täällä. Ota yhteyttä tukeen.',
+  labelFirstName: 'Etunimi',
+  labelLastName: 'Sukunimi',
+  labelEmail: 'Sähköpostiosoite',
+  labelPhone: 'Puhelinnumero',
+  labelBirthDate: 'Syntymäaika',
+  labelAddress: 'Osoite',
+  labelPostalCode: 'Postinumero',
+  labelCity: 'Kaupunki',
+  labelAddressSection: 'OSOITE',
+  birthDatePlaceholder: 'PP/KK/VVVV',
+  profilePhotoTitle: 'Profiilikuva',
+  profilePhotoMsg: 'Ominaisuus tulossa pian',
+  accountsCountUnit: 'tiliä',
 };
 
 const de: Translations = {
@@ -1077,6 +1172,25 @@ const de: Translations = {
   cardType: 'Typ',
 
   invalidPhoneNumber: 'Ungültige Telefonnummer',
+  availableCredit: 'Verfügbarer Kredit',
+  firstNameRequired: 'Vorname ist erforderlich',
+  lastNameRequired: 'Nachname ist erforderlich',
+  postalCodeInvalid: 'Ungültige Postleitzahl (5 Ziffern)',
+  cityInvalid: 'Ungültige Stadt',
+  emailReadonly: 'Die E-Mail-Adresse kann hier nicht geändert werden. Kontaktieren Sie den Support.',
+  labelFirstName: 'Vorname',
+  labelLastName: 'Nachname',
+  labelEmail: 'E-Mail-Adresse',
+  labelPhone: 'Telefonnummer',
+  labelBirthDate: 'Geburtsdatum',
+  labelAddress: 'Adresse',
+  labelPostalCode: 'Postleitzahl',
+  labelCity: 'Stadt',
+  labelAddressSection: 'ADRESSE',
+  birthDatePlaceholder: 'TT/MM/JJJJ',
+  profilePhotoTitle: 'Profilfoto',
+  profilePhotoMsg: 'Funktion demnächst verfügbar',
+  accountsCountUnit: 'Konten',
 };
 
 const no: Translations = {
@@ -1255,6 +1369,25 @@ const no: Translations = {
   cardType: 'Type',
 
   invalidPhoneNumber: 'Ugyldig telefonnummer',
+  availableCredit: 'Tilgjengelig kreditt',
+  firstNameRequired: 'Fornavn er obligatorisk',
+  lastNameRequired: 'Etternavn er obligatorisk',
+  postalCodeInvalid: 'Ugyldig postnummer (5 sifre)',
+  cityInvalid: 'Ugyldig by',
+  emailReadonly: 'E-postadressen kan ikke endres her. Kontakt support.',
+  labelFirstName: 'Fornavn',
+  labelLastName: 'Etternavn',
+  labelEmail: 'E-postadresse',
+  labelPhone: 'Telefonnummer',
+  labelBirthDate: 'Fødselsdato',
+  labelAddress: 'Adresse',
+  labelPostalCode: 'Postnummer',
+  labelCity: 'By',
+  labelAddressSection: 'ADRESSE',
+  birthDatePlaceholder: 'DD/MM/ÅÅÅÅ',
+  profilePhotoTitle: 'Profilbilde',
+  profilePhotoMsg: 'Funksjon kommer snart',
+  accountsCountUnit: 'kontoer',
 };
 
 const it: Translations = {
@@ -1433,6 +1566,25 @@ const it: Translations = {
   cardType: 'Tipo',
 
   invalidPhoneNumber: 'Numero di telefono non valido',
+  availableCredit: 'Credito disponibile',
+  firstNameRequired: 'Il nome è obbligatorio',
+  lastNameRequired: 'Il cognome è obbligatorio',
+  postalCodeInvalid: 'Codice postale non valido (5 cifre)',
+  cityInvalid: 'Città non valida',
+  emailReadonly: 'L\'indirizzo e-mail non può essere modificato qui. Contatta il supporto.',
+  labelFirstName: 'Nome',
+  labelLastName: 'Cognome',
+  labelEmail: 'Indirizzo e-mail',
+  labelPhone: 'Numero di telefono',
+  labelBirthDate: 'Data di nascita',
+  labelAddress: 'Indirizzo',
+  labelPostalCode: 'Codice postale',
+  labelCity: 'Città',
+  labelAddressSection: 'INDIRIZZO',
+  birthDatePlaceholder: 'GG/MM/AAAA',
+  profilePhotoTitle: 'Foto profilo',
+  profilePhotoMsg: 'Funzione disponibile a breve',
+  accountsCountUnit: 'conti',
 };
 
 const pt: Translations = {
@@ -1611,6 +1763,25 @@ const pt: Translations = {
   cardType: 'Tipo',
 
   invalidPhoneNumber: 'Número de telefone inválido',
+  availableCredit: 'Crédito disponível',
+  firstNameRequired: 'O nome é obrigatório',
+  lastNameRequired: 'O sobrenome é obrigatório',
+  postalCodeInvalid: 'Código postal inválido (5 dígitos)',
+  cityInvalid: 'Cidade inválida',
+  emailReadonly: 'O endereço de e-mail não pode ser alterado aqui. Contacte o suporte.',
+  labelFirstName: 'Nome',
+  labelLastName: 'Sobrenome',
+  labelEmail: 'Endereço de e-mail',
+  labelPhone: 'Número de telefone',
+  labelBirthDate: 'Data de nascimento',
+  labelAddress: 'Endereço',
+  labelPostalCode: 'Código postal',
+  labelCity: 'Cidade',
+  labelAddressSection: 'ENDEREÇO',
+  birthDatePlaceholder: 'DD/MM/AAAA',
+  profilePhotoTitle: 'Foto de perfil',
+  profilePhotoMsg: 'Funcionalidade em breve',
+  accountsCountUnit: 'contas',
 };
 
 const el: Translations = {
@@ -1789,6 +1960,25 @@ const el: Translations = {
   cardType: 'Τύπος',
 
   invalidPhoneNumber: 'Μη έγκυρος αριθμός τηλεφώνου',
+  availableCredit: 'Διαθέσιμη πίστωση',
+  firstNameRequired: 'Το όνομα είναι υποχρεωτικό',
+  lastNameRequired: 'Το επώνυμο είναι υποχρεωτικό',
+  postalCodeInvalid: 'Μη έγκυρος ταχυδρομικός κώδικας (5 ψηφία)',
+  cityInvalid: 'Μη έγκυρη πόλη',
+  emailReadonly: 'Η διεύθυνση e-mail δεν μπορεί να αλλάξει εδώ. Επικοινωνήστε με την υποστήριξη.',
+  labelFirstName: 'Όνομα',
+  labelLastName: 'Επώνυμο',
+  labelEmail: 'Διεύθυνση e-mail',
+  labelPhone: 'Αριθμός τηλεφώνου',
+  labelBirthDate: 'Ημερομηνία γέννησης',
+  labelAddress: 'Διεύθυνση',
+  labelPostalCode: 'Ταχυδρομικός κώδικας',
+  labelCity: 'Πόλη',
+  labelAddressSection: 'ΔΙΕΥΘΥΝΣΗ',
+  birthDatePlaceholder: 'ΗΗ/ΜΜ/ΕΕΕΕ',
+  profilePhotoTitle: 'Φωτογραφία προφίλ',
+  profilePhotoMsg: 'Λειτουργία σύντομα διαθέσιμη',
+  accountsCountUnit: 'λογαριασμοί',
 };
 
 const sk: Translations = {
@@ -1967,6 +2157,25 @@ const sk: Translations = {
   cardType: 'Typ',
 
   invalidPhoneNumber: 'Neplatné telefónne číslo',
+  availableCredit: 'Dostupný kredit',
+  firstNameRequired: 'Meno je povinné',
+  lastNameRequired: 'Priezvisko je povinné',
+  postalCodeInvalid: 'Neplatné PSČ (5 číslic)',
+  cityInvalid: 'Neplatné mesto',
+  emailReadonly: 'E-mailovú adresu tu nemožno zmeniť. Kontaktujte podporu.',
+  labelFirstName: 'Meno',
+  labelLastName: 'Priezvisko',
+  labelEmail: 'E-mailová adresa',
+  labelPhone: 'Telefónne číslo',
+  labelBirthDate: 'Dátum narodenia',
+  labelAddress: 'Adresa',
+  labelPostalCode: 'PSČ',
+  labelCity: 'Mesto',
+  labelAddressSection: 'ADRESA',
+  birthDatePlaceholder: 'DD/MM/RRRR',
+  profilePhotoTitle: 'Profilová fotografia',
+  profilePhotoMsg: 'Funkcia čoskoro dostupná',
+  accountsCountUnit: 'účty',
 };
 
 export const TRANSLATIONS: Record<string, Translations> = {

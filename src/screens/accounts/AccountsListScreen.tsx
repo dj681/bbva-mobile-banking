@@ -123,7 +123,7 @@ export const AccountsListScreen: React.FC = () => {
         />
       </View>
       <Text style={styles.accountCount}>
-        {accounts.length} {t('accounts').toLowerCase()}
+        {accounts.length} {t('accountsCountUnit')}
       </Text>
     </View>
   );

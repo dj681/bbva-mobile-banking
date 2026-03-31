@@ -183,10 +183,9 @@ export const TransactionDetailsScreen: React.FC = () => {
 
       {/* Share Button */}
       <Button
-        title={t('shareExport')}
+        label={t('shareExport')}
         onPress={handleShare}
         variant="outline"
-        icon="share-outline"
         style={styles.shareButton}
       />
     </ScrollView>
