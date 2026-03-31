@@ -20,6 +20,7 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { EmptyState } from '@/components/common/EmptyState';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useAppDispatch } from '@/store';
 import { fetchTransactions } from '@/store/slices';
 import type { AccountsStackParamList, Transaction, TransactionType } from '@/types';
@@ -28,13 +29,6 @@ import { formatDate } from '@/utils';
 type TransactionHistoryRouteProp = RouteProp<AccountsStackParamList, 'TransactionHistory'>;
 
 type FilterChip = 'all' | TransactionType;
-
-const FILTER_CHIPS: { key: FilterChip; label: string }[] = [
-  { key: 'all', label: 'Todos' },
-  { key: 'credit', label: 'Créditos' },
-  { key: 'debit', label: 'Débitos' },
-  { key: 'transfer', label: 'Transferencias' },
-];
 
 function groupByDate(transactions: Transaction[]): { date: string; data: Transaction[] }[] {
   const map = new Map<string, Transaction[]>();
@@ -60,6 +54,15 @@ export const TransactionHistoryScreen: React.FC = () => {
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [exportModalVisible, setExportModalVisible] = useState(false);
+
+  const { t } = useTranslation();
+
+  const filterChips: { key: FilterChip; label: string }[] = [
+    { key: 'all', label: t('filterAll') },
+    { key: 'credit', label: t('filterCredits') },
+    { key: 'debit', label: t('filterDebits') },
+    { key: 'transfer', label: t('filterTransfers') },
+  ];
 
   useEffect(() => {
     fetchTransactionsList(accountId);
@@ -148,13 +151,13 @@ export const TransactionHistoryScreen: React.FC = () => {
         <SearchBar
           value={searchQuery}
           onChangeText={handleSearch}
-          placeholder="Buscar..."
+          placeholder={t('search')}
         />
       </View>
 
       {/* Filter Chips */}
       <View style={styles.chips}>
-        {FILTER_CHIPS.map((chip) => (
+        {filterChips.map((chip) => (
           <TouchableOpacity
             key={chip.key}
             style={[styles.chip, activeFilter === chip.key && styles.chipActive]}
@@ -179,7 +182,7 @@ export const TransactionHistoryScreen: React.FC = () => {
           onPress={() => setExportModalVisible(true)}
         >
           <Ionicons name="download-outline" size={18} color={colors.primary} />
-          <Text style={styles.exportText}>Exportar</Text>
+          <Text style={styles.exportText}>{t('exportLabel')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -193,8 +196,8 @@ export const TransactionHistoryScreen: React.FC = () => {
             <LoadingSpinner />
           ) : (
             <EmptyState
-              title="Sin transacciones"
-              message="No hay resultados para los criterios seleccionados."
+              title={t('noTransactions')}
+              message={t('noTransactionsForAccount')}
               icon="search-outline"
             />
           )
@@ -218,7 +221,7 @@ export const TransactionHistoryScreen: React.FC = () => {
       <Modal
         visible={exportModalVisible}
         onClose={() => setExportModalVisible(false)}
-        title="Exportar transacciones"
+        title={t('exportTransactions')}
       >
         <View style={styles.exportModalContent}>
           {['PDF', 'CSV', 'Excel'].map((format) => (
@@ -232,7 +235,7 @@ export const TransactionHistoryScreen: React.FC = () => {
                 size={22}
                 color={colors.primary}
               />
-              <Text style={styles.exportOptionText}>Exportar en {format}</Text>
+              <Text style={styles.exportOptionText}>{t('exportIn')} {format}</Text>
             </TouchableOpacity>
           ))}
         </View>

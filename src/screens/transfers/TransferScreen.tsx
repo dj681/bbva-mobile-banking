@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useTransfer } from '@/hooks/useTransfer';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { Card } from '@/components/common/Card';
@@ -34,6 +35,7 @@ type DestinationTab = 'accounts' | 'beneficiaries' | 'new';
 export const TransferScreen: React.FC = () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const { accounts } = useAccounts();
   const { isLoading, executeTransfer, fetchBeneficiaries, addBeneficiary, beneficiaries } = useTransfer();
 
@@ -187,7 +189,7 @@ export const TransferScreen: React.FC = () => {
         {(['accounts', 'beneficiaries', 'new'] as DestinationTab[]).map(tab => (
           <TouchableOpacity key={tab} style={[styles.tab, destinationTab === tab && styles.tabActive]} onPress={() => setDestinationTab(tab)}>
             <Text style={[styles.tabText, destinationTab === tab && styles.tabTextActive]}>
-              {tab === 'accounts' ? 'Mis cuentas' : tab === 'beneficiaries' ? 'Beneficiarios' : 'Nuevo'}
+              {tab === 'accounts' ? t('myAccountsTab') : tab === 'beneficiaries' ? t('beneficiaries') : t('newTransfer')}
             </Text>
           </TouchableOpacity>
         ))}
@@ -249,7 +251,7 @@ export const TransferScreen: React.FC = () => {
         ))}
       </View>
       {transferType === 'scheduled' && (
-        <Input label='Fecha de ejecución (AAAA-MM-DD)' value={scheduledDate} onChangeText={setScheduledDate} placeholder="2024-04-01" error={errors.scheduledDate} />
+        <Input label={t('executionDate')} value={scheduledDate} onChangeText={setScheduledDate} placeholder="2024-04-01" error={errors.scheduledDate} />
       )}
       {transferType === 'recurring' && (
         <View>

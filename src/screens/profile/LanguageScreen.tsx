@@ -30,6 +30,7 @@ interface LanguageOption {
 
 const LANGUAGES: LanguageOption[] = [
   { code: 'en', nativeName: 'English', localName: 'English', flag: '🇬🇧' },
+  { code: 'fr', nativeName: 'Français', localName: 'French', flag: '🇫🇷' },
   { code: 'es', nativeName: 'Español', localName: 'Spanish', flag: '🇪🇸' },
   { code: 'fi', nativeName: 'Suomi', localName: 'Finnish', flag: '🇫🇮' },
   { code: 'de', nativeName: 'Deutsch', localName: 'German', flag: '🇩🇪' },

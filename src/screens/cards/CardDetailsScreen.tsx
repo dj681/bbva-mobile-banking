@@ -12,6 +12,7 @@ import {
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useCards } from '@/hooks/useCards';
 import { useTheme } from '@/hooks/useTheme';
+import { useTranslation } from '@/hooks/useTranslation';
 import { CreditCard } from '@/components/banking/CreditCard';
 import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
@@ -29,6 +30,7 @@ export const CardDetailsScreen: React.FC = () => {
   const route = useRoute<Route>();
   const { cardId } = route.params;
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const { cards, blockCard, unblockCard, isLoading } = useCards();
 
   const card = cards.find(c => c.id === cardId);
@@ -66,14 +68,18 @@ export const CardDetailsScreen: React.FC = () => {
     else await blockCard(cardId);
   };
 
-  const statusLabel = (s: string) => s === 'active' ? 'Activa' : s === 'blocked' ? 'Bloqueada' : s === 'expired' ? 'Vencida' : 'Pendiente';
+  const statusLabel = (s: string) =>
+    s === 'active' ? t('cardStatusActive') :
+    s === 'blocked' ? t('cardStatusBlocked') :
+    s === 'expired' ? t('cardStatusExpired') :
+    t('cardStatusPending');
   const statusVariant = (s: string): 'success' | 'error' | 'warning' | 'info' => s === 'active' ? 'success' : s === 'blocked' ? 'error' : s === 'expired' ? 'warning' : 'info';
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ Volver</Text></TouchableOpacity>
-        <Text style={styles.headerTitle}>Detalles de la tarjeta</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}><Text style={styles.backText}>‹ {t('back')}</Text></TouchableOpacity>
+        <Text style={styles.headerTitle}>{t('cardDetailsTitle')}</Text>
         <View style={{ width: 60 }} />
       </View>
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
@@ -82,20 +88,20 @@ export const CardDetailsScreen: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Información</Text>
-          <View style={styles.infoRow}><Text style={styles.infoKey}>Número</Text><Text style={styles.infoVal}>{card.cardNumber}</Text></View>
+          <Text style={styles.sectionTitle}>{t('information')}</Text>
+          <View style={styles.infoRow}><Text style={styles.infoKey}>{t('cardNumber')}</Text><Text style={styles.infoVal}>{card.cardNumber}</Text></View>
           <Divider />
-          <View style={styles.infoRow}><Text style={styles.infoKey}>Vencimiento</Text><Text style={styles.infoVal}>{card.expiryDate}</Text></View>
+          <View style={styles.infoRow}><Text style={styles.infoKey}>{t('cardExpiry')}</Text><Text style={styles.infoVal}>{card.expiryDate}</Text></View>
           <Divider />
-          <View style={styles.infoRow}><Text style={styles.infoKey}>Titular</Text><Text style={styles.infoVal}>{card.holderName}</Text></View>
+          <View style={styles.infoRow}><Text style={styles.infoKey}>{t('cardHolder')}</Text><Text style={styles.infoVal}>{card.holderName}</Text></View>
           <Divider />
-          <View style={styles.infoRow}><Text style={styles.infoKey}>Estado</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
+          <View style={styles.infoRow}><Text style={styles.infoKey}>{t('cardStatus')}</Text><Badge label={statusLabel(card.status)} variant={statusVariant(card.status)} /></View>
           {card.creditLimit && (
             <>
               <Divider />
-              <View style={styles.infoRow}><Text style={styles.infoKey}>Límite de crédito</Text><Text style={styles.infoVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>
+              <View style={styles.infoRow}><Text style={styles.infoKey}>{t('creditLimit')}</Text><Text style={styles.infoVal}>{formatCurrency(card.creditLimit, 'EUR')}</Text></View>
               <Divider />
-              <View style={styles.infoRow}><Text style={styles.infoKey}>Crédito disponible</Text><Text style={[styles.infoVal, { color: colors.success }]}>{formatCurrency(card.availableCredit ?? 0, 'EUR')}</Text></View>
+              <View style={styles.infoRow}><Text style={styles.infoKey}>{t('availableCredit')}</Text><Text style={[styles.infoVal, { color: colors.success }]}>{formatCurrency(card.availableCredit ?? 0, 'EUR')}</Text></View>
             </>
           )}
         </View>
