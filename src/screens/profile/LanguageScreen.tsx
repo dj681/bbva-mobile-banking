@@ -29,8 +29,7 @@ interface LanguageOption {
 }
 
 const LANGUAGES: LanguageOption[] = [
-  { code: 'tr', nativeName: 'Türkçe', localName: 'Turkish', flag: '🇹🇷' },
-  { code: 'en', nativeName: 'English', localName: 'English', flag: '🇬🇧' },
+  { code: 'es', nativeName: 'Español', localName: 'Spanish', flag: '🇪🇸' },
 ];
 
 const LanguageScreen: React.FC = () => {
