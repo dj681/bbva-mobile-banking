@@ -29,15 +29,8 @@ interface LangOption {
 }
 
 const LOGIN_LANGUAGES: LangOption[] = [
+  { code: 'tr', nativeName: 'Türkçe', flag: '🇹🇷' },
   { code: 'en', nativeName: 'English', flag: '🇬🇧' },
-  { code: 'es', nativeName: 'Español', flag: '🇪🇸' },
-  { code: 'fi', nativeName: 'Suomi', flag: '🇫🇮' },
-  { code: 'de', nativeName: 'Deutsch', flag: '🇩🇪' },
-  { code: 'no', nativeName: 'Norsk', flag: '🇳🇴' },
-  { code: 'it', nativeName: 'Italiano', flag: '🇮🇹' },
-  { code: 'pt', nativeName: 'Português', flag: '🇵🇹' },
-  { code: 'el', nativeName: 'Ελληνικά', flag: '🇬🇷' },
-  { code: 'sk', nativeName: 'Slovenčina', flag: '🇸🇰' },
 ];
 
 type LoginNavProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;

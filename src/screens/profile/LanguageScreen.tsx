@@ -29,16 +29,8 @@ interface LanguageOption {
 }
 
 const LANGUAGES: LanguageOption[] = [
+  { code: 'tr', nativeName: 'Türkçe', localName: 'Turkish', flag: '🇹🇷' },
   { code: 'en', nativeName: 'English', localName: 'English', flag: '🇬🇧' },
-  { code: 'fr', nativeName: 'Français', localName: 'French', flag: '🇫🇷' },
-  { code: 'es', nativeName: 'Español', localName: 'Spanish', flag: '🇪🇸' },
-  { code: 'fi', nativeName: 'Suomi', localName: 'Finnish', flag: '🇫🇮' },
-  { code: 'de', nativeName: 'Deutsch', localName: 'German', flag: '🇩🇪' },
-  { code: 'no', nativeName: 'Norsk', localName: 'Norwegian', flag: '🇳🇴' },
-  { code: 'it', nativeName: 'Italiano', localName: 'Italian', flag: '🇮🇹' },
-  { code: 'pt', nativeName: 'Português', localName: 'Portuguese', flag: '🇵🇹' },
-  { code: 'el', nativeName: 'Ελληνικά', localName: 'Greek', flag: '🇬🇷' },
-  { code: 'sk', nativeName: 'Slovenčina', localName: 'Slovak', flag: '🇸🇰' },
 ];
 
 const LanguageScreen: React.FC = () => {
