@@ -11,8 +11,8 @@ const MOCK_ACCOUNTS: Account[] = [
     iban: 'ES76 0182 0012 3456 7800 1890',
     type: 'checking',
     name: 'Cuenta Corriente BBVA',
-    balance: 200_000.00,
-    availableBalance: 200_000.00,
+    balance: 199_950.00,
+    availableBalance: 199_950.00,
     currency: 'EUR',
     isDefault: true,
     isActive: true,
@@ -29,6 +29,20 @@ function daysAgo(n: number): string {
 }
 
 const MOCK_TRANSACTIONS: Transaction[] = [
+  {
+    id: 'txn-025',
+    accountId: 'acc-001',
+    type: 'debit',
+    status: 'completed',
+    amount: 50.00,
+    currency: 'EUR',
+    description: 'RETRAIT DAB GUICHET AUTOMATIQUE',
+    category: 'cash',
+    merchant: 'Guichet Automatique BBVA',
+    reference: 'DAB20260401',
+    date: daysAgo(0),
+    balance: 199_950.00,
+  },
   {
     id: 'txn-024',
     accountId: 'acc-001',
