@@ -1,4 +1,5 @@
 import type { Card, CardTransaction, CardStatus } from '../../types';
+import { getActiveUserId } from './authApi';
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
@@ -9,7 +10,7 @@ export interface CardLimits {
 
 // ── Mock data ────────────────────────────────────────────────────────────────
 
-let MOCK_CARDS: Card[] = [
+let MOCK_CARDS_JOSE: Card[] = [
   {
     id: 'card-001',
     accountId: 'acc-001',
@@ -49,6 +50,34 @@ let MOCK_CARDS: Card[] = [
   },
 ];
 
+let MOCK_CARDS_KALLE: Card[] = [
+  {
+    id: 'card-003',
+    accountId: 'acc-003',
+    type: 'debit',
+    network: 'mastercard',
+    status: 'active',
+    cardNumber: '**** **** **** 4290',
+    holderName: 'KALLE HUIKKO',
+    expiryDate: '01/29',
+    cvv: '***',
+    spendingLimit: 0.00,
+    dailyLimit: 0.00,
+    onlinePaymentEnabled: false,
+    internationalEnabled: false,
+    contactlessEnabled: false,
+    color: '#004481',
+    createdAt: '2024-01-01T09:00:00.000Z',
+  },
+];
+
+/** Returns a mutable reference to the card list for the currently active user. */
+function getCardsForUser(): Card[] {
+  const uid = getActiveUserId();
+  if (uid === 'usr-003-khuikko') return MOCK_CARDS_KALLE;
+  return MOCK_CARDS_JOSE;
+}
+
 function daysAgo(n: number): string {
   const d = new Date();
   d.setDate(d.getDate() - n);
@@ -61,7 +90,7 @@ const MOCK_CARD_TRANSACTIONS: CardTransaction[] = [];
 
 export const fetchCardsApi = async (): Promise<Card[]> => {
   await delay(600);
-  return [...MOCK_CARDS];
+  return [...getCardsForUser()];
 };
 
 export const fetchCardTransactionsApi = async (
@@ -73,18 +102,20 @@ export const fetchCardTransactionsApi = async (
 
 export const blockCardApi = async (cardId: string): Promise<Card> => {
   await delay(800);
-  const idx = MOCK_CARDS.findIndex((c) => c.id === cardId);
+  const cards = getCardsForUser();
+  const idx = cards.findIndex((c) => c.id === cardId);
   if (idx === -1) throw new Error(`Tarjeta no encontrada: ${cardId}`);
-  MOCK_CARDS[idx] = { ...MOCK_CARDS[idx], status: 'blocked' as CardStatus };
-  return { ...MOCK_CARDS[idx] };
+  cards[idx] = { ...cards[idx], status: 'blocked' as CardStatus };
+  return { ...cards[idx] };
 };
 
 export const unblockCardApi = async (cardId: string): Promise<Card> => {
   await delay(800);
-  const idx = MOCK_CARDS.findIndex((c) => c.id === cardId);
+  const cards = getCardsForUser();
+  const idx = cards.findIndex((c) => c.id === cardId);
   if (idx === -1) throw new Error(`Tarjeta no encontrada: ${cardId}`);
-  MOCK_CARDS[idx] = { ...MOCK_CARDS[idx], status: 'active' as CardStatus };
-  return { ...MOCK_CARDS[idx] };
+  cards[idx] = { ...cards[idx], status: 'active' as CardStatus };
+  return { ...cards[idx] };
 };
 
 export const updateCardLimitsApi = async (
@@ -92,12 +123,13 @@ export const updateCardLimitsApi = async (
   limits: CardLimits,
 ): Promise<Card> => {
   await delay(700);
-  const idx = MOCK_CARDS.findIndex((c) => c.id === cardId);
+  const cards = getCardsForUser();
+  const idx = cards.findIndex((c) => c.id === cardId);
   if (idx === -1) throw new Error(`Tarjeta no encontrada: ${cardId}`);
-  MOCK_CARDS[idx] = {
-    ...MOCK_CARDS[idx],
+  cards[idx] = {
+    ...cards[idx],
     spendingLimit: limits.spendingLimit,
     dailyLimit: limits.dailyLimit,
   };
-  return { ...MOCK_CARDS[idx] };
+  return { ...cards[idx] };
 };
