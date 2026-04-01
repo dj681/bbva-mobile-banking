@@ -3,7 +3,7 @@ import type { UIState, ThemeMode, Notification } from '../../types';
 
 const initialState: UIState = {
   theme: 'system',
-  language: 'es',
+  language: 'tr',
   isOnline: true,
   notifications: [],
   unreadNotificationsCount: 0,
