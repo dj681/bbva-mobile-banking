@@ -86,24 +86,6 @@ jobs:
             echo "KEY_PASS=bbvatr_demo"                              >> "$GITHUB_ENV"
           fi
 
-      # Wire the release keystore into Gradle via project properties so the
-      # release build type is signed and Android can install the APK.
-      # V2 and V3 signing are enabled by default in AGP ≥ 2.2 and 3.0 respectively,
-      # but we set them explicitly to ensure the APK passes Play Protect validation.
-      - name: Enable V2/V3 APK signing in build.gradle
-        run: |
-          GRADLE_FILE="android/app/build.gradle"
-          # Inject v2SigningEnabled and v3SigningEnabled into every signingConfig block
-          if [ -f "$GRADLE_FILE" ]; then
-            sed -i '/signingConfigs\s*{/,/^[[:space:]]*}/ {
-              /storeFile\|storePassword\|keyAlias\|keyPassword/ {
-                /v2SigningEnabled/! {
-                  /keyPassword/ a\\            v2SigningEnabled true\n            v3SigningEnabled true
-                }
-              }
-            }' "$GRADLE_FILE" || true
-          fi
-
       - name: Build release APK with Gradle
         run: |
           cd android
