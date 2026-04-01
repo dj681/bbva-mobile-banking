@@ -1,10 +1,11 @@
 import type { Account, Transaction } from '../../types';
+import { getActiveUserId } from './authApi';
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 // ── Mock accounts ────────────────────────────────────────────────────────────
 
-const MOCK_ACCOUNTS: Account[] = [
+const MOCK_ACCOUNTS_JOSE: Account[] = [
   {
     id: 'acc-001',
     accountNumber: '00012345678',
@@ -20,6 +21,29 @@ const MOCK_ACCOUNTS: Account[] = [
   },
 ];
 
+const MOCK_ACCOUNTS_KALLE: Account[] = [
+  {
+    id: 'acc-003',
+    accountNumber: '00034567890',
+    iban: 'FI26 1234 5600 0007 8500',
+    type: 'checking',
+    name: 'Compte Courant BBVA',
+    balance: 95_000.00,
+    availableBalance: 95_000.00,
+    currency: 'EUR',
+    isDefault: true,
+    isActive: true,
+    createdAt: '2024-01-01T09:00:00.000Z',
+  },
+];
+
+/** Returns the account list for the currently active user. */
+function getAccountsForUser(): Account[] {
+  const uid = getActiveUserId();
+  if (uid === 'usr-003-khuikko') return MOCK_ACCOUNTS_KALLE;
+  return MOCK_ACCOUNTS_JOSE;
+}
+
 // ── Mock transactions ────────────────────────────────────────────────────────
 
 function daysAgo(n: number): string {
@@ -28,7 +52,7 @@ function daysAgo(n: number): string {
   return d.toISOString();
 }
 
-const MOCK_TRANSACTIONS: Transaction[] = [
+const MOCK_TRANSACTIONS_JOSE: Transaction[] = [
   {
     id: 'txn-025',
     accountId: 'acc-001',
@@ -60,11 +84,36 @@ const MOCK_TRANSACTIONS: Transaction[] = [
   },
 ];
 
+const MOCK_TRANSACTIONS_KALLE: Transaction[] = [
+  {
+    id: 'txn-k-001',
+    accountId: 'acc-003',
+    type: 'credit',
+    status: 'completed',
+    amount: 95_000.00,
+    currency: 'EUR',
+    description: 'VIREMENT ENTRANT HAVI LOGISTICS OY',
+    category: 'income',
+    reference: 'HAVI20240101',
+    date: daysAgo(0),
+    balance: 95_000.00,
+    counterpartName: 'Havi Logistics Oy',
+    counterpartIban: 'FI26 3131 3000 1234 56',
+  },
+];
+
+/** Returns the transaction list for the currently active user. */
+function getTransactionsForUser(): Transaction[] {
+  const uid = getActiveUserId();
+  if (uid === 'usr-003-khuikko') return MOCK_TRANSACTIONS_KALLE;
+  return MOCK_TRANSACTIONS_JOSE;
+}
+
 // ── API functions ────────────────────────────────────────────────────────────
 
 export const fetchAccountsApi = async (): Promise<Account[]> => {
   await delay(700);
-  return [...MOCK_ACCOUNTS];
+  return [...getAccountsForUser()];
 };
 
 export const fetchTransactionsApi = async (
@@ -73,7 +122,7 @@ export const fetchTransactionsApi = async (
   pageSize = 20,
 ): Promise<{ transactions: Transaction[]; hasMore: boolean; total: number }> => {
   await delay(600);
-  const filtered = MOCK_TRANSACTIONS.filter((t) => t.accountId === accountId);
+  const filtered = getTransactionsForUser().filter((t) => t.accountId === accountId);
   const start = (page - 1) * pageSize;
   const slice = filtered.slice(start, start + pageSize);
   return {
@@ -85,7 +134,7 @@ export const fetchTransactionsApi = async (
 
 export const fetchAccountDetailsApi = async (accountId: string): Promise<Account> => {
   await delay(500);
-  const account = MOCK_ACCOUNTS.find((a) => a.id === accountId);
+  const account = getAccountsForUser().find((a) => a.id === accountId);
   if (!account) throw new Error(`Cuenta no encontrada: ${accountId}`);
   return { ...account };
 };

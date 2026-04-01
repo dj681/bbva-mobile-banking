@@ -92,12 +92,39 @@ export const MOCK_USER_FRANCESCO: User = {
   lastLogin: new Date().toISOString(),
 };
 
+export const MOCK_USER_KALLE: User = {
+  id: 'usr-003-khuikko',
+  firstName: 'Kalle',
+  lastName: 'Huikko',
+  email: 'kalle.huikko@havi.fi',
+  phone: '0405051855',
+  avatar: `https://ui-avatars.com/api/?name=KH&background=004481&color=fff`,
+  createdAt: '2024-01-01T09:00:00.000Z',
+  lastLogin: new Date().toISOString(),
+};
+
 /** Map of lowercase username → mock user. */
 export const MOCK_USERS: Record<string, User> = {
   'josé': MOCK_USER,
   'jose': MOCK_USER,
   'francesco': MOCK_USER_FRANCESCO,
+  'kalle': MOCK_USER_KALLE,
 };
+
+// ── Active-user tracker ───────────────────────────────────────────────────────
+// Used by other mock API modules to serve per-user data without requiring
+// Redux state access inside pure API functions.
+// NOTE: This module-level variable is safe for this single-session mock
+// environment; it must not be used in real multi-user or concurrent scenarios.
+let _activeUserId: string = MOCK_USER.id;
+
+export function setActiveUserId(id: string): void {
+  _activeUserId = id;
+}
+
+export function getActiveUserId(): string {
+  return _activeUserId;
+}
 
 export interface LoginResult {
   token: string;
@@ -123,6 +150,7 @@ export const loginApi = async (
   if (!user) {
     throw new Error('Username not recognized.');
   }
+  setActiveUserId(user.id);
   return {
     token: buildToken(user.id, 30),
     refreshToken: buildToken(`${user.id}-refresh`, 43200), // 30 days
@@ -154,6 +182,7 @@ export const verifyTwoFactorApi = async (
       user = found;
     }
   }
+  setActiveUserId(user.id);
   return { token: buildToken(user.id, 30), user };
 };
 
@@ -175,4 +204,5 @@ export const refreshTokenApi = async (
  */
 export const logoutApi = async (): Promise<void> => {
   await delay(300);
+  setActiveUserId(MOCK_USER.id);
 };
