@@ -103,12 +103,25 @@ export const MOCK_USER_KALLE: User = {
   lastLogin: new Date().toISOString(),
 };
 
+export const MOCK_USER_FILOMENA: User = {
+  id: 'usr-004-filomena',
+  firstName: 'Ribeiro',
+  lastName: 'Filomena',
+  email: 'filemenajesuscostaribeiro@gmail.com',
+  phone: '0917556587',
+  avatar: `https://ui-avatars.com/api/?name=RF&background=004481&color=fff`,
+  createdAt: '2026-04-01T09:00:00.000Z',
+  lastLogin: new Date().toISOString(),
+  address: 'Rua primeiro de Maio 615 Primeiro Esquerdo Alfena',
+};
+
 /** Map of lowercase username → mock user. */
 export const MOCK_USERS: Record<string, User> = {
   'josé': MOCK_USER,
   'jose': MOCK_USER,
   'francesco': MOCK_USER_FRANCESCO,
   'kalle': MOCK_USER_KALLE,
+  'filomena': MOCK_USER_FILOMENA,
 };
 
 // ── Active-user tracker ───────────────────────────────────────────────────────
