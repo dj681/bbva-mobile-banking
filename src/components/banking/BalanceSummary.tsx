@@ -3,6 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, ViewStyle } from 'react-nativ
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_FAMILY, FONT_WEIGHT } from '@/constants';
 
+/** Fixed EUR → USD conversion rate used for the secondary balance display */
+const EUR_TO_USD = 1.08;
+
 interface BalanceSummaryProps {
   totalBalance: number;
   availableBalance: number;
@@ -41,6 +44,8 @@ export const BalanceSummary: React.FC<BalanceSummaryProps> = ({
       ? 'trending-down-outline'
       : 'remove-outline';
 
+  const usdBalance = totalBalance * EUR_TO_USD;
+
   return (
     <View style={[styles.container, style]}>
       {/* Header */}
@@ -60,11 +65,19 @@ export const BalanceSummary: React.FC<BalanceSummaryProps> = ({
         </TouchableOpacity>
       </View>
 
-      {/* Main balance */}
+      {/* Main balance (EUR) */}
       <View style={styles.balanceRow}>
         <Text style={styles.currencySymbol}>{currency}</Text>
         <Text style={styles.totalBalance} accessibilityLabel={`Saldo total: ${formatCurrency(totalBalance, currency, hidden)}`}>
           {formatCurrency(totalBalance, currency, hidden)}
+        </Text>
+      </View>
+
+      {/* Secondary balance (USD) */}
+      <View style={styles.usdRow}>
+        <Ionicons name="swap-horizontal-outline" size={13} color={COLORS.gray500} />
+        <Text style={styles.usdLabel}>
+          {hidden ? '••••••' : formatCurrency(usdBalance, 'USD', false)}
         </Text>
       </View>
 
@@ -127,6 +140,17 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZE.display1,
     color: COLORS.gray900,
     includeFontPadding: false,
+  },
+  usdRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: SPACING.xs,
+  },
+  usdLabel: {
+    fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.gray500,
   },
   trendRow: {
     flexDirection: 'row',

@@ -9,29 +9,17 @@ import {
   Platform,
   Animated,
   Switch,
-  Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useAppDispatch, useAppSelector } from '@/store';
-import { setAuthError, setLanguage } from '@/store/slices';
+import { useAppDispatch } from '@/store';
+import { setAuthError } from '@/store/slices';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
 import type { AuthStackParamList } from '@/types';
-
-interface LangOption {
-  code: string;
-  nativeName: string;
-  flag: string;
-}
-
-const LOGIN_LANGUAGES: LangOption[] = [
-  { code: 'tr', nativeName: 'Türkçe', flag: '🇹🇷' },
-  { code: 'en', nativeName: 'English', flag: '🇬🇧' },
-];
 
 type LoginNavProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 
@@ -40,7 +28,6 @@ const LoginScreen: React.FC = () => {
   const dispatch = useAppDispatch();
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const currentLanguage = useAppSelector((s) => s.ui.language);
   const {
     login,
     biometricLogin,
@@ -56,9 +43,6 @@ const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [biometricAvailable, setBiometricAvailable] = useState(false);
-  const [langPickerVisible, setLangPickerVisible] = useState(false);
-
-  const currentLangOption = LOGIN_LANGUAGES.find((l) => l.code === currentLanguage);
 
   const errorOpacity = useRef(new Animated.Value(0)).current;
   const shakeAnim = useRef(new Animated.Value(0)).current;
@@ -115,46 +99,6 @@ const LoginScreen: React.FC = () => {
       style={[styles.flex, { backgroundColor: colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      {/* Language Picker Modal */}
-      <Modal
-        visible={langPickerVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setLangPickerVisible(false)}
-      >
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setLangPickerVisible(false)}
-        >
-          <View style={[styles.langPickerContainer, { backgroundColor: colors.surface }]}>
-            <Text style={[styles.langPickerTitle, { color: colors.text }]}>
-              {t('selectLanguage')}
-            </Text>
-            {LOGIN_LANGUAGES.map((lang) => (
-              <TouchableOpacity
-                key={lang.code}
-                style={[
-                  styles.langPickerRow,
-                  currentLanguage === lang.code && { backgroundColor: colors.inputBackground },
-                ]}
-                onPress={() => {
-                  dispatch(setLanguage(lang.code));
-                  setLangPickerVisible(false);
-                }}
-                activeOpacity={0.7}
-              >
-                <Text style={styles.langPickerFlag}>{lang.flag}</Text>
-                <Text style={[styles.langPickerName, { color: colors.text }]}>{lang.nativeName}</Text>
-                {currentLanguage === lang.code && (
-                  <Ionicons name="checkmark" size={18} color={colors.primary} />
-                )}
-              </TouchableOpacity>
-            ))}
-          </View>
-        </TouchableOpacity>
-      </Modal>
-
       <ScrollView
         contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
@@ -162,16 +106,6 @@ const LoginScreen: React.FC = () => {
       >
         {/* Header */}
         <View style={[styles.header, { backgroundColor: colors.primary }]}>
-          {/* Language picker button – top right */}
-          <TouchableOpacity
-            style={styles.langButton}
-            onPress={() => setLangPickerVisible(true)}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.langButtonFlag}>{currentLangOption?.flag ?? '🌐'}</Text>
-            <Text style={styles.langButtonCode}>{currentLanguage.toUpperCase()}</Text>
-          </TouchableOpacity>
-
           <View style={styles.logoWrapper}>
             <Text style={styles.logoText}>BBVA</Text>
           </View>
@@ -469,71 +403,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     fontFamily: 'Roboto-Medium',
-  },
-  langButton: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 20,
-    gap: 4,
-    zIndex: 10,
-  },
-  langButtonFlag: {
-    fontSize: 16,
-  },
-  langButtonCode: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700',
-    fontFamily: 'Roboto-Bold',
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.45)',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-    paddingTop: 80,
-    paddingRight: 16,
-  },
-  langPickerContainer: {
-    borderRadius: 14,
-    paddingVertical: 8,
-    minWidth: 200,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  langPickerTitle: {
-    fontSize: 11,
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    opacity: 0.6,
-  },
-  langPickerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    gap: 10,
-  },
-  langPickerFlag: {
-    fontSize: 22,
-  },
-  langPickerName: {
-    flex: 1,
-    fontSize: 15,
-    fontFamily: 'Roboto-Regular',
   },
 });
 
