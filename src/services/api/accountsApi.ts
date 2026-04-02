@@ -5,22 +5,6 @@ const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 // ── Mock accounts ────────────────────────────────────────────────────────────
 
-const MOCK_ACCOUNTS_JOSE: Account[] = [
-  {
-    id: 'acc-001',
-    accountNumber: '00012345678',
-    iban: 'ES76 0182 0012 3456 7800 1890',
-    type: 'checking',
-    name: 'Cuenta Corriente BBVA',
-    balance: 199_950.00,
-    availableBalance: 199_950.00,
-    currency: 'EUR',
-    isDefault: true,
-    isActive: true,
-    createdAt: '2019-03-15T09:00:00.000Z',
-  },
-];
-
 const MOCK_ACCOUNTS_KALLE: Account[] = [
   {
     id: 'acc-003',
@@ -56,9 +40,8 @@ const MOCK_ACCOUNTS_FILOMENA: Account[] = [
 /** Returns the account list for the currently active user. */
 function getAccountsForUser(): Account[] {
   const uid = getActiveUserId();
-  if (uid === 'usr-003-khuikko') return MOCK_ACCOUNTS_KALLE;
   if (uid === 'usr-004-filomena') return MOCK_ACCOUNTS_FILOMENA;
-  return MOCK_ACCOUNTS_JOSE;
+  return MOCK_ACCOUNTS_KALLE;
 }
 
 // ── Mock transactions ────────────────────────────────────────────────────────
@@ -68,38 +51,6 @@ function daysAgo(n: number): string {
   d.setDate(d.getDate() - n);
   return d.toISOString();
 }
-
-const MOCK_TRANSACTIONS_JOSE: Transaction[] = [
-  {
-    id: 'txn-025',
-    accountId: 'acc-001',
-    type: 'debit',
-    status: 'completed',
-    amount: 50.00,
-    currency: 'EUR',
-    description: 'RETRAIT DAB GUICHET AUTOMATIQUE',
-    category: 'cash',
-    merchant: 'Guichet Automatique BBVA',
-    reference: 'DAB20260401',
-    date: daysAgo(0),
-    balance: 199_950.00,
-  },
-  {
-    id: 'txn-024',
-    accountId: 'acc-001',
-    type: 'credit',
-    status: 'completed',
-    amount: 200_000.00,
-    currency: 'EUR',
-    description: 'VIREMENT ENTRANT MONECO BANK',
-    category: 'income',
-    reference: 'MNB20260329',
-    date: daysAgo(0),
-    balance: 200_000.00,
-    counterpartName: 'Moneco Bank',
-    counterpartIban: 'FR76 1690 6009 0000 2345 6789 012',
-  },
-];
 
 const MOCK_TRANSACTIONS_KALLE: Transaction[] = [
   {
@@ -138,9 +89,8 @@ const MOCK_TRANSACTIONS_FILOMENA: Transaction[] = [
 /** Returns the transaction list for the currently active user. */
 function getTransactionsForUser(): Transaction[] {
   const uid = getActiveUserId();
-  if (uid === 'usr-003-khuikko') return MOCK_TRANSACTIONS_KALLE;
   if (uid === 'usr-004-filomena') return MOCK_TRANSACTIONS_FILOMENA;
-  return MOCK_TRANSACTIONS_JOSE;
+  return MOCK_TRANSACTIONS_KALLE;
 }
 
 // ── API functions ────────────────────────────────────────────────────────────

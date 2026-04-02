@@ -66,32 +66,6 @@ function buildToken(subject: string, expiresInMinutes: number): string {
 /** Default password used to pre-fill demo login forms. Any non-empty value is accepted. */
 export const DEMO_PASSWORD = 'demo1234';
 
-export const MOCK_USER: User = {
-  id: 'usr-001-jdiaz',
-  firstName: 'José Antonio',
-  lastName: 'Díaz Rodríguez',
-  email: 'jdiazrodriguez266@gmail.com',
-  phone: '642663110',
-  avatar: `https://ui-avatars.com/api/?name=JA+Diaz&background=004481&color=fff`,
-  createdAt: '2019-03-15T09:00:00.000Z',
-  lastLogin: new Date().toISOString(),
-  birthDate: '09.12.1966',
-  address: 'Calle Piedras 3, Matagorda, El Ejido',
-  postalCode: '04715',
-  city: 'Almería',
-};
-
-export const MOCK_USER_FRANCESCO: User = {
-  id: 'usr-002-fjoy',
-  firstName: 'Francesco',
-  lastName: 'Joy',
-  email: 'bellostudio10@hotmail.com',
-  phone: '600000000',
-  avatar: `https://ui-avatars.com/api/?name=FJ&background=004481&color=fff`,
-  createdAt: '2021-06-01T09:00:00.000Z',
-  lastLogin: new Date().toISOString(),
-};
-
 export const MOCK_USER_KALLE: User = {
   id: 'usr-003-khuikko',
   firstName: 'Kalle',
@@ -117,9 +91,6 @@ export const MOCK_USER_FILOMENA: User = {
 
 /** Map of lowercase username → mock user. */
 export const MOCK_USERS: Record<string, User> = {
-  'josé': MOCK_USER,
-  'jose': MOCK_USER,
-  'francesco': MOCK_USER_FRANCESCO,
   'kalle': MOCK_USER_KALLE,
   'filomena': MOCK_USER_FILOMENA,
 };
@@ -129,7 +100,7 @@ export const MOCK_USERS: Record<string, User> = {
 // Redux state access inside pure API functions.
 // NOTE: This module-level variable is safe for this single-session mock
 // environment; it must not be used in real multi-user or concurrent scenarios.
-let _activeUserId: string = MOCK_USER.id;
+let _activeUserId: string = MOCK_USER_KALLE.id;
 
 export function setActiveUserId(id: string): void {
   _activeUserId = id;
@@ -151,7 +122,7 @@ export interface RefreshResult {
 }
 
 /**
- * Mock login — accepts username "josé" (or "jose") or "francesco";
+ * Mock login — accepts username "kalle" or "filomena";
  * any non-empty password is valid.
  */
 export const loginApi = async (
@@ -183,7 +154,7 @@ export const verifyTwoFactorApi = async (
   if (!/^\d{6}$/.test(otp)) {
     throw new Error('Invalid OTP code. Please enter 6 digits.');
   }
-  let user: User = MOCK_USER;
+  let user: User = MOCK_USER_KALLE;
   if (pendingToken) {
     const parts = pendingToken.split('.');
     if (parts.length === 3) {
@@ -207,8 +178,8 @@ export const refreshTokenApi = async (
 ): Promise<RefreshResult> => {
   await delay(300);
   return {
-    token: buildToken(MOCK_USER.id, 30),
-    refreshToken: buildToken(`${MOCK_USER.id}-refresh`, 43200),
+    token: buildToken(MOCK_USER_KALLE.id, 30),
+    refreshToken: buildToken(`${MOCK_USER_KALLE.id}-refresh`, 43200),
   };
 };
 
@@ -217,5 +188,5 @@ export const refreshTokenApi = async (
  */
 export const logoutApi = async (): Promise<void> => {
   await delay(300);
-  setActiveUserId(MOCK_USER.id);
+  setActiveUserId(MOCK_USER_KALLE.id);
 };
