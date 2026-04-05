@@ -17,7 +17,7 @@ const MOCK_ACCOUNTS_KALLE: Account[] = [
     currency: 'EUR',
     isDefault: true,
     isActive: true,
-    createdAt: '2024-01-01T09:00:00.000Z',
+    createdAt: '2026-04-01T09:00:00.000Z',
   },
 ];
 
