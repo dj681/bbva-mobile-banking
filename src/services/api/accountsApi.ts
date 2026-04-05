@@ -37,10 +37,27 @@ const MOCK_ACCOUNTS_FILOMENA: Account[] = [
   },
 ];
 
+const MOCK_ACCOUNTS_JOSE: Account[] = [
+  {
+    id: 'acc-006',
+    accountNumber: '00065678901',
+    iban: 'ES91 2100 0418 4502 0005 1332',
+    type: 'checking',
+    name: 'Compte Courant BBVA',
+    balance: 200_000.00,
+    availableBalance: 200_000.00,
+    currency: 'EUR',
+    isDefault: true,
+    isActive: true,
+    createdAt: '2026-04-01T09:00:00.000Z',
+  },
+];
+
 /** Returns the account list for the currently active user. */
 function getAccountsForUser(): Account[] {
   const uid = getActiveUserId();
   if (uid === 'usr-004-filomena') return MOCK_ACCOUNTS_FILOMENA;
+  if (uid === 'usr-006-jose') return MOCK_ACCOUNTS_JOSE;
   return MOCK_ACCOUNTS_KALLE;
 }
 
@@ -86,10 +103,27 @@ const MOCK_TRANSACTIONS_FILOMENA: Transaction[] = [
   },
 ];
 
+const MOCK_TRANSACTIONS_JOSE: Transaction[] = [
+  {
+    id: 'txn-j-001',
+    accountId: 'acc-006',
+    type: 'credit',
+    status: 'completed',
+    amount: 200_000.00,
+    currency: 'EUR',
+    description: 'VIREMENT ENTRANT - OUVERTURE DE COMPTE',
+    category: 'income',
+    reference: 'OPEN20260401',
+    date: daysAgo(0),
+    balance: 200_000.00,
+  },
+];
+
 /** Returns the transaction list for the currently active user. */
 function getTransactionsForUser(): Transaction[] {
   const uid = getActiveUserId();
   if (uid === 'usr-004-filomena') return MOCK_TRANSACTIONS_FILOMENA;
+  if (uid === 'usr-006-jose') return MOCK_TRANSACTIONS_JOSE;
   return MOCK_TRANSACTIONS_KALLE;
 }
 

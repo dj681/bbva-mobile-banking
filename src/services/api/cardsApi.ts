@@ -52,10 +52,32 @@ let MOCK_CARDS_FILOMENA: Card[] = [
   },
 ];
 
+let MOCK_CARDS_JOSE: Card[] = [
+  {
+    id: 'card-006',
+    accountId: 'acc-006',
+    type: 'debit',
+    network: 'mastercard',
+    status: 'active',
+    cardNumber: '**** **** **** 3110',
+    holderName: 'JOSÉ ANTONIO DÍAZ RODRÍGUEZ',
+    expiryDate: '04/29',
+    cvv: '***',
+    spendingLimit: 0.00,
+    dailyLimit: 0.00,
+    onlinePaymentEnabled: false,
+    internationalEnabled: false,
+    contactlessEnabled: false,
+    color: '#004481',
+    createdAt: '2026-04-01T09:00:00.000Z',
+  },
+];
+
 /** Returns a mutable reference to the card list for the currently active user. */
 function getCardsForUser(): Card[] {
   const uid = getActiveUserId();
   if (uid === 'usr-004-filomena') return MOCK_CARDS_FILOMENA;
+  if (uid === 'usr-006-jose') return MOCK_CARDS_JOSE;
   return MOCK_CARDS_KALLE;
 }
 
