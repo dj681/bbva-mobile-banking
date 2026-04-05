@@ -77,6 +77,17 @@ export const MOCK_USER_KALLE: User = {
   lastLogin: new Date().toISOString(),
 };
 
+export const MOCK_USER_JHON: User = {
+  id: 'usr-005-jhon',
+  firstName: 'Jhon',
+  lastName: '',
+  email: 'jhon@bbva.fr',
+  phone: '',
+  avatar: `https://ui-avatars.com/api/?name=JH&background=004481&color=fff`,
+  createdAt: new Date().toISOString(),
+  lastLogin: new Date().toISOString(),
+};
+
 export const MOCK_USER_FILOMENA: User = {
   id: 'usr-004-filomena',
   firstName: 'Ribeiro',
@@ -93,6 +104,7 @@ export const MOCK_USER_FILOMENA: User = {
 export const MOCK_USERS: Record<string, User> = {
   'kalle': MOCK_USER_KALLE,
   'filomena': MOCK_USER_FILOMENA,
+  'jhon': MOCK_USER_JHON,
 };
 
 // ── Active-user tracker ───────────────────────────────────────────────────────
