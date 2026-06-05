@@ -112,12 +112,25 @@ export const MOCK_USER_JOSE: User = {
   address: 'Calle Piedras 3, Matagorda, El Ejido, Almería, 04715',
 };
 
+export const MOCK_USER_FRIEDRICH: User = {
+  id: 'usr-007-friedrich',
+  firstName: 'Friedrich',
+  lastName: 'Uhl',
+  email: 'friedrich.uhl03@gmail.com',
+  phone: '6705562092',
+  avatar: `https://ui-avatars.com/api/?name=FU&background=004481&color=fff`,
+  createdAt: '2026-06-05T00:00:00.000Z',
+  lastLogin: new Date().toISOString(),
+  address: 'Auptstrasse 71, 8544 Pölfing Brunn',
+};
+
 /** Map of lowercase username → mock user. */
 export const MOCK_USERS: Record<string, User> = {
   'kalle': MOCK_USER_KALLE,
   'filomena': MOCK_USER_FILOMENA,
   'jhon': MOCK_USER_JHON,
   'josé': MOCK_USER_JOSE,
+  'friedrich': MOCK_USER_FRIEDRICH,
 };
 
 // ── Active-user tracker ───────────────────────────────────────────────────────
@@ -147,7 +160,7 @@ export interface RefreshResult {
 }
 
 /**
- * Mock login — accepts username "kalle" or "filomena";
+ * Mock login — accepts username "kalle", "filomena", "friedrich", etc.;
  * any non-empty password is valid.
  */
 export const loginApi = async (
