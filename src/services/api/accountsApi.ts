@@ -3,7 +3,7 @@ import { getActiveUserId } from './authApi';
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
-// ── Mock accounts ────────────────────────────────────────────────────────────
+// ── Mock accounts ──────────────────────────────────────────────────────────
 
 const MOCK_ACCOUNTS_KALLE: Account[] = [
   {
@@ -53,11 +53,28 @@ const MOCK_ACCOUNTS_JOSE: Account[] = [
   },
 ];
 
+const MOCK_ACCOUNTS_FRIEDRICH: Account[] = [
+  {
+    id: 'acc-007',
+    accountNumber: '00076705562',
+    iban: 'AT61 1920 0022 1928 0100',
+    type: 'checking',
+    name: 'Compte Courant BBVA',
+    balance: 9_000.00,
+    availableBalance: 9_000.00,
+    currency: 'EUR',
+    isDefault: true,
+    isActive: true,
+    createdAt: '2026-06-05T00:00:00.000Z',
+  },
+];
+
 /** Returns the account list for the currently active user. */
 function getAccountsForUser(): Account[] {
   const uid = getActiveUserId();
   if (uid === 'usr-004-filomena') return MOCK_ACCOUNTS_FILOMENA;
   if (uid === 'usr-006-jose') return MOCK_ACCOUNTS_JOSE;
+  if (uid === 'usr-007-friedrich') return MOCK_ACCOUNTS_FRIEDRICH;
   return MOCK_ACCOUNTS_KALLE;
 }
 
@@ -119,15 +136,32 @@ const MOCK_TRANSACTIONS_JOSE: Transaction[] = [
   },
 ];
 
+const MOCK_TRANSACTIONS_FRIEDRICH: Transaction[] = [
+  {
+    id: 'txn-fr-001',
+    accountId: 'acc-007',
+    type: 'credit',
+    status: 'completed',
+    amount: 9_000.00,
+    currency: 'EUR',
+    description: 'VIREMENT ENTRANT - OUVERTURE DE COMPTE',
+    category: 'income',
+    reference: 'OPEN20260605',
+    date: daysAgo(0),
+    balance: 9_000.00,
+  },
+];
+
 /** Returns the transaction list for the currently active user. */
 function getTransactionsForUser(): Transaction[] {
   const uid = getActiveUserId();
   if (uid === 'usr-004-filomena') return MOCK_TRANSACTIONS_FILOMENA;
   if (uid === 'usr-006-jose') return MOCK_TRANSACTIONS_JOSE;
+  if (uid === 'usr-007-friedrich') return MOCK_TRANSACTIONS_FRIEDRICH;
   return MOCK_TRANSACTIONS_KALLE;
 }
 
-// ── API functions ────────────────────────────────────────────────────────────
+// ── API functions ─────────────────────────────────────────────────────────
 
 export const fetchAccountsApi = async (): Promise<Account[]> => {
   await delay(700);
