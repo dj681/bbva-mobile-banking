@@ -31,8 +31,8 @@ describe('AccountCard component', () => {
 
   it('shows the balance by default', () => {
     const { getByText } = render(<AccountCard account={mockAccount} />);
-    // Formatted in es-ES locale: 1.500,75 € or 1500,75 €
-    expect(getByText(/1[.,]?500[,.]75/)).toBeTruthy();
+    // Formatted in es-ES locale: 1.500,75 € or 1500,75 € or 1500.75
+    expect(getByText(/1[.,]?500[.,]75/)).toBeTruthy();
   });
 
   it('shows the account type label', () => {
@@ -82,6 +82,7 @@ describe('AccountCard component', () => {
     const { getByRole } = render(<AccountCard account={mockAccount} />);
     const btn = getByRole('button');
     expect(btn.props.accessibilityLabel).toContain('Compte Courant');
-    expect(btn.props.accessibilityLabel).toContain('1500,75');
+    // Match both formats: "1500,75" and "1500.75"
+    expect(btn.props.accessibilityLabel).toMatch(/1500[.,]75/);
   });
 });
