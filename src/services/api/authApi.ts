@@ -133,6 +133,11 @@ export const MOCK_USERS: Record<string, User> = {
   'friedrich': MOCK_USER_FRIEDRICH,
 };
 
+/** Specific passwords required for certain users. Users not in this map accept any non-empty password. */
+const USER_PASSWORDS: Record<string, string> = {
+  'friedrich': 'uhl1298',
+};
+
 // ── Active-user tracker ───────────────────────────────────────────────────────
 // Used by other mock API modules to serve per-user data without requiring
 // Redux state access inside pure API functions.
@@ -160,18 +165,34 @@ export interface RefreshResult {
 }
 
 /**
- * Mock login — accepts username "kalle", "filomena", "friedrich", etc.;
- * any non-empty password is valid.
+ * Mock login — accepts username with specific password validation.
+ * - Most users accept any non-empty password
+ * - Friedrich requires exact password: "uhl1298"
  */
 export const loginApi = async (
   username: string,
-  _password: string,
+  password: string,
 ): Promise<LoginResult> => {
   await delay(MOCK_DELAY);
   const user = MOCK_USERS[username.trim().toLowerCase()];
   if (!user) {
     throw new Error('Username not recognized.');
   }
+  
+  // Check password requirements
+  const requiredPassword = USER_PASSWORDS[username.trim().toLowerCase()];
+  if (requiredPassword) {
+    // This user has a specific password requirement
+    if (password !== requiredPassword) {
+      throw new Error('Invalid password.');
+    }
+  } else {
+    // Other users accept any non-empty password
+    if (!password || password.trim() === '') {
+      throw new Error('Password cannot be empty.');
+    }
+  }
+  
   setActiveUserId(user.id);
   return {
     token: buildToken(user.id, 30),
