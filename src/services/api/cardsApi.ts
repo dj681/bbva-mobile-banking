@@ -8,7 +8,7 @@ export interface CardLimits {
   dailyLimit: number;
 }
 
-// ── Mock data ────────────────────────────────────────────────────────────────
+// ── Mock data ──────────────────────────────────────────────────────────────
 
 let MOCK_CARDS_KALLE: Card[] = [
   {
@@ -73,11 +73,33 @@ let MOCK_CARDS_JOSE: Card[] = [
   },
 ];
 
+let MOCK_CARDS_FRIEDRICH: Card[] = [
+  {
+    id: 'card-007',
+    accountId: 'acc-007',
+    type: 'debit',
+    network: 'mastercard',
+    status: 'active',
+    cardNumber: '**** **** **** 5562',
+    holderName: 'FRIEDRICH UHL',
+    expiryDate: '06/28',
+    cvv: '***',
+    spendingLimit: 0.00,
+    dailyLimit: 0.00,
+    onlinePaymentEnabled: false,
+    internationalEnabled: false,
+    contactlessEnabled: false,
+    color: '#004481',
+    createdAt: '2026-06-05T00:00:00.000Z',
+  },
+];
+
 /** Returns a mutable reference to the card list for the currently active user. */
 function getCardsForUser(): Card[] {
   const uid = getActiveUserId();
   if (uid === 'usr-004-filomena') return MOCK_CARDS_FILOMENA;
   if (uid === 'usr-006-jose') return MOCK_CARDS_JOSE;
+  if (uid === 'usr-007-friedrich') return MOCK_CARDS_FRIEDRICH;
   return MOCK_CARDS_KALLE;
 }
 
@@ -89,7 +111,7 @@ function daysAgo(n: number): string {
 
 const MOCK_CARD_TRANSACTIONS: CardTransaction[] = [];
 
-// ── API functions ────────────────────────────────────────────────────────────
+// ── API functions ─────────────────────────────────────────────────────────
 
 export const fetchCardsApi = async (): Promise<Card[]> => {
   await delay(600);
