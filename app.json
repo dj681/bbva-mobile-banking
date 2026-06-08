@@ -46,7 +46,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "publicPath": "/bbva-mobile-banking/"
     },
     "plugins": [
       "expo-font",
