@@ -1,0 +1,4 @@
+# This file tells GitHub Pages NOT to process the site with Jekyll
+# This is critical for Single Page Applications (SPAs) deployed to GitHub Pages
+# Without this file, GitHub Pages will process directories starting with underscores,
+# which breaks code splitting in most modern JavaScript bundlers
